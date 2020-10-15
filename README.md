@@ -38,10 +38,10 @@
 Note: Ask whether we actually need to use IV.
 
 
-**Davia:** research on eligibility for pension programs, paper structure, overleaf, a)-d)
-**Erik:** combination of methods with IV, relevance of complier population, a)-d)
-**Jere:** github, think about data, semiparametric est
-**Johannes:** plausibility checks, variable transformations + descriptives
-**Mila:** nonparametric estimators, think about data
+**Davia:** research on eligibility for pension programs, paper structure, overleaf, a)-d)  
+**Erik:** combination of methods with IV, relevance of complier population, a)-d)  
+**Jere:** github, think about data, semiparametric est  
+**Johannes:** plausibility checks, variable transformations + descriptives  
+**Mila:** nonparametric estimators, think about data  
 
 
