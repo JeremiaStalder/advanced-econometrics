@@ -1,1 +1,1 @@
-# Advanced Econometrics Project
+# Advanced Econometric Methods Project
