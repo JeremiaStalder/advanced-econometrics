@@ -58,8 +58,8 @@ labelfont=bf,width=.88\textwidth,skip=0pt]{caption}
 					Variable & abbrev. & Type & Transformation & Notes   \\
 					\midrule
 					\textbf{Key Vars} & & & & \\
-					Participation & p401 & Binary & - & Treatment \\
-					Eligibility & e401 & Binary & - & Instrument \\
+					Participation & p401 & Binary & - & Treatment. 1 if $a401>0$. \\
+					Eligibility & e401 & Binary & - & Instrument. 1 if any HH-member works in firm that offers 401k. \\
 					\midrule
 					\textbf{Outcome Vars} & & & & \\
 					Financial Assets & tfa & & &	\\
@@ -76,7 +76,7 @@ labelfont=bf,width=.88\textwidth,skip=0pt]{caption}
 					married & marr & & & \\
 					Participation in IRA & pira & & & \\
 					IRA account & ira & & & \\
-					Defined Benefit Pension & db & & & \\
+					Defined Benefit Pension & db & & & 1 if employer offers DB pension plan.\\
 					Home Owner & hown & & & \\
 					House Value & hval & & & \\
 					Home Mortgage & hmort & & & \\

@@ -25,7 +25,6 @@
 11.	Log transformation for wealth vars
 12.	Check dummy variables – whether we need to kick out the reference category
 13.	What should we do with all the wealth variables? 
-New E: 14. Could income lead to reverse causality if it includes income from assets (interest, capital gains,...). If yes: can we find an IV? (probably not). State in paper. 
 
 ## Estimators
 1.	Lasso (postlasso)
@@ -43,14 +42,12 @@ New E: 14. Could income lead to reverse causality if it includes income from ass
 **Mila:** nonparametric estimators, think about data  
 
 ## Questions for Petyo:
-Do we need to use IV?
-Any way to test for reverse causality for cross section (no TS data)? We dont know any. 
-Can we use additional papers as source? (many that also worked on the same dataset) 
+Do we need to use IV? - No IV, he wants effect of eligibility
+Any way to test for reverse causality for cross section (no TS data)? We dont know any. - NO. Just focus on selc on obs setting, this can be mentioned but igonored
+Can we use additional papers as source? (many that also worked on the same dataset) - Sure we can. 
 
 ## Research Question
-Need to decide whats more interesting:
-	Effect of 401k participation on wealth? (would need IV)
-	Effect of 401k eligibility on wealth (no IV)
+What is the effect of 401k eligibility on wealth? (No IV)
 
 ## Information pension plans
 DB - defined benefit plan, mostly payed by employer, introduced before 401k.
