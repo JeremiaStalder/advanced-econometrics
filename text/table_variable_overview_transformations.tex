@@ -1,0 +1,108 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[pdftex]{graphicx}
+\usepackage[hang,flushmargin]{footmisc}
+\usepackage{amssymb,amsmath,setspace,array,natbib,booktabs,threeparttable,rotating,multirow,pdflscape,amsthm,floatpag,xfrac,enumerate}
+\usepackage[margin=1.in]{geometry}
+\usepackage[titletoc,title]{appendix}
+\usepackage[osf]{mathpazo}
+\usepackage{fullpage}
+\usepackage[justification=centering, labelsep=newline, aboveskip=-2pt,
+labelfont=bf,width=.88\textwidth,skip=0pt]{caption}
+\usepackage[english]{babel}
+\usepackage[pdftex,
+			pdfauthor={Anne Ardila Brenøe, Thomas Epper},
+			pdftitle={The Intergenerational Transmission of Time Preferences Persists across Four Decades - Appendix XX},
+			pdfsubject={Intergenerational Transmission of Preferences},
+			pdfkeywords={time preferences, intergenerational transmission, nurturing},
+			pdfproducer={Latex},
+			pdfcreator={pdflatex}]{hyperref}
+\linespread{1.069}
+\floatpagestyle{empty}
+
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}
+
+\def\figs{./assets/figs}
+\def\tabs{./assets/tables}
+\usepackage[justification=centering, labelsep=newline, aboveskip=-2pt, labelfont=bf,width=.88\textwidth]{caption}
+
+
+\usepackage{todonotes}
+\usepackage{longtable} %% added by erik for pagebreak in table
+\usepackage{color,soul} %% added by erik for highlighing
+\usepackage{threeparttable}
+\usepackage{threeparttablex} % new version of trheeparttable
+
+
+\begin{document}
+\begin{landscape}
+\begin{singlespace}
+	%\begin{landscape} 
+		%\begin{table} %[!htbp]
+			% \centering
+			\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+			\begin{ThreePartTable}
+				\begin{TableNotes}
+					\begin{scriptsize}
+					\item \textit{Note:} 		
+					\end{scriptsize}
+				\end{TableNotes}
+				
+				\begin{longtable}{l C{2cm} C{4cm} C{6cm} C{6cm} }
+					\caption{Variable Transformations}\label{tab_soep_transmission_all_controls}\\
+					%Sample & \multicolumn{5}{c}{All} & 1974+ & Siblings \\  
+					Variable & abbrev. & Type & Transformation & Notes   \\
+					\midrule
+					\textbf{Key Vars} & & & & \\
+					Participation & p401 & Binary & - & Treatment \\
+					Eligibility & e401 & Binary & - & Instrument \\
+					\midrule
+					\textbf{Outcome Vars} & & & & \\
+					Financial Assets & tfa & & &	\\
+					Net Financial Assets & net_tfa & & &	\\
+					Net Non-401(k) Assets & net_n401 & & & \\
+					Total Wealth & tw & & & \\
+
+					\midrule
+					\textbf{Covariates} & & & & \\
+					Assets 401k & a401 & & & \\
+					Income & inc & & &  \\
+					Age & age & & & \\
+					Family Size & fsize & & & \\
+					married & marr & & & \\
+					Participation in IRA & pira & & & \\
+					IRA account & ira & & & \\
+					Defined Benefit Pension & db & & & \\
+					Home Owner & hown & & & \\
+					House Value & hval & & & \\
+					Home Mortgage & hmort & & & \\
+					Home Equity & hequity & & & \\
+					Two earners & twoearn & & & \\
+					Dummies for education & nohs, hs, smcol, col & & & no high-school, high-school, some college, college\\
+					Years of Education & educ & & & \\
+					Gender (male) & male & & & Question: is it really 1=m? because 80\% of respondents are 0, and they are the home/flat owner - check this. \\
+					\midrule
+					\textbf{Generated Covariates} & & & & \\
+					\midrule
+					\textbf{Dropped Covariates} & & & & \\
+					\midrule
+					\textbf{Non-observed confounders} & & & & \\
+					Company Promotion of 401k & & & & \\
+					\bottomrule
+				\insertTableNotes \\
+				%\endlastfoot	
+				\end{longtable} 
+				% \endgroup 
+
+				
+			\end{ThreePartTable}
+		%\end{table} 
+	%\end{landscape} 
+\end{singlespace} 
+\end{landscape}
+
+\end{document}

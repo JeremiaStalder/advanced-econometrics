@@ -38,6 +38,7 @@
 ## Questions for Petyo:
 Note: Ask whether we actually need to use IV.
 Any way to test for reverse causality for cross section (no TS data)? We dont know any. 
+Can we use additional papers as source? (many that also worked on the same dataset) 
 
 
 **Davia:** research on eligibility for pension programs, paper structure, overleaf, a)-d)  
@@ -49,7 +50,13 @@ Any way to test for reverse causality for cross section (no TS data)? We dont kn
 ## Possibly good descriptives for our data
 1. correlation matrix (done)
 2. boxplots / hists for continuous variables (before and after transformation, univariate)
-3. boxplots / hists for continous variables grouped by (1) participation OR (2) eligiblilty
+3. boxplots / hists and descriptive tables for all variables grouped by (1) participation OR (2) eligiblilty (shows difference between treated & non-treated in covariates -> identify confounders
 4. cross tabulation for participation, eligibility and other binary variables (to see if each group has sufficient obs + can test for independence of variable and treatment via chi-square-test -> if independent then variable is no true confounder)
 5. classic boring descriptives table for all variables 
 
+## Literature insights
+Benjamin: 
+	Same IV idea (with propensity score subsclassification (what is this? ;)) 
+	Outcome: total assets to avoid reshuffeling effects. 
+	DB-variable: Problem: DB-wealth is not included in 
+	
