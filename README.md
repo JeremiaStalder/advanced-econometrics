@@ -35,7 +35,9 @@
 6.	Causal random forest (package)
 7.	Other estimators Erik can think of and which Jere can code
 
+## Questions for Petyo:
 Note: Ask whether we actually need to use IV.
+Any way to test for reverse causality for cross section (no TS data)? We dont know any. 
 
 
 **Davia:** research on eligibility for pension programs, paper structure, overleaf, a)-d)  
@@ -43,5 +45,11 @@ Note: Ask whether we actually need to use IV.
 **Jere:** github, think about data, semiparametric est  
 **Johannes:** plausibility checks, variable transformations + descriptives  
 **Mila:** nonparametric estimators, think about data  
+
+## Possibly good descriptives for our data
+1. correlation matrix (done)
+2. boxplots / hists for continuous variables (before and after transformation, univariate)
+3. boxplots / hists for continous variables grouped by (1) participation OR (2) eligiblilty
+3. cross tabulation for participation, eligibility and other binary variables (to see if each group has sufficient obs + can test for independence of variable and treatment via chi-square-test -> if independent then variable is no true confounder)
 
 
