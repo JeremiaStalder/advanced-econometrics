@@ -20,6 +20,22 @@
 		
 5.	Check criteria of eligibility for 401k/IRA/DB
 
+
+## TODO 
+Final Dataset - Erik, 
+	Check CS after all transformations. Drop Vars w/o CS. 
+	Redo descriptives
+	Balance Check & difference in means test
+	remainig vars: Standardize cont vars + dummys 
+	documentation on all variables
+	variable transformation overview + table 
+Text 
+	Set up paper - Davia
+	(a)to(d)  - Davia Erik.  (bullet points, compare, then devide writing part)
+	Desciptive Section - Erik, Johannes as proofread
+	Assumptions for Estimators: everyone who codes an estimator
+
+
 ## Variable transformation
 1.	Age! Try different forms of polynomials, different interaction terms. 
 2.	Education (maybe only use dummies)!
@@ -42,23 +58,28 @@
 	
 13.	What should we do with all the wealth variables? 
 
+14. add dummy for withdrawal
+
 New: 14: E - what is tfa_he
 
 
-## Estimators
-1.	Lasso (postlasso)
-2.	Nonparametric (kernel? Reduce dimensionality – pca/tsne)
-3.	Semiparametric ??? – ask to cover
-4.	NLS
-5.	Simple linear (TSLS), propensity score (matching?), doubly robust. 
-6.	Causal random forest (package)
-7.	Other estimators Erik can think of and which Jere can code. Idea Erik: Simple Means Difference. I believe in Jere! 
 
 **Davia:** research on eligibility for pension programs, paper structure, overleaf, a)-d)  
 **Erik:** combination of methods with IV, relevance of complier population, a)-d)  
-**Jere:** github, think about data, semiparametric est  
+**Jere:** github, think about data, semiparametric est. 
 **Johannes:** plausibility checks, variable transformations + descriptives  
 **Mila:** nonparametric estimators, think about data  
+
+## Estimators
+First Person is responsible for the writing & documentation.
+1.	Lasso (postlasso) - Johannes, Mila
+2.	Nonparametric (kernel? Reduce dimensionality – pca/tsne) - Mila, Johannes
+3.	Semiparametric - Jere, Johannes
+4.	NLS - Jere (check what is it)
+5.	Difference in Means + Simple linear, propensity score (matching?), doubly robust. - Davia, Erik
+6.	Causal random forest (package). Double ML package Knauss useful? - Erik, Jere
+7.	Other estimators Erik can think of and which Jere can code. 
+
 
 ## Questions for Petyo:
 Do we need to use IV? - No IV, he wants effect of eligibility. 
@@ -71,7 +92,7 @@ Are we interested in (C)ATET or (C)CATE? CATET would have weaker assumptions: Co
 
 ## Information pension plans
 DB - defined benefit plan, mostly payed by employer, introduced before 401k.
-Withdrawal without penalty: generally above age 59.5 (in some cases 55).
+Withdrawal without penalty: generally above age XX (look up what it was in 1991)
 Nice to know for fancy intro: which states offered 401k in 1990 and now, share of firms offering 401k, # americans in 401k...
 
 # Method News

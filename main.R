@@ -93,12 +93,15 @@ mydata <- as.data.frame(pension)
      mydata$tfa_check = mydata$a401+mydata$nifa+mydata$ira
      sum(mydata$tfa_check==mydata$tfa)
      sum(mydata$tfa_check!=mydata$tfa)
+     (mydata$tfa-mydata$tfa_check)[mydata$tfa_check!=mydata$tfa]
      
     # replicate net fin assets
      mydata$nifa_check = mydata$a401 + mydata$net_n401 
      hist(mydata$nifa_check-mydata$nifa)
      sum(mydata$nifa_check==mydata$nifa)
      sum(mydata$nifa_check!=mydata$nifa)
+     (mydata$nifa-mydata$nifa_check)[mydata$nifa_check!=mydata$nifa]
+     
      
     # replicate total wealth: not possible since value of bus,property = value_other etc is missing. Can generate it
      mydata$value_other = mydata$tw - mydata$nifa - mydata$hequity
@@ -139,6 +142,9 @@ mydata <- as.data.frame(pension)
        )
        dev.off()
      }
+     
+     
+     
 ############################################
    
  #### Data Transformation ####
@@ -158,14 +164,30 @@ mydata <- as.data.frame(pension)
      mydata_transform = mutate(mydata_transform, hequity_dummy_neg = hequity<0) # hequity dummy negative
      mydata_transform = mutate(mydata_transform, hequity_dummy = hequity>0) # hequity dummy
      
+    # Log wealth variables
+     # Note: if variable can be negative, we transform it to be positive ("move the minimum value") such that we can use logs. We move the minimum of the series to 1.
+     # !Attention: for variables with negative minimum (only home equity), the interpretability of the coefficient is killed.)
+     continuous_vars = c("a401","tw","tfa","ira","net_tfa","tfa_he", "nifa","net_nifa","net_n401","inc","hmort","hequity","hval")
+     for (i in 1:length(continuous_vars)){
+       if (min(mydata_transform[,continuous_vars[i]])<=1){
+         mydata_transform[,continuous_vars[i]] = log( mydata_transform[,continuous_vars[i]]-min(mydata_transform[,continuous_vars[i]])+1)
+       }
+       else {
+         mydata_transform[,continuous_vars[i]] = log( mydata_transform[,continuous_vars[i]])
+       }
+     }
+     
+     
+     
      # Standardize continuous variables.
        # ! Hint: need to do all "content-related" variable transformations before this step. 
        # ! Hint2: add newly created continuous variables to the vector
-       continuous_vars = c("a401","tw","tfa","ira","net_tfa","tfa_he", "nifa","net_nifa","net_n401","inc","hmort","hequity","hval")
        mydata_transform[,continuous_vars] = scale(mydata_transform[,continuous_vars])
       
   # Drop Variables
    mydata_transform = select(mydata_transform, -zhat)    # remove IV variable
    mydata_transform = select(mydata_transform, -nohs)  # no high school as reference category 
+   
+   
    
    
