@@ -19,7 +19,7 @@ ggpairs <- GGally::ggpairs
 ggcorrplot <- ggcorrplot::ggcorrplot
 
 # setwd("C:/Users/eriks/Desktop/MiQE_F/Advanced Econometrics Methods/project") # setwd
-setwd("C:/Users/johan/Documents/GitHub/advanced-econometrics") # setwd
+# setwd("C:/Users/johan/Documents/GitHub/advanced-econometrics") # setwd
 # source("functions.R") # functions
 
 
@@ -104,6 +104,41 @@ mydata <- as.data.frame(pension)
      mydata$value_other = mydata$tw - mydata$nifa - mydata$hequity
      sum(mydata$tw_check==mydata$tfa)
      sum(mydata$tw_check!=mydata$tfa)
+     
+     
+     
+     #Conditional Mean
+     cond.mean <- matrix(NA, nrow = 2,ncol = ncol(mydata))
+     for (i in 1:ncol(mydata)) {
+       x <- by(data = mydata[,i], INDICES = mydata$e401, FUN = mean)
+       cond.mean[1,i] <- x[[1]]
+       cond.mean[2,i] <- x[[2]]
+     }
+     colnames(cond.mean) <- colnames(mydata)
+     
+     
+     #Overlapping Histograms
+     for (i in 1:ncol(mydata)) {
+       ggplot(mydata,aes_string(x=paste0(colnames(mydata)[i]))) + 
+         geom_histogram(data=subset(mydata,e401 == 0),fill = "red", alpha = 0.2) + #Red eligible not for 401
+         geom_histogram(data=subset(mydata,e401 == 1),fill = "green", alpha = 0.2)+ #Green eligible  for 401
+         ggsave(paste0(outpath,"overlap_hist_",colnames(mydata)[i],".png"))
+     }
+     
+     #Boxplot
+     for (i in 1:ncol(mydata)) {
+       png(file=paste0(outpath,"boxplot",colnames(mydata)[i],".png"),
+           width=600, height=350)
+       boxplot(subset(mydata,e401 == 0)[,i], subset(mydata,e401 == 1)[,i],
+               main = paste("Boxplot e401 = 0 or 1 and",colnames(mydata)[i]),
+               at = c(1,2),
+               names = c("e401 = 0","e401 = 1"),
+               las = 2,
+               horizontal = FALSE,
+               notch = FALSE
+       )
+       dev.off()
+     }
 ############################################
    
  #### Data Transformation ####
