@@ -112,7 +112,7 @@ mydata <- as.data.frame(pension)
  
   # New variables
    # family variable
-   mydata_transform$busy_couple = mydata_transform$fsize==2 & mydata_transform$twoearn==1
+   mydata_transform$busy_couple = as.numeric(mydata_transform$fsize==2 & mydata_transform$twoearn==1)
    
   # Variable transformations
     # Dummies for cutoffs
@@ -128,6 +128,6 @@ mydata <- as.data.frame(pension)
       
   # Drop Variables
    mydata_transform = select(mydata_transform, -zhat)    # remove IV variable
-   bydata_transform = select(mydata_transform, -nohs)  # no high school as reference category 
+   mydata_transform = select(mydata_transform, -nohs)  # no high school as reference category 
    
    
