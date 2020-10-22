@@ -115,7 +115,7 @@ mydata <- as.data.frame(pension)
  
   # New variables
    # family variable
-   mydata_transform$busy_couple = mydata_transform$fsize==2 & mydata_transform$twoearn==1
+   mydata_transform$busy_couple = as.numeric(mydata_transform$fsize==2 & mydata_transform$twoearn==1)
    
   # Variable transformations
     # Dummies for cutoffs
