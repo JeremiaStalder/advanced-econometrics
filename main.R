@@ -19,7 +19,10 @@ ggpairs <- GGally::ggpairs
 ggcorrplot <- ggcorrplot::ggcorrplot
 
 # setwd("C:/Users/eriks/Desktop/MiQE_F/Advanced Econometrics Methods/project") # setwd
+setwd("C:/Users/johan/Documents/GitHub/advanced-econometrics") # setwd
 # source("functions.R") # functions
+
+
 outpath = "./output/" # output
 datapath = "./data/" # data files (input datafile from package)
 
@@ -128,6 +131,6 @@ mydata <- as.data.frame(pension)
       
   # Drop Variables
    mydata_transform = select(mydata_transform, -zhat)    # remove IV variable
-   bydata_transform = select(mydata_transform, -nohs)  # no high school as reference category 
+   mydata_transform = select(mydata_transform, -nohs)  # no high school as reference category 
    
    
