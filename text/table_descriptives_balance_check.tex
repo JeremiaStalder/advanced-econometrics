@@ -1,0 +1,217 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[pdftex]{graphicx}
+\usepackage[hang,flushmargin]{footmisc}
+\usepackage{amssymb,amsmath,setspace,array,natbib,booktabs,threeparttable,rotating,multirow,pdflscape,amsthm,floatpag,xfrac,enumerate}
+\usepackage[margin=1.in]{geometry}
+\usepackage[titletoc,title]{appendix}
+\usepackage[osf]{mathpazo}
+\usepackage{fullpage}
+\usepackage[justification=centering, labelsep=newline, aboveskip=-2pt,
+labelfont=bf,width=.88\textwidth,skip=0pt]{caption}
+\usepackage[english]{babel}
+\usepackage[pdftex,
+			pdfauthor={Anne Ardila Brenøe, Thomas Epper},
+			pdftitle={The Intergenerational Transmission of Time Preferences Persists across Four Decades - Appendix XX},
+			pdfsubject={Intergenerational Transmission of Preferences},
+			pdfkeywords={time preferences, intergenerational transmission, nurturing},
+			pdfproducer={Latex},
+			pdfcreator={pdflatex}]{hyperref}
+\linespread{1.069}
+\floatpagestyle{empty}
+
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}
+
+\def\figs{./assets/figs}
+\def\tabs{./assets/tables}
+\usepackage[justification=centering, labelsep=newline, aboveskip=-2pt, labelfont=bf,width=.88\textwidth]{caption}
+
+
+\usepackage{todonotes}
+\usepackage{longtable} %% added by erik for pagebreak in table
+\usepackage{color,soul} %% added by erik for highlighing
+\usepackage{threeparttable}
+\usepackage{threeparttablex} % new version of trheeparttable
+
+
+\begin{document}
+
+
+\begin{singlespace}
+	%\begin{landscape} 
+		%\begin{table} %[!htbp]
+			% \centering
+			\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+			\begin{ThreePartTable}
+				\begin{TableNotes}
+					\begin{scriptsize}
+					\item \textit{Note:} Balance check for mean differences of potential confounders for households eligible and non-eligible for 401k. The standardized difference in means is classified as relevant if absolute value larger than 0.1 (rule of thumb). The table is sorted by standardized difference.
+					\end{scriptsize}
+				\end{TableNotes}
+				
+				\begin{longtable}{l C{2cm} C{2cm} C{2cm} C{2cm} }
+					\caption{Balance Check - Significant Difference in Means}\label{tab_soep_transmission_all_controls}\\
+			\toprule
+			 Variable & Mean Difference & SD Mean Difference & Standardized Difference & Relevant?* \\ 
+  \hline
+  e401 & 1.000 & 0.000 &  Inf & 1.000 \\ 
+  e401\_std & 2.059 & 0.000 &  Inf & 1.000 \\ 
+  p401 & 0.706 & 0.322 & 2.192 & 1.000 \\ 
+  p401\_std & 1.592 & 0.726 & 2.192 & 1.000 \\ 
+  a401 & 6.046 & 2.944 & 2.054 & 1.000 \\ 
+  a401\_std & 1.549 & 0.754 & 2.054 & 1.000 \\ 
+  a401\_quantile\_std & 1.324 & 0.877 & 1.510 & 1.000 \\ 
+  a401\_quantile & 0.096 & 0.064 & 1.510 & 1.000 \\ 
+  tfa\_quantile & 0.219 & 0.254 & 0.863 & 1.000 \\ 
+  tfa\_quantile\_std & 0.787 & 0.913 & 0.863 & 1.000 \\ 
+  tfa & 2.541 & 3.004 & 0.846 & 1.000 \\ 
+  tfa\_std & 0.752 & 0.889 & 0.846 & 1.000 \\ 
+  inc\_quantile & 0.191 & 0.271 & 0.706 & 1.000 \\ 
+  inc\_quantile\_std & 0.662 & 0.938 & 0.706 & 1.000 \\ 
+  inc & 0.407 & 0.583 & 0.699 & 1.000 \\ 
+  inc\_std & 0.654 & 0.936 & 0.699 & 1.000 \\ 
+  tfa\_adjust\_quantile\_std & 0.651 & 0.951 & 0.685 & 1.000 \\ 
+  tfa\_adjust\_quantile & 0.182 & 0.266 & 0.685 & 1.000 \\ 
+  tfa\_adjust & 0.793 & 1.232 & 0.643 & 1.000 \\ 
+  tfa\_adjust\_std & 0.623 & 0.969 & 0.643 & 1.000 \\ 
+  net\_tfa\_quantile\_std & 0.588 & 0.967 & 0.608 & 1.000 \\ 
+  net\_tfa\_quantile & 0.169 & 0.278 & 0.608 & 1.000 \\ 
+  inc\_cub & 0.366 & 0.713 & 0.513 & 1.000 \\ 
+  inc\_cub\_std & 0.491 & 0.957 & 0.513 & 1.000 \\ 
+  net\_tfa\_adjust\_quantile & 0.144 & 0.282 & 0.509 & 1.000 \\ 
+  net\_tfa\_adjust\_quantile\_std & 0.500 & 0.982 & 0.509 & 1.000 \\ 
+  db & 0.226 & 0.446 & 0.508 & 1.000 \\ 
+  db\_std & 0.506 & 0.996 & 0.508 & 1.000 \\ 
+  tw\_quantile & 0.139 & 0.278 & 0.500 & 1.000 \\ 
+  tw\_quantile\_std & 0.483 & 0.966 & 0.500 & 1.000 \\ 
+  nifa\_std & 0.463 & 0.949 & 0.488 & 1.000 \\ 
+  nifa & 1.524 & 3.125 & 0.488 & 1.000 \\ 
+  nifa\_quantile\_std & 0.453 & 0.969 & 0.467 & 1.000 \\ 
+  nifa\_quantile & 0.125 & 0.267 & 0.467 & 1.000 \\ 
+  tw\_adjust\_quantile & 0.129 & 0.280 & 0.461 & 1.000 \\ 
+  tw\_adjust\_quantile\_std & 0.448 & 0.972 & 0.461 & 1.000 \\ 
+  i2 & -0.168 & 0.376 & -0.446 & 1.000 \\ 
+  i2\_std & -0.418 & 0.938 & -0.446 & 1.000 \\ 
+  tw & 0.285 & 0.657 & 0.435 & 1.000 \\ 
+  tw\_std & 0.428 & 0.983 & 0.435 & 1.000 \\ 
+  hval\_quantile\_std & 0.414 & 0.987 & 0.420 & 1.000 \\ 
+  hval\_quantile & 0.090 & 0.214 & 0.420 & 1.000 \\ 
+  hmort\_quantile & 0.070 & 0.171 & 0.410 & 1.000 \\ 
+  hmort\_quantile\_std & 0.409 & 0.997 & 0.410 & 1.000 \\ 
+  tw\_adjust & 0.264 & 0.656 & 0.403 & 1.000 \\ 
+  tw\_adjust\_std & 0.397 & 0.986 & 0.403 & 1.000 \\ 
+  hmort & 2.026 & 5.296 & 0.383 & 1.000 \\ 
+  hmort\_std & 0.376 & 0.982 & 0.383 & 1.000 \\ 
+  hval & 1.944 & 5.292 & 0.367 & 1.000 \\ 
+  hval\_std & 0.358 & 0.974 & 0.367 & 1.000 \\ 
+  hmort\_dummy\_std & 0.357 & 0.981 & 0.363 & 1.000 \\ 
+  hmort\_dummy & 0.178 & 0.490 & 0.363 & 1.000 \\ 
+  net\_tfa & 0.092 & 0.257 & 0.359 & 1.000 \\ 
+  net\_tfa\_std & 0.377 & 1.049 & 0.359 & 1.000 \\ 
+  i6\_std & 0.353 & 1.022 & 0.345 & 1.000 \\ 
+  i6 & 0.130 & 0.378 & 0.345 & 1.000 \\ 
+  hown & 0.159 & 0.466 & 0.341 & 1.000 \\ 
+  hval\_dummy & 0.159 & 0.466 & 0.341 & 1.000 \\ 
+  hown\_std & 0.332 & 0.973 & 0.341 & 1.000 \\ 
+  hval\_dummy\_std & 0.332 & 0.973 & 0.341 & 1.000 \\ 
+  hequity\_std & 0.323 & 0.980 & 0.329 & 1.000 \\ 
+  hequity & 1.674 & 5.080 & 0.329 & 1.000 \\ 
+  twoearn & 0.153 & 0.486 & 0.316 & 1.000 \\ 
+  twoearn\_std & 0.314 & 0.995 & 0.316 & 1.000 \\ 
+  net\_tfa\_adjust & 0.078 & 0.253 & 0.309 & 1.000 \\ 
+  net\_tfa\_adjust\_std & 0.325 & 1.052 & 0.309 & 1.000 \\ 
+  educ\_std & 0.296 & 0.981 & 0.301 & 1.000 \\ 
+  educ & 0.824 & 2.735 & 0.301 & 1.000 \\ 
+  tw\_original\_std & 0.304 & 1.012 & 0.300 & 1.000 \\ 
+  tw\_original & 34116.948 & 113641.767 & 0.300 & 1.000 \\ 
+  hequity\_quantile\_std & 0.288 & 0.995 & 0.289 & 1.000 \\ 
+  hequity\_quantile & 0.058 & 0.199 & 0.289 & 1.000 \\ 
+  i7 & 0.076 & 0.282 & 0.268 & 1.000 \\ 
+  i7\_std & 0.279 & 1.040 & 0.268 & 1.000 \\ 
+  ira & 1.045 & 3.969 & 0.263 & 1.000 \\ 
+  ira\_std & 0.266 & 1.010 & 0.263 & 1.000 \\ 
+  pira & 0.114 & 0.436 & 0.260 & 1.000 \\ 
+  pira\_std & 0.263 & 1.009 & 0.260 & 1.000 \\ 
+  net\_n401\_quantile & 0.070 & 0.289 & 0.244 & 1.000 \\ 
+  net\_n401\_quantile\_std & 0.245 & 1.005 & 0.244 & 1.000 \\ 
+  ira\_quantile\_std & 0.245 & 1.017 & 0.241 & 1.000 \\ 
+  ira\_quantile & 0.016 & 0.066 & 0.241 & 1.000 \\ 
+  col\_std & 0.229 & 1.008 & 0.227 & 1.000 \\ 
+  col & 0.100 & 0.439 & 0.227 & 1.000 \\ 
+  other\_assets\_quantile & 0.047 & 0.226 & 0.206 & 1.000 \\ 
+  other\_assets\_quantile\_std & 0.207 & 1.001 & 0.206 & 1.000 \\ 
+  marr & 0.094 & 0.482 & 0.196 & 1.000 \\ 
+  marr\_std & 0.194 & 0.990 & 0.196 & 1.000 \\ 
+  other\_assets & 0.240 & 1.229 & 0.195 & 1.000 \\ 
+  other\_assets\_std & 0.196 & 1.004 & 0.195 & 1.000 \\ 
+  net\_nifa\_quantile & 0.057 & 0.290 & 0.195 & 1.000 \\ 
+  net\_nifa\_quantile\_std & 0.197 & 1.009 & 0.195 & 1.000 \\ 
+  age\_sq & -21.919 & 114.468 & -0.191 & 1.000 \\ 
+  age\_sq\_std & -0.188 & 0.982 & -0.191 & 1.000 \\ 
+  i3 & -0.071 & 0.403 & -0.177 & 1.000 \\ 
+  i3\_std & -0.174 & 0.982 & -0.177 & 1.000 \\ 
+  i5 & 0.052 & 0.337 & 0.156 & 1.000 \\ 
+  i5\_std & 0.159 & 1.018 & 0.156 & 1.000 \\ 
+  busy\_couple\_std & 0.159 & 1.021 & 0.155 & 1.000 \\ 
+  busy\_couple & 0.048 & 0.310 & 0.155 & 1.000 \\ 
+  net\_n401 & 0.037 & 0.241 & 0.151 & 1.000 \\ 
+  net\_n401\_std & 0.160 & 1.057 & 0.151 & 1.000 \\ 
+  a3 & 0.064 & 0.460 & 0.140 & 1.000 \\ 
+  a3\_std & 0.140 & 1.005 & 0.140 & 1.000 \\ 
+  net\_nifa & 0.027 & 0.228 & 0.120 & 1.000 \\ 
+  net\_nifa\_std & 0.128 & 1.063 & 0.120 & 1.000 \\ 
+  hmort\_dummy\_right\_censored & 0.020 & 0.172 & 0.116 & 1.000 \\ 
+  hmort\_dummy\_right\_censored\_std & 0.121 & 1.038 & 0.116 & 1.000 \\ 
+  withdrawal & -0.024 & 0.231 & -0.105 & 1.000 \\ 
+  withdrawal\_std & -0.103 & 0.976 & -0.105 & 1.000 \\ 
+  hval\_dummy\_right\_censored & 0.015 & 0.158 & 0.094 & 0.000 \\ 
+  hval\_dummy\_right\_censored\_std & 0.098 & 1.034 & 0.094 & 0.000 \\ 
+  fsize\_4 & 0.038 & 0.411 & 0.092 & 0.000 \\ 
+  fsize\_4\_std & 0.093 & 1.007 & 0.092 & 0.000 \\ 
+  a5\_std & -0.087 & 0.988 & -0.088 & 0.000 \\ 
+  a5 & -0.029 & 0.335 & -0.088 & 0.000 \\ 
+  a4 & 0.036 & 0.415 & 0.086 & 0.000 \\ 
+  a4\_std & 0.087 & 1.006 & 0.086 & 0.000 \\ 
+  hs\_std & -0.071 & 0.997 & -0.072 & 0.000 \\ 
+  hs & -0.035 & 0.483 & -0.072 & 0.000 \\ 
+  i4 & 0.027 & 0.385 & 0.071 & 0.000 \\ 
+  i4\_std & 0.072 & 1.007 & 0.071 & 0.000 \\ 
+  inc\_sq & -0.034 & 0.482 & -0.071 & 0.000 \\ 
+  inc\_sq\_std & -0.070 & 0.990 & -0.071 & 0.000 \\ 
+  age\_std & 0.065 & 0.987 & 0.065 & 0.000 \\ 
+  age & 0.666 & 10.180 & 0.065 & 0.000 \\ 
+  male & -0.021 & 0.401 & -0.054 & 0.000 \\ 
+  male\_std & -0.053 & 0.995 & -0.054 & 0.000 \\ 
+  fsize\_std & 0.049 & 0.996 & 0.049 & 0.000 \\ 
+  fsize & 0.066 & 1.350 & 0.049 & 0.000 \\ 
+  smcol & 0.021 & 0.433 & 0.049 & 0.000 \\ 
+  smcol\_std & 0.049 & 1.003 & 0.049 & 0.000 \\ 
+  fsize\_5\_or\_above\_std & -0.041 & 0.995 & -0.041 & 0.000 \\ 
+  fsize\_5\_or\_above & -0.014 & 0.339 & -0.041 & 0.000 \\ 
+  a2 & -0.016 & 0.406 & -0.040 & 0.000 \\ 
+  a2\_std & -0.040 & 0.996 & -0.040 & 0.000 \\ 
+  fsize\_2 & 0.012 & 0.425 & 0.029 & 0.000 \\ 
+  fsize\_2\_std & 0.029 & 1.002 & 0.029 & 0.000 \\ 
+  age\_cub & -42.061 & 2711.492 & -0.016 & 0.000 \\ 
+  age\_cub\_std & -0.015 & 0.977 & -0.016 & 0.000 \\ 
+  hequity\_dummy\_right\_censored\_std & -0.013 & 0.985 & -0.013 & 0.000 \\ 
+  hequity\_dummy\_right\_censored & -0.001 & 0.050 & -0.013 & 0.000 \\ 
+  fsize\_3\_std & -0.005 & 1.000 & -0.005 & 0.000 \\ 
+  fsize\_3 & -0.002 & 0.397 & -0.005 & 0.000 \\ 
+					\bottomrule
+				\insertTableNotes \\
+				%\endlastfoot	
+				\end{longtable} 
+				% \endgroup 
+
+				
+			\end{ThreePartTable}
+		%\end{table} 
+	%\end{landscape} 
+\end{singlespace} 
+
+\end{document}
