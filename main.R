@@ -358,13 +358,12 @@ mydata_transform <-
 # Dummies for left cutoff (0)
 # check which vars have left cutoff:
 # result: hmort, hval
+# BUT: with removed negative equity variables _> hown = hval_dummy
 print("To determine left cutoff (apart from hist): number of obs equal to minumum of variable")
 for (i in 1:length(continuous_vars)) {
   print(continuous_vars[i])
   print(sum(mydata_transform[, continuous_vars[i]] == min(mydata_transform[, continuous_vars[i]])))
 }
-mydata_transform <-
-  mutate(mydata_transform, hval_dummy = as.numeric(hval > 0)) # house value dummy
 mydata_transform <-
   mutate(mydata_transform, hmort_dummy = as.numeric(hmort > 0)) # mortgage dummy
 

@@ -10,13 +10,6 @@
 \usepackage[justification=centering, labelsep=newline, aboveskip=-2pt,
 labelfont=bf,width=.88\textwidth,skip=0pt]{caption}
 \usepackage[english]{babel}
-\usepackage[pdftex,
-			pdfauthor={Anne Ardila Brenøe, Thomas Epper},
-			pdftitle={The Intergenerational Transmission of Time Preferences Persists across Four Decades - Appendix XX},
-			pdfsubject={Intergenerational Transmission of Preferences},
-			pdfkeywords={time preferences, intergenerational transmission, nurturing},
-			pdfproducer={Latex},
-			pdfcreator={pdflatex}]{hyperref}
 \linespread{1.069}
 \floatpagestyle{empty}
 
@@ -39,6 +32,7 @@ labelfont=bf,width=.88\textwidth,skip=0pt]{caption}
 
 
 \begin{document}
+
 \begin{landscape}
 \begin{singlespace}
 	%\begin{landscape} 
@@ -48,47 +42,81 @@ labelfont=bf,width=.88\textwidth,skip=0pt]{caption}
 			\begin{ThreePartTable}
 				\begin{TableNotes}
 					\begin{scriptsize}
-					\item \textit{Note:} 		
+					\item \textit{Note:} Summary table for removed observations and the reasoning. 	
 					\end{scriptsize}
 				\end{TableNotes}
 				
-				\begin{longtable}{l C{2cm} C{4cm} C{6cm} C{6cm} }
-					\caption{Variable Transformations}\label{tab_soep_transmission_all_controls}\\
+				\begin{longtable}{l C{15cm} C{5cm}}
+					\caption{Removed Observations}\label{tab_drop_observations}\\
 					%Sample & \multicolumn{5}{c}{All} & 1974+ & Siblings \\  
-					Variable & abbrev. & Type & Transformation & Notes   \\
+					\toprule
+					Key variable & Description & impacted observations  \\
 					\midrule
-					\textbf{Key Vars} & & & & \\
-					Participation & p401 & Binary & - & Treatment. 1 if $a401>0$. \\
-					Eligibility & e401 & Binary & - & Instrument. 1 if any HH-member works in firm that offers 401k. \\
+					income & Negative or 0 Income implausible. & 5 \\
+					income & Low income obs due to no common support (no eligible hh. with low income) & 350 \\
+				 	total wealth & extreme negative outliers to reduce issue of log transformation & 20 \\
+				 	hequity & negative equity outliers (even if it is possible) & 20 \\
+					\midrule
+					\bottomrule
+				\insertTableNotes \\
+				%\endlastfoot	
+				\end{longtable} 
+				% \endgroup 
+
+				
+			\end{ThreePartTable}
+		%\end{table} 
+	%\end{landscape} 
+\end{singlespace} 
+\end{landscape}
+
+
+\begin{landscape}
+\begin{singlespace}
+	%\begin{landscape} 
+		%\begin{table} %[!htbp]
+			% \centering
+			\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+			\begin{ThreePartTable}
+				\begin{TableNotes}
+					\begin{scriptsize}
+					\item \textit{Note:} Summary table for all relevant base variables in the data set. Shows all created transformations and main features of data. 	
+					\end{scriptsize}
+				\end{TableNotes}
+				
+				\begin{longtable}{l C{2cm} C{2cm} C{7cm} C{7cm} }
+					\caption{Variable Transformations}\label{tab_variable_transformation}\\
+					%Sample & \multicolumn{5}{c}{All} & 1974+ & Siblings \\  
+					Variable & abbrev. & Type & Transformations & Notes   \\
+					\midrule
+					\textbf{Treatment} & & & & \\
+					Eligibility & e401 & Binary & - & Treatment. 1 if any HH-member works in firm that offers 401k. \\
 					\midrule
 					\textbf{Outcome Vars} & & & & \\
-					Financial Assets & tfa & & &	\\
-					Net Financial Assets & net_tfa & & &	\\
-					Net Non-401(k) Assets & net_n401 & & & \\
-					Total Wealth & tw & & & \\
+					Financial Assets & tfa & cont. & log (same name), quantiles. Adjusted according to Benjamin due to db.  &	\\
+					Net Financial Assets & $net tfa$ & cont.&  log (same name), quantiles. Adjusted according to Benjamin due to defined benefit pension.&	\\
+					Net Non-401(k) Assets & $net n401$ & cont.&log (same name), quantiles. & \\
+					Total Wealth & tw & cont.&  log (same name), quantiles. Adjusted according to Benjamin due to defined benefit pension. & Most important outcome variable. Log-Transformation might impact results in a relevant way (negative wealth values). \\
 
 					\midrule
 					\textbf{Covariates} & & & & \\
-					Assets 401k & a401 & & & \\
-					Income & inc & & &  \\
-					Age & age & & & \\
-					Family Size & fsize & & & \\
-					married & marr & & & \\
-					Participation in IRA & pira & & & \\
-					IRA account & ira & & & \\
-					Defined Benefit Pension & db & & & 1 if employer offers DB pension plan.\\
-					Home Owner & hown & & & \\
-					House Value & hval & & & \\
-					Home Mortgage & hmort & & & \\
-					Home Equity & hequity & & & \\
-					Two earners & twoearn & & & \\
-					Dummies for education & nohs, hs, smcol, col & & & no high-school, high-school, some college, college\\
-					Years of Education & educ & & & \\
-					Gender (male) & male & & & Question: is it really 1=m? because 80\% of respondents are 0, and they are the home/flat owner - check this. \\
-					\midrule
-					\textbf{Generated Covariates} & & & & \\
-					\midrule
-					\textbf{Dropped Covariates} & & & & \\
+					Participation & p401 & Binary & - & 1 if $a401>0$. Most relevant binary covariate. \\
+					Assets 401k & a401 & cont.& log (same name), quantile. & \\
+					Income & inc & cont.&  log (same name), quantiles, dummies for intervals (i1-7, from paper).  &  Most relevant continuous covariate. \\
+					Age & age & factor & st.-dized, $age^2$, $age^3$, dummies for age groups (a1-5, from paper)& \\
+					Family Size & fsize & factor & dummified& \\
+					married & marr & binary & & \\
+					Participation in IRA & pira & binary& & \\
+					IRA account & ira & cont. & log (same name), quantile. & \\
+					Defined Benefit Pension & db & binary & & 1 if employer offers DB pension plan.\\
+					Home Owner & hown & binary & & \\
+					House Value & hval & cont.& dummy for right censoring. log (same name), quantile. & \\
+					Home Mortgage & hmort & cont.& dummy for mortgage,  log (same name), quantile  & \\
+					Home Equity & hequity & cont.& dummy for right censoring.  log (same name), quantile  & \\
+					Two earners & twoearn & binary& & \\
+					Dummies for education & nohs, hs, smcol, col & binary & & no high-school, high-school, some college, college\\
+					Years of Education & educ & factor & st.-dized, usually drop for analysis & \\
+					Gender (male) & male & binary & & Question: is it really 1=m? because 80\% of respondents are 0, and they are the home/flat owner - check this. \\
 					\midrule
 					\textbf{Non-observed confounders} & & & & \\
 					Company Promotion of 401k & & & & \\

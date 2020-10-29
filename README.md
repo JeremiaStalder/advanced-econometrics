@@ -2,7 +2,6 @@
 
 ## Research Question
 What is the (conditional) average treatment effect of 401k eligibility on wealth? (No IV)
-Are we interested in (C)ATET or (C)CATE? CATET would have weaker assumptions: Common support only for D=1 -> how to we check for this (overlap not necessary anymore)? , CIA only for Y1 (doesnt really matter). 
 
 ## TODO 
 Final Dataset - Erik. STATUS: main part done, dataset is ready to work with. Need proofread + someone to look at descriptives after transform for check. 
@@ -10,8 +9,8 @@ Final Dataset - Erik. STATUS: main part done, dataset is ready to work with. Nee
 	Redo descriptives - Done
 	Balance Check & difference in means test - DONE. Add to Descriptive Table and explain. (indication for relevant confounders)
 	Remainig vars: Standardize cont vars + dummys  - DONE
-	Documentation on all variables - In progress
-	Variable transformation overview + table - In progress
+	Documentation on all variables - Done. Will improve if questions occur
+	Variable transformation overview + table - Done. 
 	Fancy Descriptives for Paper - NOT DONE
 Text 
 	Set up paper - Davia
