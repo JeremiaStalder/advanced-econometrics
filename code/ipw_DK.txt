@@ -1,0 +1,62 @@
+##### IPW Estimator - DAVIA #####
+attach(mydata_transform)
+
+# Mean comparison ----------------------------------------------------------------------------------------------------
+
+MC_ate <- mean(tw[e401==1]) - mean(tw[e401==0])
+est_mc <- lm(tw~d)
+summary(est_mc)
+
+# Parametric model ---------------------------------------------------------------------------------------------------
+
+x <- cbind(age,inc,db,marr,male,twoearn,pira,hs,smcol,col,hown,fsize_2,fsize_3,fsize_4,fsize_5_or_above
+           ,busy_couple,hmort_dummy,hval_dummy_right_censored,hmort_dummy_right_censored,hequity_dummy_right_censored
+           ,age_sq,age_cub,inc_sq,inc_cub)
+d <- as.matrix(e401)
+colnames(d)[1] <- "d"
+
+
+# Simple OLS
+
+est <- lm(tw~d+x)
+summary(est)
+OLS_ate <- summary(est)$coefficients[2, 1]
+
+
+# Inverse Probability Weighting
+
+logit <- function(d, x){
+  out <- glm(d~x, family = "binomial")
+  return(as.matrix(out$fitted.values))
+}
+out <- glm(d~x, family = "binomial")
+summary(out)
+yhat <- logit(d, x)
+
+mean <- mean(yhat)
+max <- max(yhat)
+min <- min(yhat)
+colname <- cbind("min", "mean", "max")
+desc_yhat <- cbind(min, mean, max)
+hist(yhat, breaks=100)
+
+help <- as.data.frame(cbind(tw, yhat, d, x))
+help <- help[help$V2 < 0.95 & help$V2 > 0.05, ]
+help2 <- help[help$V2 < 0.90 & help$V2 > 0.10, ]
+
+
+IPW <- function(yhat,y,d){
+  ate <- mean((d*y)/yhat - ((1-d)*y/(1-yhat)))
+  return(ate)
+}
+
+IPW_ate <- IPW(yhat,tw,d)
+IPW_ate2 <- IPW(help$V2, help$tw, help$d)
+IPW_ate3 <- IPW(help2$V2, help2$tw, help2$d)
+
+
+
+
+# Comparison ---------------------------------------------------------------------------------------------------
+
+para_est <- rbind(cbind("Mean Comparison", "OLS", "IPW", "IPW_restricted", "IPW_restricted2"),cbind(MC_ate, OLS_ate, IPW_ate, IPW_ate2, IPW_ate3))
