@@ -16,6 +16,8 @@ library(xtable)
 library(fastDummies)
 library(nonrandom)
 
+options(scipen=10000)
+
 ## functions
 filter <- dplyr::filter
 select <- dplyr::select
@@ -41,7 +43,7 @@ rownames(res) = colnames(vars)
 return(res)
 }
 
-# setwd("D:/GitHub/advanced-econometrics") # setwd
+setwd("D:/GitHub/advanced-econometrics") # setwd
 # setwd("C:/Users/johan/Documents/GitHub/advanced-econometrics") # setwd
 # source("functions.R") # functions
 
@@ -49,6 +51,7 @@ return(res)
 outpath <- "./output/" # output
 outpath_des_before_trans <- "./output/descriptives/before_trans/"
 outpath_des_after_trans <- "./output/descriptives/after_trans/"
+outpath_des_paper <- "./output/descriptives/paper/"
 datapath <- "./data/" # data files (input datafile from package)
 
 ####  0) Import Data ####
@@ -783,26 +786,23 @@ for (i in 1:ncol(mydata_transform)) {
 
 ##### 5) Pretty Descriptives for Paper #####
 # summary table: descriptives full sample & for eligiblity groups, balance check for key variables.
+# table descriptives for paper 
 # vars to use
-  
-
 vars_descriptive_table = c("e401","p401",
                            "tw_adjust_original","net_tfa_adjust_original","net_nifa",
                            "age","inc","db","ira", "hequity","educ", "fsize","marr","male","twoearn","withdrawal")
 names_vars_descriptive_table = c("Eligibility","Participation",
                                  "Total Wealth","Net Financial Assets","Net Non-401k Financial Assets",
-                                 "Age","Income","Defined Benefit Dummy","IRA Account","Home Equity","Years Education", "Family Size", "Married","Male","Two Earners","Withdrawal w.o. Cost")
+                                 "Age","Income","Defined Benefit Participation","IRA Account","Home Equity","Years Education", "Family Size", "Married","Male","Two Earners","Withdrawal w.o. Cost")
 
 # data for descriptives for tweaks
 mydata_transform_descriptive <- mydata_transform[,vars_descriptive_table]
 # revert some log transformations for descriptives
-  mydata_transform_descriptive$ira <- exp(mydata_transform_descriptive$ira)
-  mydata_transform_descriptive$hequity <- exp(mydata_transform_descriptive$hequity)
-  mydata_transform_descriptive$net_nifa <- exp(mydata_transform_descriptive$net_nifa)
-  mydata_transform_descriptive$inc <- exp(mydata_transform_descriptive$inc)
+  mydata_transform_descriptive$ira <- exp(mydata_transform_descriptive$ira)-1
+  mydata_transform_descriptive$hequity <- exp(mydata_transform_descriptive$hequity)-1
+  mydata_transform_descriptive$net_nifa <- exp(mydata_transform_descriptive$net_nifa)-1
+  mydata_transform_descriptive$inc <- exp(mydata_transform_descriptive$inc)-1
 
-
-# table descriptives for paper 
 standardized_difference <- as.data.frame(balance_check(mydata_transform_descriptive,mydata_transform_descriptive$e401)) # balance check procedure
 
 table_descriptives_paper <- cbind(apply(mydata_transform_descriptive, 2, mean), 
@@ -817,3 +817,87 @@ rownames(table_descriptives_paper) <- names_vars_descriptive_table
 
 save(table_descriptives_paper, file= paste0(outpath_des_after_trans, "table_descriptives_paper.Rdata"))
 xtable(table_descriptives_paper, title = "Descriptive Statistics", digits = 2)
+
+# correlation matrix for key variables
+# use transformed dataset (to show correlations)
+# vars to use
+vars_descriptive_corrplot = c("e401","p401",
+                           "tw_adjust","net_tfa_adjust","net_nifa",
+                           "age","inc","db","pira", "hown","educ", "fsize","marr","male","twoearn","withdrawal")
+names_vars_descriptive_corrplot = c("Eligibility","Participation",
+                                 "Total Wealth","Net Financial Assets","Net Non-401k Financial Assets",
+                                 "Age","Income","Defined Benefit Participation","IRA Participation","Home Owner","Years Education", "Family Size", "Married","Male","Two Earners","Withdrawal w.o. Cost")
+
+mydata_transform_corrplot_paper <- mydata_transform[,vars_descriptive_corrplot]
+colnames(mydata_transform_corrplot_paper) <- names_vars_descriptive_corrplot
+ggcorrplot(cor(mydata_transform_corrplot_paper, method =
+                 "pearson"), tl.cex = 6)
+ggsave(
+  file = paste0(
+    outpath_des_paper,
+    "corr_matrix_paper",
+    ".png"
+  ),
+  width = 6,
+  height = 4,
+  dpi = 1200
+)
+
+# Income: overlap plots before and after transformation
+number_bins <- 50
+# BEFORE transformation
+mydata_transform_overlap_paper_before <- mydata %>%
+  mutate(e401 = ifelse(e401==1, "Eligible","Non-Eligible"))
+
+ggplot(mydata_transform_overlap_paper_before, aes(x = inc, fill = e401)) +
+  geom_histogram(aes(y=..count..),
+                 color="black",
+                 position="identity",
+                 alpha = 0.5, 
+                 bins = number_bins)+
+  geom_vline(aes(xintercept=mean(inc)), color="black", linetype="dashed", size=1)+
+  labs(x = "Income in USD")+
+  labs(y = "Frequency")+
+  labs(fill = "")+
+  theme_bw()+
+  theme(legend.position = c(0.8, 0.5), legend.text=element_text(size=12))+
+  theme(axis.text=element_text(size=12),
+        axis.title=element_text(size=12,face="bold"))
+ggsave(
+  paste0(
+    outpath_des_paper,
+    "overlap_hist_income_before_paper",
+    ".png"
+  )
+)
+
+
+
+
+# AFTER transformation
+mydata_transform_overlap_paper_after <- mydata_transform %>%
+  mutate(inc_original = exp(inc)) %>% # maybe display non-logged income
+  mutate(e401 = ifelse(e401==1, "Eligible","Non-Eligible"))
+
+ggplot(mydata_transform_overlap_paper_after, aes(x = inc, fill = e401)) +
+  geom_histogram(aes(y=..count..),
+                 color="black",
+                 position="identity",
+                 alpha = 0.5, 
+                 bins = number_bins)+
+  geom_vline(aes(xintercept=mean(inc)), color="black", linetype="dashed", size=1)+
+  labs(x = "Income in USD- Logged")+
+  labs(y = "Frequency")+
+  labs(fill = "")+
+  theme_bw()+
+  theme(legend.position = c(0.8, 0.5),legend.text=element_text(size=12))+
+  theme(axis.text=element_text(size=12),
+        axis.title=element_text(size=12,face="bold"))
+ggsave(
+  paste0(
+    outpath_des_paper,
+    "overlap_hist_income_after_paper",
+    ".png"
+  )
+)
+

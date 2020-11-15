@@ -1,76 +1,4 @@
-\documentclass[12pt,a4paper]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[pdftex]{graphicx}
-\usepackage[hang,flushmargin]{footmisc}
-\usepackage{amssymb,amsmath,setspace,array,natbib,booktabs,threeparttable,rotating,multirow,pdflscape,amsthm,floatpag,xfrac,enumerate}
-\usepackage[margin=1.in]{geometry}
-\usepackage[titletoc,title]{appendix}
-\usepackage[osf]{mathpazo}
-\usepackage{fullpage}
-\usepackage[justification=centering, labelsep=newline, aboveskip=-2pt,
-labelfont=bf,width=.88\textwidth,skip=0pt]{caption}
-\usepackage[english]{babel}
-\linespread{1.069}
-\floatpagestyle{empty}
-
-
-\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-\newcommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}
-
-\def\figs{./assets/figs}
-\def\tabs{./assets/tables}
-\usepackage[justification=centering, labelsep=newline, aboveskip=-2pt, labelfont=bf,width=.88\textwidth]{caption}
-
-
-\usepackage{todonotes}
-\usepackage{longtable} %% added by erik for pagebreak in table
-\usepackage{color,soul} %% added by erik for highlighing
-\usepackage{threeparttable}
-\usepackage{threeparttablex} % new version of trheeparttable
-
-
-\begin{document}
-
-\begin{landscape}
-\begin{singlespace}
-	%\begin{landscape} 
-		%\begin{table} %[!htbp]
-			% \centering
-			\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
-			\begin{ThreePartTable}
-				\begin{TableNotes}
-					\begin{scriptsize}
-					\item \textit{Note:} Summary table for removed observations and the reasoning. 	
-					\end{scriptsize}
-				\end{TableNotes}
-				
-				\begin{longtable}{l C{15cm} C{5cm}}
-					\caption{Removed Observations}\label{tab_drop_observations}\\
-					%Sample & \multicolumn{5}{c}{All} & 1974+ & Siblings \\  
-					\toprule
-					Key variable & Description & impacted observations  \\
-					\midrule
-					Income & Negative or 0 income implausible. & 5 \\
-					Income & Low income obs due to no common support (no eligible hh. with low income) & 350 \\
-				 	Total Wealth & Extreme negative outliers & 20 \\
-				 	Home Equity & Negative equity outliers (even if it is possible) & 20 \\
-					\midrule
-					\bottomrule
-				\insertTableNotes \\
-				%\endlastfoot	
-				\end{longtable} 
-				% \endgroup 
-
-				
-			\end{ThreePartTable}
-		%\end{table} 
-	%\end{landscape} 
-\end{singlespace} 
-\end{landscape}
-
-
+% Table Variable Transformtaion
 \begin{landscape}
 \begin{singlespace}
 	%\begin{landscape} 
@@ -131,5 +59,3 @@ labelfont=bf,width=.88\textwidth,skip=0pt]{caption}
 	%\end{landscape} 
 \end{singlespace} 
 \end{landscape}
-
-\end{document}

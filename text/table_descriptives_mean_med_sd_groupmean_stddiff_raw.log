@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.10.1)  12 NOV 2020 00:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.10.1)  12 NOV 2020 16:51
 entering extended mode
 **./table_descriptives_mean_med_sd_groupmean_stddiff_raw.tex
 (table_descriptives_mean_med_sd_groupmean_stddiff_raw.tex
@@ -765,7 +765,7 @@ Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 ))
 \TPTL@width=\skip73
 )
-No file table_descriptives_mean_med_sd_groupmean_stddiff_raw.aux.
+(table_descriptives_mean_med_sd_groupmean_stddiff_raw.aux)
 \openout1 = `table_descriptives_mean_med_sd_groupmean_stddiff_raw.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
@@ -784,6 +784,7 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 34.
 LaTeX Font Info:    ... okay on input line 34.
 LaTeX Font Info:    Trying to load font information for OT1+pplj on input line 
 34.
+
 ("C:\Program Files\MiKTeX 2.9\tex/latex/psnfss\ot1pplj.fd"
 File: ot1pplj.fd 2004/09/06 font definitions for OT1/pplj.
 )
@@ -847,49 +848,49 @@ Package: ltcaption 2018/08/26 v1.4a longtable captions (AR)
 Package caption Info: End \AtBeginDocument code.
 
 ABD: EveryShipout initializing macros
-LaTeX Font Info:    Trying to load font information for OT1+ppl on input line 4
-2.
+LaTeX Font Info:    Trying to load font information for OT1+ppl on input line 3
+9.
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/psnfss\ot1ppl.fd"
 File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
 )
 LaTeX Font Info:    Trying to load font information for OML+zplm on input line 
-42.
+39.
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/psnfss\omlzplm.fd"
 File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
 )
 LaTeX Font Info:    Trying to load font information for OMS+zplm on input line 
-42.
+39.
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/psnfss\omszplm.fd"
 File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
 )
 LaTeX Font Info:    Trying to load font information for OMX+zplm on input line 
-42.
+39.
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/psnfss\omxzplm.fd"
 File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
 )
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 10.42007pt on input line 42.
+(Font)              scaled to size 10.42007pt on input line 39.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 7.91925pt on input line 42.
+(Font)              scaled to size 7.91925pt on input line 39.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 6.25204pt on input line 42.
+(Font)              scaled to size 6.25204pt on input line 39.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 10.42007pt on input line 42.
+(Font)              scaled to size 10.42007pt on input line 39.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 7.91925pt on input line 42.
+(Font)              scaled to size 7.91925pt on input line 39.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 6.25204pt on input line 42.
+(Font)              scaled to size 6.25204pt on input line 39.
 LaTeX Font Info:    Trying to load font information for OT1+zplm on input line 
-42.
+39.
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/psnfss\ot1zplm.fd"
 File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 )
-Overfull \hbox (127.92204pt too wide) in paragraph at lines 42--63
+Overfull \hbox (127.92204pt too wide) in paragraph at lines 39--61
  [][] 
  []
 
@@ -898,9 +899,9 @@ Overfull \hbox (127.92204pt too wide) in paragraph at lines 42--63
 {C:/Users/eriks/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
 (table_descriptives_mean_med_sd_groupmean_stddiff_raw.aux) ) 
 Here is how much of TeX's memory you used:
- 17755 strings out of 480930
- 345450 string characters out of 2909011
- 590550 words of memory out of 3000000
+ 17757 strings out of 480930
+ 345599 string characters out of 2909011
+ 590530 words of memory out of 3000000
  33234 multiletter control sequences out of 15000+200000
  541866 words of font info for 50 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -910,7 +911,7 @@ iKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/
 public/fpl/fplrc8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/up
 lr8a.pfb>
 Output written on table_descriptives_mean_med_sd_groupmean_stddiff_raw.pdf (1 p
-age, 40509 bytes).
+age, 40912 bytes).
 PDF statistics:
  42 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

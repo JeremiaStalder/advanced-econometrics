@@ -1,0 +1,40 @@
+
+%\begin{landscape}
+%  Removed Observations
+%\begin{singlespace}
+	\begin{tiny}
+	%\begin{landscape} 
+		%\begin{table} %[!htbp]
+			% \centering
+			\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+			\begin{ThreePartTable}
+				\begin{TableNotes}
+					\begin{scriptsize}
+					\item \textit{Note:} Summary table for removed observations and the reasoning. 	
+					\end{scriptsize}
+				\end{TableNotes}
+				
+				\begin{longtable}{l l{8cm} C{4cm}}
+					\caption{Removed Observations}\label{tab_drop_observations}\\
+					%Sample & \multicolumn{5}{c}{All} & 1974+ & Siblings \\  
+					\toprule
+					Key variable & Description & impacted observations  \\
+					\midrule
+					Income & Negative or 0 income implausible. & 5 \\
+					Income & Low income obs due to no common support (no eligible hh. with low income) & 350 \\
+				 	Total Wealth & Extreme negative outliers & 20 \\
+				 	Home Equity & Negative equity outliers (even if it is possible) & 20 \\
+					\midrule
+					\bottomrule
+				\insertTableNotes \\
+				%\endlastfoot	
+				\end{longtable} 
+				% \endgroup 
+
+				
+			\end{ThreePartTable}
+		%\end{table} 
+	%\end{landscape} 
+	\end{tiny}
+%\end{singlespace} 
+%\end{landscape}
