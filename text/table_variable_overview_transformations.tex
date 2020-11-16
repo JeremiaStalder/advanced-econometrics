@@ -52,9 +52,9 @@ labelfont=bf,width=.88\textwidth,skip=0pt]{caption}
 					\toprule
 					Key variable & Description & impacted observations  \\
 					\midrule
-					income & Negative or 0 Income implausible. & 5 \\
+					income & Negative or 0 income implausible. & 5 \\
 					income & Low income obs due to no common support (no eligible hh. with low income) & 350 \\
-				 	total wealth & extreme negative outliers to reduce issue of log transformation & 20 \\
+				 	total wealth & extreme negative outliers & 20 \\
 				 	hequity & negative equity outliers (even if it is possible) & 20 \\
 					\midrule
 					\bottomrule
@@ -99,7 +99,7 @@ labelfont=bf,width=.88\textwidth,skip=0pt]{caption}
 					Total Wealth & tw & cont.&  log (same name), quantiles. Adjusted according to Benjamin due to defined benefit pension. & Most important outcome variable. Log-Transformation might impact results in a relevant way (negative wealth values). \\
 
 					\midrule
-					\textbf{Covariates} & & & & \\
+					\textbf{Confounders} & & & & \\
 					Participation & p401 & Binary & - & 1 if $a401>0$. Most relevant binary covariate. \\
 					Assets 401k & a401 & cont.& log (same name), quantile. & \\
 					Income & inc & cont.&  log (same name), quantiles, dummies for intervals (i1-7, from paper).  &  Most relevant continuous covariate. \\

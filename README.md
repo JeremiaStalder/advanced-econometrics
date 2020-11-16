@@ -32,21 +32,24 @@ First Person is responsible for the writing & documentation.
 7.	Other estimators Erik can think of and which Jere can code. 
 
 ## Open Questions / Todos
+E: Variable transformations: 
+	Outcome variable to use: quantile or log? (since tw has negative values)
+	Confounder: no confounder has negative values initially, so log transformation would be fine. Quantiles would maybe be more consistent with outcome variable. Which do we use? 
 E: Reverse causality issue with eligibility? (if yes need to mention)
 E: ATE or CATE. 
 	Petyo wants ATE and thinks CATE would be great. 
 	possible variables for conditioning? Discuss:  income (as in paper), family size,IRA and/or DB ppl vs no pension plan before, ...? Do we only want to condition on dummies or also on continous variables? (E.g. in paper they use income dummies, for OLS we could then estimate different models).
 	Question: statistical tests, if cates are different from each other possible?
 E: Heterogeneity across states. States have different tax levels. self-selection effect of ppl into states
-		Should we use (wealth) variables before or after tax? 
+	Should we use (wealth) variables before or after tax? 
 E: Might need more INTERACTION TERMS etc. (especially for Lasso). Feel free to
 	best option: add variables in preprocessing file, and add them to variable sets
 	or (if really only useful for one estimator): add in estimator code
 	E: IMPORTANT: Outcome Total wealth is transformed as log by shifting (due to ~1000 negative values). Any possible adjustments? Issue: we cannot interpret effect properly at the moment!
 		"Solution": also created quantile total wealth (and other outcomes): test sensitiviy of results towards variable transformations.
 E: Ideas for cool descriptives in paper? 
-	
 
+	
 ## Information pension plans
 DB - defined benefit plan, mostly payed by employer, introduced before 401k.
 Withdrawal without penalty: generally above age XX (look up what it was in 1991)
@@ -54,8 +57,9 @@ Important to know for fancy intro: which states offered 401k in 1990 and now, sh
 
 ## Information Variables
 Outcome variables: 
+	SUGGESTION for outcome variable to use:  tw_adjust_quantile, others in dependent_variable_selection (tw has 1000 negative values, therefore logtransmation with shift kills interpretability)
 	Transformation forms: logged, quantiles (both also standardized), for tw: also original
-		Variables
+	Variables
 		tw_adjust - Total wealth (includes all substitution effect between different sources) 
 		net_niNet Financial Assets (net_tfa)
 		Net non401k Financial Assets (effect of 401k to non-401 savings) 
