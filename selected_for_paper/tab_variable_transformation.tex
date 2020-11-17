@@ -1,0 +1,61 @@
+% Table Variable Transformtaion
+\begin{landscape}
+	\begin{tiny}
+	%\begin{singlespace}
+		%\begin{table} %[!htbp]
+			% \centering
+			\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+			\begin{ThreePartTable}
+				\begin{TableNotes}
+					\begin{scriptsize}
+					\item \textit{Note:} Summary table for all relevant base variables in the data set. Shows all created transformations and main features of data. 	
+					\end{scriptsize}
+				\end{TableNotes}
+				
+				\begin{longtable}{l C{2cm} C{2cm} C{7cm} C{7cm} }
+					\caption{Variable Transformations}\label{tab_variable_transformation}\\
+					%Sample & \multicolumn{5}{c}{All} & 1974+ & Siblings \\  
+					\toprule
+					\textbf{Variable} & \textbf{abbrev.} & \textbf{Type} & \textbf{Transformations} & \textbf{Notes}   \\
+					\midrule
+					\textbf{Treatment} & & & & \\
+					Eligibility & e401 & Binary & - & Treatment. 1 if any HH-member works in firm that offers 401k. \\
+					Participation & p401 & Binary & - & 1 if $a401>0$. Possible alternative as treatment.  \\
+					\midrule
+					\textbf{Outcome Vars} & & & & \\
+					Financial Assets & tfa & cont. & log (same name), quantiles. Adjusted according to Benjamin due to db.  &	\\
+					Net Financial Assets & net tfa & cont.&  log (same name), quantiles. Adjusted according to Benjamin due to defined benefit pension.&	\\
+					Net Non-401(k) Assets & net n401 & cont.&log (same name), quantiles. & \\
+					Total Wealth & tw & cont.&  log (same name), quantiles. Adjusted according to Benjamin due to defined benefit pension. & Most important outcome variable. Log-Transformation might impact results in a relevant way (negative wealth values). \\
+
+					\midrule
+					\textbf{Confounders} & & & & \\
+					Assets 401k & a401 & cont.& log (same name), quantile. & \\
+					Income & inc & cont.&  log (same name), quantiles, dummies for intervals (i1-7, from paper).  &  Most relevant continuous covariate. \\
+					Age & age & factor & st.-dized, $age^2$, $age^3$, dummies for age groups (a1-5, from paper)& \\
+					Family Size & fsize & factor & dummified& \\
+					married & marr & binary & & \\
+					Participation in IRA & pira & binary& & \\
+					IRA account & ira & cont. & log (same name), quantile. & \\
+					Defined Benefit Pension & db & binary & & 1 if employer offers DB pension plan.\\
+					Home Owner & hown & binary & & \\
+					House Value & hval & cont.& dummy for right censoring. log (same name), quantile. & \\
+					Home Mortgage & hmort & cont.& dummy for mortgage,  log (same name), quantile  & \\
+					Home Equity & hequity & cont.& dummy for right censoring.  log (same name), quantile  & \\
+					Two earners & twoearn & binary& & \\
+					Dummies for education & nohs, hs, smcol, col & binary & & no high-school, high-school, some college, college 					\vspace{0.5cm}\\
+
+					Years of Education & educ & factor & st.-dized, usually drop for analysis & \\
+					Gender (male) & male & binary & & Question: is it really 1=m? because 80\% of respondents are 0, and they are the home/flat owner - check this. \\
+					\bottomrule
+				\insertTableNotes \\
+				%\endlastfoot	
+				\end{longtable} 
+				% \endgroup 
+
+				
+			\end{ThreePartTable}			
+	\end{tiny}
+		%\end{table} 
+	%\end{singlespace}
+\end{landscape}

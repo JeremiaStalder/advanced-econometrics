@@ -1,5 +1,14 @@
 ### Project Pension - Advanced Econometrics Methods, HSG
 
+setwd("D:/GitHub/advanced-econometrics") # setwd
+# setwd("C:/Users/johan/Documents/GitHub/advanced-econometrics") # setwd
+options(scipen=10000)
+outpath <- "./output/" # output
+outpath_des_before_trans <- "./output/descriptives/before_trans/"
+outpath_des_after_trans <- "./output/descriptives/after_trans/"
+outpath_des_paper <- "./output/descriptives/paper/"
+datapath <- "./data/" # data files (input datafile from package)
+
 # librarys
 library(readr)
 library(zoo)
@@ -14,13 +23,14 @@ library(GGally)
 library(ggcorrplot)
 library(xtable)
 library(fastDummies)
-library(nonrandom)
+
 
 ## functions
 filter <- dplyr::filter
 select <- dplyr::select
 ggpairs <- GGally::ggpairs
 ggcorrplot <- ggcorrplot::ggcorrplot
+# source("functions.R") # functions
 
 # balance check function 
 balance_check <- function(vars, treat){
@@ -41,15 +51,7 @@ rownames(res) = colnames(vars)
 return(res)
 }
 
-# setwd("D:/GitHub/advanced-econometrics") # setwd
-# setwd("C:/Users/johan/Documents/GitHub/advanced-econometrics") # setwd
-# source("functions.R") # functions
 
-
-outpath <- "./output/" # output
-outpath_des_before_trans <- "./output/descriptives/before_trans/"
-outpath_des_after_trans <- "./output/descriptives/after_trans/"
-datapath <- "./data/" # data files (input datafile from package)
 
 ####  0) Import Data ####
 View(data("pension"))
@@ -150,7 +152,7 @@ colnames(cond_mean_before_trans) <-
     "median_eligible")
 rownames(cond_mean_before_trans) <- colnames(mydata)
 print(cond_mean_before_trans, digits = 3)
-xtable(cond_mean_before_trans, title = "Conditional Means (before variable transformations", digits = 3)
+print(xtable(cond_mean_before_trans, title = "Conditional Means (before variable transformations", digits = 3), type="latex",paste0(outpath_des_before_trans, "cond_mean_before_trans.tex"))
 save(
   cond_mean_before_trans,
   file = paste0(outpath_des_before_trans, "cond_means_table_before.Rdata")
@@ -527,7 +529,6 @@ independent_vars_std <-  paste0(independent_vars, "_std")
 independent_vars_selection <-
   c(
     "e401",
-    "p401",
     "age",
     "inc",
     "db",
@@ -539,16 +540,7 @@ independent_vars_selection <-
     "smcol",
     "col",
     "hown",
-    "fsize_2",
-    "fsize_3",
-    "fsize_4",
-    "fsize_5_or_above",
     "withdrawal",
-    "working_couple",
-    "hmort_dummy",
-    "hval_dummy_right_censored",
-    "hmort_dummy_right_censored",
-    "hequity_dummy_right_censored",
     "age_sq",
     "age_cub",
     "inc_sq" ,
@@ -590,8 +582,10 @@ independent_vars_benjamin_std <-
     list(
       dependent_vars,
       dependent_vars_std,
+      dependent_vars_quantile,
       dependent_vars_selection,
       dependent_vars_selection_std,
+      dependent_vars_selection_quantile,
       non_used_wealth_variables,
       independent_vars,
       independent_vars_std,
@@ -606,8 +600,10 @@ independent_vars_benjamin_std <-
     c(
       "dependent_vars",
       "dependent_vars_std",
+      "dependent_vars_quantile",
       "dependent_vars_selection",
       "dependent_vars_selection_std",
+      "dependent_vars_selection_quantile",
       "non_used_wealth_variables",
       "independent_vars",
       "independent_vars_std",
@@ -700,7 +696,7 @@ colnames(cond_mean_after_trans) <-
     "median_eligible")
 rownames(cond_mean_after_trans) <- colnames(mydata_transform)
 print(cond_mean_after_trans, digits = 3)
-xtable(cond_mean_after_trans, title = "Conditional Means (after variable transformations", digits = 3)
+print(xtable(cond_mean_after_trans, title = "Conditional Means (after variable transformations", digits = 3), type="latex",paste0(outpath_des_after_trans, "cond_mean_after_trans.tex"))
 save(
   cond_mean_after_trans,
   file = paste0(
@@ -714,7 +710,7 @@ standardized_difference <- as.data.frame(balance_check(mydata_transform,mydata_t
   arrange(desc(abs(standardized_difference)))
 
 save(standardized_difference, file= paste0(outpath_des_after_trans, "standardized_difference.Rdata"))
-xtable(standardized_difference, title = "Standardized Difference (after variable transformations", digits = 3)
+print(xtable(standardized_difference, title = "Standardized Difference (after variable transformations", digits = 3))
 
 # Histograms
 for (i in 1:ncol(mydata_transform)) {
@@ -783,26 +779,23 @@ for (i in 1:ncol(mydata_transform)) {
 
 ##### 5) Pretty Descriptives for Paper #####
 # summary table: descriptives full sample & for eligiblity groups, balance check for key variables.
+# table descriptives for paper 
 # vars to use
-  
-
 vars_descriptive_table = c("e401","p401",
                            "tw_adjust_original","net_tfa_adjust_original","net_nifa",
                            "age","inc","db","ira", "hequity","educ", "fsize","marr","male","twoearn","withdrawal")
 names_vars_descriptive_table = c("Eligibility","Participation",
                                  "Total Wealth","Net Financial Assets","Net Non-401k Financial Assets",
-                                 "Age","Income","Defined Benefit Dummy","IRA Account","Home Equity","Years Education", "Family Size", "Married","Male","Two Earners","Withdrawal w.o. Cost")
+                                 "Age","Income","Defined Benefit Participation","IRA Account","Home Equity","Years Education", "Family Size", "Married","Male","Two Earners","Withdrawal w.o. Cost")
 
 # data for descriptives for tweaks
 mydata_transform_descriptive <- mydata_transform[,vars_descriptive_table]
 # revert some log transformations for descriptives
-  mydata_transform_descriptive$ira <- exp(mydata_transform_descriptive$ira)
-  mydata_transform_descriptive$hequity <- exp(mydata_transform_descriptive$hequity)
-  mydata_transform_descriptive$net_nifa <- exp(mydata_transform_descriptive$net_nifa)
-  mydata_transform_descriptive$inc <- exp(mydata_transform_descriptive$inc)
+  mydata_transform_descriptive$ira <- exp(mydata_transform_descriptive$ira)-1
+  mydata_transform_descriptive$hequity <- exp(mydata_transform_descriptive$hequity)-1
+  mydata_transform_descriptive$net_nifa <- exp(mydata_transform_descriptive$net_nifa)-1
+  mydata_transform_descriptive$inc <- exp(mydata_transform_descriptive$inc)-1
 
-
-# table descriptives for paper 
 standardized_difference <- as.data.frame(balance_check(mydata_transform_descriptive,mydata_transform_descriptive$e401)) # balance check procedure
 
 table_descriptives_paper <- cbind(apply(mydata_transform_descriptive, 2, mean), 
@@ -816,4 +809,88 @@ rownames(table_descriptives_paper) <- names_vars_descriptive_table
 
 
 save(table_descriptives_paper, file= paste0(outpath_des_after_trans, "table_descriptives_paper.Rdata"))
-xtable(table_descriptives_paper, title = "Descriptive Statistics", digits = 2)
+print(xtable(table_descriptives_paper,title = "Descriptive Statistics", digits = 2), type="latex",paste0(outpath_des_after_trans, "table_descriptives_paper.tex"))
+
+# correlation matrix for key variables
+# use transformed dataset (to show correlations)
+# vars to use
+vars_descriptive_corrplot = c("e401","p401",
+                           "tw_adjust","net_tfa_adjust","net_nifa",
+                           "age","inc","db","pira", "hown","educ", "fsize","marr","male","twoearn","withdrawal")
+names_vars_descriptive_corrplot = c("Eligibility","Participation",
+                                 "Total Wealth","Net Financial Assets","Net Non-401k Financial Assets",
+                                 "Age","Income","Defined Benefit Participation","IRA Participation","Home Owner","Years Education", "Family Size", "Married","Male","Two Earners","Withdrawal w.o. Cost")
+
+mydata_transform_corrplot_paper <- mydata_transform[,vars_descriptive_corrplot]
+colnames(mydata_transform_corrplot_paper) <- names_vars_descriptive_corrplot
+ggcorrplot(cor(mydata_transform_corrplot_paper, method =
+                 "pearson"), tl.cex = 6)
+ggsave(
+  file = paste0(
+    outpath_des_paper,
+    "corr_matrix_paper",
+    ".png"
+  ),
+  width = 6,
+  height = 4,
+  dpi = 1200
+)
+
+# Income: overlap plots before and after transformation
+number_bins <- 50
+# BEFORE transformation
+mydata_transform_overlap_paper_before <- mydata %>%
+  mutate(e401 = ifelse(e401==1, "Eligible","Non-Eligible"))
+
+ggplot(mydata_transform_overlap_paper_before, aes(x = inc, fill = e401)) +
+  geom_histogram(aes(y=..count..),
+                 color="black",
+                 position="identity",
+                 alpha = 0.5, 
+                 bins = number_bins)+
+  geom_vline(aes(xintercept=mean(inc)), color="black", linetype="dashed", size=1)+
+  labs(x = "Income in USD")+
+  labs(y = "Frequency")+
+  labs(fill = "")+
+  theme_bw()+
+  theme(legend.position = c(0.8, 0.5), legend.text=element_text(size=12))+
+  theme(axis.text=element_text(size=12),
+        axis.title=element_text(size=12,face="bold"))
+ggsave(
+  paste0(
+    outpath_des_paper,
+    "overlap_hist_income_before_paper",
+    ".png"
+  )
+)
+
+
+
+
+# AFTER transformation
+mydata_transform_overlap_paper_after <- mydata_transform %>%
+  mutate(inc_original = exp(inc)) %>% # maybe display non-logged income
+  mutate(e401 = ifelse(e401==1, "Eligible","Non-Eligible"))
+
+ggplot(mydata_transform_overlap_paper_after, aes(x = inc, fill = e401)) +
+  geom_histogram(aes(y=..count..),
+                 color="black",
+                 position="identity",
+                 alpha = 0.5, 
+                 bins = number_bins)+
+  geom_vline(aes(xintercept=mean(inc)), color="black", linetype="dashed", size=1)+
+  labs(x = "Income in USD- Logged")+
+  labs(y = "Frequency")+
+  labs(fill = "")+
+  theme_bw()+
+  theme(legend.position = c(0.8, 0.5),legend.text=element_text(size=12))+
+  theme(axis.text=element_text(size=12),
+        axis.title=element_text(size=12,face="bold"))
+ggsave(
+  paste0(
+    outpath_des_paper,
+    "overlap_hist_income_after_paper",
+    ".png"
+  )
+)
+

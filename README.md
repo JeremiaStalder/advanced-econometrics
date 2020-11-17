@@ -3,6 +3,12 @@
 ## Research Question
 What is the (conditional) average treatment effect of 401k eligibility on wealth? (No IV)
 
+## Questions for Petyo:
+Figures: ok to use color? (e.g. correlation plots, overlap histograms work better) 
+Do we need to use IV? - No IV, he wants effect of eligibility. 
+Any way to test for reverse causality for cross section (no TS data)? We dont know any. - NO. Just focus on fulfilling CIA,. Reverse Causality can be mentioned but igonored.
+Can we use additional papers as source? (many that also worked on the same dataset) - Sure we can. 
+
 ## TODO 
 Final Dataset - Erik. STATUS: main part done, dataset is ready to work with. Need proofread + someone to look at descriptives after transform for check. 
 	Check CS after all transformations. Drop Vars w/o CS. - DONE (dropped ~350 obs with low income because they all had e401==0)
@@ -32,15 +38,7 @@ First Person is responsible for the writing & documentation.
 7.	Other estimators Erik can think of and which Jere can code. 
 
 ## Open Questions / Todos
-E: Variable transformations: 
-	Outcome variable to use: quantile or log? (since tw has negative values)
-	Confounder: no confounder has negative values initially, so log transformation would be fine. Quantiles would maybe be more consistent with outcome variable. Which do we use? 
-E: Reverse causality issue with eligibility? (if yes need to mention)
-E: ATE or CATE. 
-	Petyo wants ATE and thinks CATE would be great. 
-	possible variables for conditioning? Discuss:  income (as in paper), family size,IRA and/or DB ppl vs no pension plan before, ...? Do we only want to condition on dummies or also on continous variables? (E.g. in paper they use income dummies, for OLS we could then estimate different models).
-	Question: statistical tests, if cates are different from each other possible?
-E: Heterogeneity across states. States have different tax levels. self-selection effect of ppl into states
+E: For blabla in paper: Heterogeneity across states. States have different tax levels. self-selection effect of ppl into states
 	Should we use (wealth) variables before or after tax? 
 E: Might need more INTERACTION TERMS etc. (especially for Lasso). Feel free to
 	best option: add variables in preprocessing file, and add them to variable sets
@@ -48,6 +46,25 @@ E: Might need more INTERACTION TERMS etc. (especially for Lasso). Feel free to
 	E: IMPORTANT: Outcome Total wealth is transformed as log by shifting (due to ~1000 negative values). Any possible adjustments? Issue: we cannot interpret effect properly at the moment!
 		"Solution": also created quantile total wealth (and other outcomes): test sensitiviy of results towards variable transformations.
 E: Ideas for cool descriptives in paper? 
+E: Variable transformations: 
+	Outcome variable to use: quantile or log? (since tw has negative values)
+	Confounder: no confounder has negative values initially, so log transformation would be fine. Quantiles would maybe be more consistent with outcome variable. Which do we use? 
+E: ATE or CATE. 
+	Petyo wants ATE and thinks CATE would be great. 
+	possible variables for conditioning? Discuss:  income (as in paper), family size,IRA and/or DB ppl vs no pension plan before, ...? Do we only want to condition on dummies or also on continous variables? (E.g. in paper they use income dummies, for OLS we could then estimate different models).
+	Question: statistical tests, if cates are different from each other?
+	CATE could be done for the 5 income quintiles. Is income as variable then removed? (because its probably still confounding. But can have overfitting with polynomials, maybe remove them? 
+E: Which variable sets to use?
+	outcome: test all dependent_vars_selection & dependent_vars_selection_quantiles 
+	confounders: independent_vars_selection
+	for some methods (e.g. lasso) we can ofc deviate. Then state which vars are used. 
+E: Effect Estimates: which results do we present?	
+	Effect Estimate. 
+	SD, T-Val, P-val -> for some methods hard / impossible to get?
+	For all outcome measures
+E: How to get SD for IPW, Doubly-Robust? 
+E/Davia: Cut obs for IPW
+
 
 	
 ## Information pension plans
@@ -118,11 +135,6 @@ FINAL DATASET
 			1. replacement of preexisting db-plan: subtract 20% of 401k assets from from tw, tfa, net_tfa
 			2. marginal substitution effect: employers shift support from DB to 401k plan. Larger effeect for high income workers which are more likely to be eligible. subtract 0.032$ from tw, tfa, net_tfa per $of income 
 				
-
-## Questions for Petyo:
-Do we need to use IV? - No IV, he wants effect of eligibility. 
-Any way to test for reverse causality for cross section (no TS data)? We dont know any. - NO. Just focus on fulfilling CIA,. Reverse Causality can be mentioned but igonored.
-Can we use additional papers as source? (many that also worked on the same dataset) - Sure we can. 
 
 ## Possibly good descriptives for our data
 1. correlation matrix (done)

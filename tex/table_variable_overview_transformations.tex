@@ -52,10 +52,10 @@ labelfont=bf,width=.88\textwidth,skip=0pt]{caption}
 					\toprule
 					Key variable & Description & impacted observations  \\
 					\midrule
-					income & Negative or 0 income implausible. & 5 \\
-					income & Low income obs due to no common support (no eligible hh. with low income) & 350 \\
-				 	total wealth & extreme negative outliers & 20 \\
-				 	hequity & negative equity outliers (even if it is possible) & 20 \\
+					Income & Negative or 0 income implausible. & 5 \\
+					Income & Low income obs due to no common support (no eligible hh. with low income) & 350 \\
+				 	Total Wealth & Extreme negative outliers & 20 \\
+				 	Home Equity & Negative equity outliers (even if it is possible) & 20 \\
 					\midrule
 					\bottomrule
 				\insertTableNotes \\
@@ -87,20 +87,21 @@ labelfont=bf,width=.88\textwidth,skip=0pt]{caption}
 				\begin{longtable}{l C{2cm} C{2cm} C{7cm} C{7cm} }
 					\caption{Variable Transformations}\label{tab_variable_transformation}\\
 					%Sample & \multicolumn{5}{c}{All} & 1974+ & Siblings \\  
-					Variable & abbrev. & Type & Transformations & Notes   \\
+					\toprule
+					\textbf{Variable} & \textbf{abbrev.} & \textbf{Type} & \textbf{Transformations} & \textbf{Notes}   \\
 					\midrule
 					\textbf{Treatment} & & & & \\
 					Eligibility & e401 & Binary & - & Treatment. 1 if any HH-member works in firm that offers 401k. \\
+					Participation & p401 & Binary & - & 1 if $a401>0$. Possible alternative as treatment.  \\
 					\midrule
 					\textbf{Outcome Vars} & & & & \\
 					Financial Assets & tfa & cont. & log (same name), quantiles. Adjusted according to Benjamin due to db.  &	\\
-					Net Financial Assets & $net tfa$ & cont.&  log (same name), quantiles. Adjusted according to Benjamin due to defined benefit pension.&	\\
-					Net Non-401(k) Assets & $net n401$ & cont.&log (same name), quantiles. & \\
+					Net Financial Assets & net tfa & cont.&  log (same name), quantiles. Adjusted according to Benjamin due to defined benefit pension.&	\\
+					Net Non-401(k) Assets & net n401 & cont.&log (same name), quantiles. & \\
 					Total Wealth & tw & cont.&  log (same name), quantiles. Adjusted according to Benjamin due to defined benefit pension. & Most important outcome variable. Log-Transformation might impact results in a relevant way (negative wealth values). \\
 
 					\midrule
 					\textbf{Confounders} & & & & \\
-					Participation & p401 & Binary & - & 1 if $a401>0$. Most relevant binary covariate. \\
 					Assets 401k & a401 & cont.& log (same name), quantile. & \\
 					Income & inc & cont.&  log (same name), quantiles, dummies for intervals (i1-7, from paper).  &  Most relevant continuous covariate. \\
 					Age & age & factor & st.-dized, $age^2$, $age^3$, dummies for age groups (a1-5, from paper)& \\
@@ -114,12 +115,10 @@ labelfont=bf,width=.88\textwidth,skip=0pt]{caption}
 					Home Mortgage & hmort & cont.& dummy for mortgage,  log (same name), quantile  & \\
 					Home Equity & hequity & cont.& dummy for right censoring.  log (same name), quantile  & \\
 					Two earners & twoearn & binary& & \\
-					Dummies for education & nohs, hs, smcol, col & binary & & no high-school, high-school, some college, college\\
+					Dummies for education & nohs, hs, smcol, col & binary & & no high-school, high-school, some college, college 					\vspace{0.5cm}\\
+
 					Years of Education & educ & factor & st.-dized, usually drop for analysis & \\
 					Gender (male) & male & binary & & Question: is it really 1=m? because 80\% of respondents are 0, and they are the home/flat owner - check this. \\
-					\midrule
-					\textbf{Non-observed confounders} & & & & \\
-					Company Promotion of 401k & & & & \\
 					\bottomrule
 				\insertTableNotes \\
 				%\endlastfoot	
