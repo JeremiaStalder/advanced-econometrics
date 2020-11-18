@@ -485,6 +485,9 @@ colnames(standardized_vars) <-
 mydata_transform_work <-
   cbind(mydata_transform_work, standardized_vars)
 
+# add cate variables ######
+mydata_transform_work <- mutate(mydata_transform_work, inc_quintile =ntile(inc,5)) 
+
 # rename transform data
 mydata_transform <- mydata_transform_work
 
@@ -511,11 +514,14 @@ dependent_vars <-
 dependent_vars_std <- paste0(dependent_vars, "_std")
 dependent_vars_quantile <- paste0(dependent_vars, "_quantile")
 dependent_vars_selection <-
-  c("tw_adjust", "net_tfa_adjust", "net_nifa", "tw_original")
+  c("tw_adjust", "net_tfa_adjust", "net_nifa", "tw_adjust_original")
 dependent_vars_selection_std <-
   paste0(dependent_vars_selection, "_std")
 dependent_vars_selection_quantile <-
-  paste0(dependent_vars_selection[dependent_vars_selection != "tw_original"], "_quantile")
+  paste0(dependent_vars_selection[dependent_vars_selection != "tw_adjust_original"], "_quantile")
+
+# cate variables
+cate_vars <- c("inc_quintile")
 
 # independent variables
 non_used_wealth_variables <- c("a401", "hval", "hmort", "hequity")
@@ -594,7 +600,8 @@ independent_vars_benjamin_std <-
       dependent_vars_benjamin,
       dependent_vars_benjamin_std,
       independent_vars_benjamin,
-      independent_vars_benjamin_std
+      independent_vars_benjamin_std,
+      cate_vars
     )
   names(variable_sets_descriptives) <-
     c(
@@ -612,7 +619,8 @@ independent_vars_benjamin_std <-
       "dependent_vars_benjamin",
       "dependent_vars_benjamin_std",
       "independent_vars_benjamin",
-      "independent_vars_benjamin_std"
+      "independent_vars_benjamin_std",
+      "cate_vars"
     )
   
   # second list: for models, excluding p401
