@@ -1,7 +1,7 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.10.1)  11 NOV 2020 14:18
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.10.1)  18 NOV 2020 01:29
 entering extended mode
-**./table_basic_descriptives.tex
-(table_basic_descriptives.tex
+**./ate_table_all_outcomes.tex
+(ate_table_all_outcomes.tex
 LaTeX2e <2020-02-02> patch level 5
 L3 programming layer <2020-04-06>
 ("C:\Program Files\MiKTeX 2.9\tex/latex/base\article.cls"
@@ -765,8 +765,8 @@ Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 ))
 \TPTL@width=\skip73
 )
-(table_basic_descriptives.aux)
-\openout1 = `table_basic_descriptives.aux'.
+No file ate_table_all_outcomes.aux.
+\openout1 = `ate_table_all_outcomes.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
 LaTeX Font Info:    ... okay on input line 34.
@@ -784,7 +784,6 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 34.
 LaTeX Font Info:    ... okay on input line 34.
 LaTeX Font Info:    Trying to load font information for OT1+pplj on input line 
 34.
-
 ("C:\Program Files\MiKTeX 2.9\tex/latex/psnfss\ot1pplj.fd"
 File: ot1pplj.fd 2004/09/06 font definitions for OT1/pplj.
 )
@@ -849,74 +848,70 @@ Package caption Info: End \AtBeginDocument code.
 
 ABD: EveryShipout initializing macros
 LaTeX Font Info:    Trying to load font information for OT1+ppl on input line 4
-2.
+0.
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/psnfss\ot1ppl.fd"
 File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
 )
 LaTeX Font Info:    Trying to load font information for OML+zplm on input line 
-42.
+40.
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/psnfss\omlzplm.fd"
 File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
 )
 LaTeX Font Info:    Trying to load font information for OMS+zplm on input line 
-42.
+40.
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/psnfss\omszplm.fd"
 File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
 )
 LaTeX Font Info:    Trying to load font information for OMX+zplm on input line 
-42.
+40.
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/psnfss\omxzplm.fd"
 File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
 )
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 10.42007pt on input line 42.
+(Font)              scaled to size 10.42007pt on input line 40.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 7.91925pt on input line 42.
+(Font)              scaled to size 7.91925pt on input line 40.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 6.25204pt on input line 42.
+(Font)              scaled to size 6.25204pt on input line 40.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 10.42007pt on input line 42.
+(Font)              scaled to size 10.42007pt on input line 40.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 7.91925pt on input line 42.
+(Font)              scaled to size 7.91925pt on input line 40.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 6.25204pt on input line 42.
+(Font)              scaled to size 6.25204pt on input line 40.
 LaTeX Font Info:    Trying to load font information for OT1+zplm on input line 
-42.
+40.
 
 ("C:\Program Files\MiKTeX 2.9\tex/latex/psnfss\ot1zplm.fd"
 File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 )
-Overfull \hbox (49.05202pt too wide) in paragraph at lines 93--143
- [][] 
- []
-
-
-Overfull \hbox (66.26201pt too wide) in paragraph at lines 194--228
+Overfull \hbox (186.24274pt too wide) in paragraph at lines 40--53
  [][] 
  []
 
 [1
 
-{C:/Users/eriks/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}] [2]
-[3] [4] (table_basic_descriptives.aux) ) 
+
+{C:/Users/eriks/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+(ate_table_all_outcomes.aux) ) 
 Here is how much of TeX's memory you used:
- 17766 strings out of 480930
- 345375 string characters out of 2909011
- 626446 words of memory out of 3000000
- 33240 multiletter control sequences out of 15000+200000
- 544187 words of font info for 54 fonts, out of 3000000 for 9000
+ 17756 strings out of 480930
+ 345195 string characters out of 2909011
+ 589461 words of memory out of 3000000
+ 33235 multiletter control sequences out of 15000+200000
+ 541866 words of font info for 50 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 68i,10n,83p,499b,269s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/enc/
-dvips/base/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/fpl/fplrc8a.p
-fb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplr8a.pfb>
-Output written on table_basic_descriptives.pdf (4 pages, 44511 bytes).
+ 68i,9n,83p,497b,258s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base
+/8r.enc}<C:/Program Files/MiKTeX 2.9/fonts/type1/public/fpl/fplrc8a.pfb><C:/Pro
+gram Files/MiKTeX 2.9/fonts/type1/urw/palatino/uplr8a.pfb>
+Output written on ate_table_all_outcomes.pdf (1 page, 38206 bytes).
 PDF statistics:
- 51 PDF objects out of 1000 (max. 8388607)
+ 42 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  109 words of extra memory for PDF output out of 10000 (max. 10000000)
 

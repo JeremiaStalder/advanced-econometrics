@@ -1,0 +1,55 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[pdftex]{graphicx}
+\usepackage[hang,flushmargin]{footmisc}
+\usepackage{amssymb,amsmath,setspace,array,natbib,booktabs,threeparttable,rotating,multirow,pdflscape,amsthm,floatpag,xfrac,enumerate}
+\usepackage[margin=1.in]{geometry}
+\usepackage[titletoc,title]{appendix}
+\usepackage[osf]{mathpazo}
+\usepackage{fullpage}
+\usepackage[justification=centering, labelsep=newline, aboveskip=-2pt,
+labelfont=bf,width=.88\textwidth,skip=0pt]{caption}
+\usepackage[english]{babel}
+\linespread{1.069}
+\floatpagestyle{empty}
+
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}
+
+\def\figs{./assets/figs}
+\def\tabs{./assets/tables}
+\usepackage[justification=centering, labelsep=newline, aboveskip=-2pt, labelfont=bf,width=.88\textwidth]{caption}
+
+
+\usepackage{todonotes}
+\usepackage{longtable} %% added by erik for pagebreak in table
+\usepackage{color,soul} %% added by erik for highlighing
+\usepackage{threeparttable}
+\usepackage{threeparttablex} % new version of trheeparttable
+
+
+\begin{document}
+% latex table generated in R 3.6.1 by xtable 1.8-4 package
+% Wed Nov 18 01:23:30 2020
+\begin{landscape}
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrrrrrr}
+  \hline
+ & Mean Comparison & OLS & OLS\_flex & IPW & IPW\_restricted & IPW\_restricted2 & Doubly\_robust\_base & Doubly\_robust\_restricted & Doubly\_robust\_restricted2 \\ 
+  \hline
+tw\_adjust & 0.26 & 0.05 & -0.71 & -0.15 & -0.14 & 0.05 & 0.05 & 0.05 & 0.04 \\ 
+  net\_tfa\_adjust & 0.08 & 0.03 & -0.59 & -0.19 & -0.18 & 0.03 & 0.03 & 0.03 & 0.03 \\ 
+  net\_nifa & 0.03 & -0.00 & -0.21 & -0.23 & -0.21 & -0.00 & -0.01 & -0.01 & -0.01 \\ 
+  tw\_adjust\_original & 31319.52 & 3711.45 & -53222.99 & 3461.41 & 3525.08 & 3446.20 & 3788.05 & 3874.71 & 3761.41 \\ 
+  tw\_adjust\_quantile & 0.13 & 0.03 & -0.27 & 0.02 & 0.02 & 0.02 & 0.03 & 0.03 & 0.02 \\ 
+  net\_tfa\_adjust\_quantile & 0.14 & 0.08 & -0.90 & 0.07 & 0.07 & 0.07 & 0.07 & 0.07 & 0.07 \\ 
+  net\_nifa\_quantile & 0.06 & -0.00 & -0.45 & -0.01 & -0.01 & -0.01 & -0.00 & -0.00 & -0.01 \\ 
+   \hline
+\end{tabular}
+\end{table}
+\end{landscape}
+\end{document}

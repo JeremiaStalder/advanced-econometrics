@@ -1,5 +1,14 @@
 ### Project Pension - Advanced Econometrics Methods, HSG
 
+setwd("D:/GitHub/advanced-econometrics") # setwd
+# setwd("C:/Users/johan/Documents/GitHub/advanced-econometrics") # setwd
+options(scipen=10000)
+outpath <- "./output/" # output
+outpath_des_before_trans <- "./output/descriptives/before_trans/"
+outpath_des_after_trans <- "./output/descriptives/after_trans/"
+outpath_des_paper <- "./output/descriptives/paper/"
+datapath <- "./data/" # data files (input datafile from package)
+
 # librarys
 library(readr)
 library(zoo)
@@ -14,15 +23,14 @@ library(GGally)
 library(ggcorrplot)
 library(xtable)
 library(fastDummies)
-library(nonrandom)
 
-options(scipen=10000)
 
 ## functions
 filter <- dplyr::filter
 select <- dplyr::select
 ggpairs <- GGally::ggpairs
 ggcorrplot <- ggcorrplot::ggcorrplot
+# source("functions.R") # functions
 
 # balance check function 
 balance_check <- function(vars, treat){
@@ -43,16 +51,7 @@ rownames(res) = colnames(vars)
 return(res)
 }
 
-setwd("D:/GitHub/advanced-econometrics") # setwd
-# setwd("C:/Users/johan/Documents/GitHub/advanced-econometrics") # setwd
-# source("functions.R") # functions
 
-
-outpath <- "./output/" # output
-outpath_des_before_trans <- "./output/descriptives/before_trans/"
-outpath_des_after_trans <- "./output/descriptives/after_trans/"
-outpath_des_paper <- "./output/descriptives/paper/"
-datapath <- "./data/" # data files (input datafile from package)
 
 ####  0) Import Data ####
 View(data("pension"))
@@ -153,7 +152,7 @@ colnames(cond_mean_before_trans) <-
     "median_eligible")
 rownames(cond_mean_before_trans) <- colnames(mydata)
 print(cond_mean_before_trans, digits = 3)
-xtable(cond_mean_before_trans, title = "Conditional Means (before variable transformations", digits = 3)
+print(xtable(cond_mean_before_trans, title = "Conditional Means (before variable transformations", digits = 3), type="latex",paste0(outpath_des_before_trans, "cond_mean_before_trans.tex"))
 save(
   cond_mean_before_trans,
   file = paste0(outpath_des_before_trans, "cond_means_table_before.Rdata")
@@ -486,6 +485,9 @@ colnames(standardized_vars) <-
 mydata_transform_work <-
   cbind(mydata_transform_work, standardized_vars)
 
+# add cate variables ######
+mydata_transform_work <- mutate(mydata_transform_work, inc_quintile =ntile(inc,5)) 
+
 # rename transform data
 mydata_transform <- mydata_transform_work
 
@@ -512,11 +514,14 @@ dependent_vars <-
 dependent_vars_std <- paste0(dependent_vars, "_std")
 dependent_vars_quantile <- paste0(dependent_vars, "_quantile")
 dependent_vars_selection <-
-  c("tw_adjust", "net_tfa_adjust", "net_nifa", "tw_original")
+  c("tw_adjust", "net_tfa_adjust", "net_nifa", "tw_adjust_original")
 dependent_vars_selection_std <-
   paste0(dependent_vars_selection, "_std")
 dependent_vars_selection_quantile <-
-  paste0(dependent_vars_selection[dependent_vars_selection != "tw_original"], "_quantile")
+  paste0(dependent_vars_selection[dependent_vars_selection != "tw_adjust_original"], "_quantile")
+
+# cate variables
+cate_vars <- c("inc_quintile")
 
 # independent variables
 non_used_wealth_variables <- c("a401", "hval", "hmort", "hequity")
@@ -583,8 +588,10 @@ independent_vars_benjamin_std <-
     list(
       dependent_vars,
       dependent_vars_std,
+      dependent_vars_quantile,
       dependent_vars_selection,
       dependent_vars_selection_std,
+      dependent_vars_selection_quantile,
       non_used_wealth_variables,
       independent_vars,
       independent_vars_std,
@@ -593,14 +600,17 @@ independent_vars_benjamin_std <-
       dependent_vars_benjamin,
       dependent_vars_benjamin_std,
       independent_vars_benjamin,
-      independent_vars_benjamin_std
+      independent_vars_benjamin_std,
+      cate_vars
     )
   names(variable_sets_descriptives) <-
     c(
       "dependent_vars",
       "dependent_vars_std",
+      "dependent_vars_quantile",
       "dependent_vars_selection",
       "dependent_vars_selection_std",
+      "dependent_vars_selection_quantile",
       "non_used_wealth_variables",
       "independent_vars",
       "independent_vars_std",
@@ -609,7 +619,8 @@ independent_vars_benjamin_std <-
       "dependent_vars_benjamin",
       "dependent_vars_benjamin_std",
       "independent_vars_benjamin",
-      "independent_vars_benjamin_std"
+      "independent_vars_benjamin_std",
+      "cate_vars"
     )
   
   # second list: for models, excluding p401
@@ -693,7 +704,7 @@ colnames(cond_mean_after_trans) <-
     "median_eligible")
 rownames(cond_mean_after_trans) <- colnames(mydata_transform)
 print(cond_mean_after_trans, digits = 3)
-xtable(cond_mean_after_trans, title = "Conditional Means (after variable transformations", digits = 3)
+print(xtable(cond_mean_after_trans, title = "Conditional Means (after variable transformations", digits = 3), type="latex",paste0(outpath_des_after_trans, "cond_mean_after_trans.tex"))
 save(
   cond_mean_after_trans,
   file = paste0(
@@ -707,7 +718,7 @@ standardized_difference <- as.data.frame(balance_check(mydata_transform,mydata_t
   arrange(desc(abs(standardized_difference)))
 
 save(standardized_difference, file= paste0(outpath_des_after_trans, "standardized_difference.Rdata"))
-xtable(standardized_difference, title = "Standardized Difference (after variable transformations", digits = 3)
+print(xtable(standardized_difference, title = "Standardized Difference (after variable transformations", digits = 3))
 
 # Histograms
 for (i in 1:ncol(mydata_transform)) {
@@ -806,7 +817,7 @@ rownames(table_descriptives_paper) <- names_vars_descriptive_table
 
 
 save(table_descriptives_paper, file= paste0(outpath_des_after_trans, "table_descriptives_paper.Rdata"))
-xtable(table_descriptives_paper, title = "Descriptive Statistics", digits = 2)
+print(xtable(table_descriptives_paper,title = "Descriptive Statistics", digits = 2), type="latex",paste0(outpath_des_after_trans, "table_descriptives_paper.tex"))
 
 # correlation matrix for key variables
 # use transformed dataset (to show correlations)
