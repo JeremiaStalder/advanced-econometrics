@@ -34,7 +34,7 @@ d_name <- "e401"
 d <- as.matrix(mydata_linear_model[,d_name]) # treatment
 x_name <- as.vector(variable_sets_modelling$independent_vars_selection[variable_sets_modelling$independent_vars_selection!="e401"])
 x <- as.matrix(mydata_linear_model[,x_name]) # use all base vars except treatment as confounders
-y_possible_names <- c(variable_sets_modelling$dependent_vars_selection,variable_sets_modelling$dependent_vars_selection_quantile) # names of outcome vars to consider
+y_possible_names <- c(variable_sets_modelling$dependent_vars_selection) # names of outcome vars to consider
 y_possible <- as.matrix(mydata_linear_model[,y_possible_names]) # matrix of outcomes to choose from
 colnames(d)[1] <- "d"
 
