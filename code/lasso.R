@@ -12,25 +12,26 @@ load("./output/mydata_transform.Rdata")
 load("./output/variable_sets_descriptives.Rdata")
 load("./output/variable_sets_modelling.Rdata")
 
+#Data prep
 lassodata <- mydata_transform
-X <- as.matrix(select(lassodata, c(variable_sets_modelling[["independent_vars_benjamin_std"]])))
+X <- as.matrix(select(lassodata, c(variable_sets_modelling[["independent_vars_selection_std"]])))
 Y <- as.matrix(lassodata$tw_adjust_std)
 
+
+#Lasso CV
 lasso.cv <- cv.glmnet(X, Y, type.measure = "mse", family = "gaussian", nfolds = 15, alpha = 1)
+model <- glmnet(X, Y, alpha = 1, family = "gaussian",
+                lambda = lasso.cv$lambda.min)
 
-lambdas <- cbind(c(lasso.cv$lambda),as.numeric(c(lasso.cv$nzero)))
-rownames(lambdas) <- lambdas[,2]
-lambdas <- as.data.frame(t(lambdas[,-2]))
-lambda2 <- lambdas$`2`
-lambda2
-
-
-
-coef_lasso1 <- coef(lasso.cv, s = lambda2) # save for later comparison
-print(coef_lasso1)
-coef_lasso1[which(coef_lasso1 != 0 ) ]
-
-coef_lasso1@Dimnames[[1]][which(coef_lasso1 != 0 ) ]
-
-postlasso <- lm(tw_adjust_std ~ ira_std + hown_std + e401_std, data = lassodata)
+#Post lasso
+variables <- coef_lasso1@Dimnames[[1]][which(coef_lasso1 != 0 ) ]
+postlasso <- lm(as.formula(paste("tw_adjust_std ~ ", paste(variables[2:length(variables)], collapse= "+"))), data = lassodata)
 summary(postlasso)
+
+#ATE post lasso
+plasso_ATE <- postlasso$coefficients[["e401_std"]]
+
+#CATE
+#split data for 5 quantiles use the variables as before
+#run whole lasso again?
+
