@@ -3,6 +3,12 @@
 ## Research Question
 What is the (conditional) average treatment effect of 401k eligibility on wealth? (No IV)
 
+## Questions for Petyo:
+Figures: ok to use color? (e.g. correlation plots, overlap histograms work better) 
+Do we need to use IV? - No IV, he wants effect of eligibility. 
+Any way to test for reverse causality for cross section (no TS data)? We dont know any. - NO. Just focus on fulfilling CIA,. Reverse Causality can be mentioned but igonored.
+Can we use additional papers as source? (many that also worked on the same dataset) - Sure we can. 
+
 ## TODO 
 Final Dataset - Erik. STATUS: main part done, dataset is ready to work with. Need proofread + someone to look at descriptives after transform for check. 
 	Check CS after all transformations. Drop Vars w/o CS. - DONE (dropped ~350 obs with low income because they all had e401==0)
@@ -118,11 +124,6 @@ FINAL DATASET
 			1. replacement of preexisting db-plan: subtract 20% of 401k assets from from tw, tfa, net_tfa
 			2. marginal substitution effect: employers shift support from DB to 401k plan. Larger effeect for high income workers which are more likely to be eligible. subtract 0.032$ from tw, tfa, net_tfa per $of income 
 				
-
-## Questions for Petyo:
-Do we need to use IV? - No IV, he wants effect of eligibility. 
-Any way to test for reverse causality for cross section (no TS data)? We dont know any. - NO. Just focus on fulfilling CIA,. Reverse Causality can be mentioned but igonored.
-Can we use additional papers as source? (many that also worked on the same dataset) - Sure we can. 
 
 ## Possibly good descriptives for our data
 1. correlation matrix (done)
