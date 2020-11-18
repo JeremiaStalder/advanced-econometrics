@@ -4,15 +4,23 @@
 What is the (conditional) average treatment effect of 401k eligibility on wealth? (No IV)
 
 ## Questions for Petyo:
+Deadline Paper & Exam Date
+how to present results? need sds/conf intervals etc
 Figures: ok to use color? (e.g. correlation plots, overlap histograms work better) 
-Do we need to use IV? - No IV, he wants effect of eligibility. 
-Any way to test for reverse causality for cross section (no TS data)? We dont know any. - NO. Just focus on fulfilling CIA,. Reverse Causality can be mentioned but igonored.
-Can we use additional papers as source? (many that also worked on the same dataset) - Sure we can. 
+What type of assumption do you mean for e.g. nonparametric estimation (math assumptions or content)? (apart from the classic Sel on Obs Ass)
+Space mgmt: only 7pagesfor 5ppl? -> otherwise everyhting goes to appendix
+	- detailed description of estimators
+	- figures appendix
+Cod File orga: what to do with code that runs a long time?
+				can we call the seperate scripts from one main file -> comment out? 
+	
 
 ## Meeting 18.11.2020
 0. General Questions
 1. Compare estimation results	
-	Effects, confoudners used, SDs, outcome vars 
+	Effects, confoudners used, SDs, outcome vars
+	Report: ATE, CATE (5 Quintiles)
+	relative ATE = ATE / mean(wealth), relative CATE = CATE / mean(wealth in that group)
 2. Decide on 
 	variables used (similar for most estimators)
 	cate possible with all methods? (E: could do income quintiles cate- Q: do we then still include income as regressor?)
