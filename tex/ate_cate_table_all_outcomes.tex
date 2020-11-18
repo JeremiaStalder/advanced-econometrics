@@ -1,0 +1,57 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[pdftex]{graphicx}
+\usepackage[hang,flushmargin]{footmisc}
+\usepackage{amssymb,amsmath,setspace,array,natbib,booktabs,threeparttable,rotating,multirow,pdflscape,amsthm,floatpag,xfrac,enumerate}
+\usepackage[margin=1.in]{geometry}
+\usepackage[titletoc,title]{appendix}
+\usepackage[osf]{mathpazo}
+\usepackage{fullpage}
+\usepackage[justification=centering, labelsep=newline, aboveskip=-2pt,
+labelfont=bf,width=.88\textwidth,skip=0pt]{caption}
+\usepackage[english]{babel}
+\linespread{1.069}
+\floatpagestyle{empty}
+
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}
+
+\def\figs{./assets/figs}
+\def\tabs{./assets/tables}
+\usepackage[justification=centering, labelsep=newline, aboveskip=-2pt, labelfont=bf,width=.88\textwidth]{caption}
+
+
+\usepackage{todonotes}
+\usepackage{longtable} %% added by erik for pagebreak in table
+\usepackage{color,soul} %% added by erik for highlighing
+\usepackage{threeparttable}
+\usepackage{threeparttablex} % new version of trheeparttable
+
+
+\begin{document}
+
+% latex table generated in R 3.6.1 by xtable 1.8-4 package
+% Wed Nov 18 00:48:34 2020
+\begin{landscape}
+\begin{table}[ht]
+
+\centering
+\begin{tabular}{rrrrrrr}
+  \hline
+ & ATE & CATE\_inc\_quantile1 & CATE\_inc\_quantile2 & CATE\_inc\_quantile3 & CATE\_inc\_quantile4 & CATE\_inc\_quantile5 \\ 
+  \hline
+tw\_adjust & 0.05 & 0.06 & 0.03 & 0.05 & 0.08 & 0.06 \\ 
+  net\_tfa\_adjust & 0.03 & -0.02 & 0.01 & 0.03 & 0.04 & 0.07 \\ 
+  net\_nifa & -0.01 & -0.04 & -0.01 & -0.00 & 0.00 & 0.00 \\ 
+  tw\_adjust\_original & 4769.91 & 5253.78 & 2295.20 & 2973.58 & 8245.77 & 4761.86 \\ 
+  tw\_adjust\_quantile & 0.03 & 0.04 & 0.02 & 0.03 & 0.03 & 0.02 \\ 
+  net\_tfa\_adjust\_quantile & 0.07 & 0.07 & 0.05 & 0.08 & 0.08 & 0.09 \\ 
+  net\_nifa\_quantile & -0.01 & -0.01 & -0.03 & -0.00 & -0.00 & 0.01 \\ 
+   \hline
+\end{tabular}
+\end{table}
+\end{landscape}
+\end{document}
