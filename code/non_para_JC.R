@@ -1,5 +1,7 @@
 library(ATE)
 library (BNSP)
+library(bbemkr)
+library(tidyverse)
 
 setwd("C:/Users/johan/Documents/GitHub/advanced-econometrics")
 load("./output/mydata_transform.Rdata")
@@ -7,6 +9,21 @@ load("./output/variable_sets_descriptives.Rdata")
 load("./output/variable_sets_modelling.Rdata")
 
 #####Non-Parametric####
+
+
+#PCA of confounders everything apart of D and outcome
+  #two PCA for D=1 and D=0, number of variables 1-26 
+#kernel estimator of the joint fY,X(y,x) and fX(x) for both D=1 and D=0
+  # lecture 3 eq.32 
+  #package npudens (code on canvas) estimate the K then use equation 32
+  #estimate h by rule of thumb and CV and compare
+#difference of both cond. means
+
+
+
+
+
+#############################################################
 npdata <- mydata_transform
 Y <- npdata$tw #numeric vector with outcome variable
 Ti <- npdata$e401 #Treatment 
