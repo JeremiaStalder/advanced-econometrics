@@ -11,7 +11,7 @@ load("./output/variable_sets_descriptives.Rdata")
 load("./output/variable_sets_modelling.Rdata")
 
 
-data_ker <- as.data.frame(select(mydata_transform, c(variable_sets_modelling[["independent_vars_benjamin_std"]])))
+data_ker <- as.data.frame(select(mydata_transform, c(variable_sets_modelling[["independent_vars_selection_std"]])))
 Y <- as.data.frame(select(mydata_transform, c("tw_adjust_std")))
 D <- as.data.frame(select(mydata_transform, c("e401_std")))
 #####Kernel Estimator####
@@ -35,41 +35,13 @@ PCA_function <- function(f){
 }
 
 PCA <- PCA_function(data_ker)
-
-#seperate the data
-pca_data <- cbind(PCA[[3]], D)
-PCA0 <- pca_data[pca_data[,"e401_std"] < 0,1:2]
-PCA1 <- pca_data[pca_data[,"e401_std"] > 0,1:2]
-
+PCA_data <- PCA[[3]]
+##################################
+non_para_data <- cbind(Y,D,PCA_data)
+colnames(non_para_data)[3:4] <- c("dim1","dim2")
 
 
-#kernel estimator of the joint fY,X(y,x) and fX(x) for both D=1 and D=0
-# lecture 3 eq.32 
-#package npudens (code on canvas) estimate the K then use equation 32
-#estimate h by rule of thumb and CV and compare
-#difference of both cond. means
-
-
-kernel <- function(X){
-  h.cv=npudensbw(X, bwmethod="cv.ls")	# least squares cross validation. 
-  # Need first to calculate the bandwidth 
-  dens4=npudens(bws=h.cv)			# Now calculate the density
-  #plot(dens4, main ="Cross validation")
-  kernelvalues <- dens4[["dens"]]
-  return(kernelvalues)
-}
-
-kernelvalues1 <- kernel(PCA1)
-kernelvalues0 <- kernel(PCA0)
-
-m_function <- function(dens, y){
-  mx <- sum(y*dens)/sum(dens)
-  return(mx)
-}
-
-m1 <- m_function(kernelvalues1,Y)
-m0 <- m_function(kernelvalues0,Y)
-
-ATE <- m1-m0
-ATE
-
+model.pl_nonpara <- npplreg(tw_adjust_std ~ e401_std
+                    | dim1 + dim2,
+                    data = non_para_data)
+summary(model.pl_nonpara)
