@@ -524,7 +524,7 @@ dependent_vars_selection <-
 cate_vars <- c("inc_quintile")
 
 # independent variables
-non_used_wealth_variables <- c("a401", "hval", "hmort", "hequity","hval_quantile","a401_quantile","hmort_quantile","hequity_quantile","hval_quantile","other_assets_quantile")
+non_used_wealth_variables <- c("a401", "hval", "hmort", "hequity","hval_quantile","a401_quantile","hmort_quantile","hequity_quantile","hval_quantile","other_assets_quantile","inc_quintile")
 independent_vars_temp <-
   colnames(mydata_transform)[!grepl("_std", colnames(mydata_transform), TRUE)]
 independent_vars <-
@@ -828,13 +828,14 @@ ggplot(mydata_transform_scatter, aes(x=inc/1000, y=tw_adjust_original/1000, z=e4
   labs(y = "Total Wealth in TUSD")+
   labs(fill = "Share Eligible")+
   theme_bw()+
-  theme(legend.text=element_text(size=12))+
+  theme(legend.text=element_text(size=10),
+        legend.position = c(0.87,0.2))+
   theme(axis.text=element_text(size=12),
         axis.title=element_text(size=12,face="bold"))
 ggsave(
   paste0(
     outpath_des_paper,
-    "3d_scatter_income_wealth_eligibility",
+    "3d_scatter_income_wealth_eligibility_paper",
     ".png"
   )
 )
