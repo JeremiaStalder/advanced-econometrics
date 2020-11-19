@@ -61,13 +61,14 @@ lasso <- function(Y,X,C){#Y = outcome, X=covariates inculding D, C= conditional 
   X_vars <- colnames(X)
   Y_vars <- colnames(Y)
   #Combine the three dataframes
-  dat <- as.matrix(cbind(Y,X,C))
+  dat <- as.data.frame(cbind(Y,X,C))
   colnames(dat)[ncol(dat)] <- "quantile"
   
   
   for (n in 1:5) {
-  dat_n <- dat[dat[,"quantile"] == n]#split into quantile datasets
-  
+  #dat_n <- dat[dat[,"quantile"] == n]#split into quantile datasets
+  dat_n <- dat[dat[,"inc_quintile"] < (n/5)]
+  dat_n <- dat_n[dat_n[,"quantile"] > (n/5-1/5)]
   #seperate datasets
   Y_cate <- as.matrix(select(dat_n, Y_vars))
   X_cate <- as.matrix(select(dat_n, X_vars))
