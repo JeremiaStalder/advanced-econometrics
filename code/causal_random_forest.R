@@ -36,7 +36,7 @@ d <- as.matrix(mydata_crf[,d_name]) # treatment
 colnames(d)[1] <- "d"
 x_name <- c("ira","hval","hmort","hequity","age","inc","fsize","educ","db","marr","male","twoearn") # confounders: all raw variables (no transformations needed)
 x <- as.matrix(mydata_crf[,x_name]) # use all base vars except treatment as confounders
-y_possible_names <- c(variable_sets_modelling$dependent_vars_selection,variable_sets_modelling$dependent_vars_selection_quantile) # names of outcome vars to consider
+y_possible_names <- c(variable_sets_modelling$dependent_vars_selection) # names of outcome vars to consider
 y_possible <- as.matrix(mydata_crf[,y_possible_names]) # matrix of outcomes to choose from
 cate_variable_name <- variable_sets_modelling$cate_vars # select cate variable name. IMPORTANT: CATE CAN ONLY HAVE VALUES 1-5 atm, otherwise change code (cate_variable==1,2,3,4,5 below)
 cate_variable <- as.vector(mydata_crf[,cate_variable_name])

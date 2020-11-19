@@ -30,7 +30,7 @@ bw <- npregbw(xdat = X1, ydat = Y)
 save(bw, file = "./output/non_para_M_bw.RData")
 #dd <- npudens(bws = bw$bw, data = X1)
 
-# теперь на всём датасете (мб отдельно на двух подсэмплах?)
+# теперь на всём датасете (мб отдельно на двух подсэмплах?) - хрень
 bw.0 <- npregbw(xdat = Xe0, ydat = Y.0, nmulti = 3)
 save(bw, file = "./output/non_para_M_bw_Xe0.RData")
 
@@ -73,3 +73,7 @@ bw.cv.1 = npudensbw(ym.1, bwmethod="cv.ls")	# least squares cv for bw
 ## Nadaraya-Watson
 nwk.0 = NadarayaWatsonkernel(ym.0, Y.0, h = bw.cv.0$bw, gridpoint = seq(-3, 3, length.out = 100))
 nwk.1 = NadarayaWatsonkernel(ym.1, Y.1, h = bw.cv.1$bw, gridpoint = seq(-3, 3, length.out = 100))
+
+
+# использовать стандартизированные данные для bw и kernel
+# check if I can get standard errors for the estimator

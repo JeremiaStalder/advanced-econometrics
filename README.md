@@ -5,8 +5,8 @@ What is the (conditional) average treatment effect of 401k eligibility on wealth
 
 ## Questions for Petyo:
 Deadline Paper & Exam Date
-how to present results? need sds/conf intervals etc
-Figures: ok to use color? (e.g. correlation plots, overlap histograms work better) 
+how to present results? need sds/conf intervals etc - yes, get SDs and try to get confidence intervals
+Figures: ok to use color? (e.g. correlation plots, overlap histograms work better)  - yes we can
 What type of assumption do you mean for e.g. nonparametric estimation (math assumptions or content)? (apart from the classic Sel on Obs Ass)
 Space mgmt: only 7pagesfor 5ppl? -> otherwise everyhting goes to appendix
 	- detailed description of estimators
@@ -18,8 +18,9 @@ Cod File orga: what to do with code that runs a long time?
 ## Meeting 18.11.2020
 0. General Questions
 1. Compare estimation results	
-	Effects, confoudners used, SDs, outcome vars
 	Report: ATE, CATE (5 Quintiles)
+	If possible: Standard errors ATE (and CATEs)
+	If possible: confidence intervals ATE (and CATEs)
 	relative ATE = ATE / mean(wealth), relative CATE = CATE / mean(wealth in that group)
 2. Decide on 
 	variables used (similar for most estimators)
