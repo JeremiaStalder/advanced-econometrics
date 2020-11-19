@@ -32,6 +32,7 @@ select <- dplyr::select
 ggpairs <- GGally::ggpairs
 ggcorrplot <- ggcorrplot::ggcorrplot
 # source("functions.R") # functions
+source("./code/non_para_M_functions.R")
 
 # balance check function 
 balance_check <- function(vars, treat){
@@ -838,6 +839,23 @@ ggsave(
     ".png"
   )
 )
+
+# Scatter Plot of the two first Principal Components
+X.scatter <- dplyr::select(mydata_transform_scatter, -c("tw_adjust_original"))
+PC.scatter = pcatr(X.scatter)
+PC.scatter["tw"] <- mydata_transform_scatter["tw_adjust_original"]
+
+ggplot(PC.scatter, aes(x = V1, y = V2, color = tw)) + geom_point() + 
+  scale_color_gradientn(colours = rainbow(5)) + 
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), 
+        panel.grid.major = element_line(colour = "lightgrey"),
+        panel.grid.minor = element_line(colour = "lightgrey")) +
+  xlab("PC 1") +
+  ylab("PC 2") +
+  ggtitle("First two principal components")
+
+ggsave("./output/descriptives/paper/first_two_PCs.png")
+
 
 # correlation matrix for key variables
 # use transformed dataset (to show correlations)
