@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.10.1)  18 NOV 2020 01:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.10.1)  18 NOV 2020 14:47
 entering extended mode
 **./cate_table_all_outcomes_all_cates.tex
 (cate_table_all_outcomes_all_cates.tex
@@ -765,7 +765,7 @@ Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
 ))
 \TPTL@width=\skip73
 )
-No file cate_table_all_outcomes_all_cates.aux.
+(cate_table_all_outcomes_all_cates.aux)
 \openout1 = `cate_table_all_outcomes_all_cates.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 34.
@@ -784,6 +784,7 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 34.
 LaTeX Font Info:    ... okay on input line 34.
 LaTeX Font Info:    Trying to load font information for OT1+pplj on input line 
 34.
+
 ("C:\Program Files\MiKTeX 2.9\tex/latex/psnfss\ot1pplj.fd"
 File: ot1pplj.fd 2004/09/06 font definitions for OT1/pplj.
 )
@@ -899,9 +900,9 @@ LaTeX Warning: Float too large for page by 74.17958pt on input line 86.
 [1{C:/Users/eriks/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
 (cate_table_all_outcomes_all_cates.aux) ) 
 Here is how much of TeX's memory you used:
- 17756 strings out of 480930
- 345294 string characters out of 2909011
- 604494 words of memory out of 3000000
+ 17758 strings out of 480930
+ 345404 string characters out of 2909011
+ 604473 words of memory out of 3000000
  33235 multiletter control sequences out of 15000+200000
  541866 words of font info for 50 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191

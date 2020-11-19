@@ -23,7 +23,8 @@ library(GGally)
 library(ggcorrplot)
 library(xtable)
 library(fastDummies)
-
+library(plotly)
+library(hexbin)
 
 ## functions
 filter <- dplyr::filter
@@ -509,26 +510,27 @@ dependent_vars <-
     "net_tfa",
     "nifa",
     "net_n401",
-    "tfa_adjust"
+    "tfa_adjust",
+   "tw_adjust_original",
+   "net_tfa_adjust_original",
+   "tfa_adjust_original"
   )
 dependent_vars_std <- paste0(dependent_vars, "_std")
 dependent_vars_quantile <- paste0(dependent_vars, "_quantile")
 dependent_vars_selection <-
-  c("tw_adjust", "net_tfa_adjust", "net_nifa", "tw_adjust_original")
-dependent_vars_selection_std <-
-  paste0(dependent_vars_selection, "_std")
-dependent_vars_selection_quantile <-
-  paste0(dependent_vars_selection[dependent_vars_selection != "tw_adjust_original"], "_quantile")
+  c("tw_adjust_original", "tw_adjust_quantile")
 
 # cate variables
 cate_vars <- c("inc_quintile")
 
 # independent variables
-non_used_wealth_variables <- c("a401", "hval", "hmort", "hequity")
+non_used_wealth_variables <- c("a401", "hval", "hmort", "hequity","hval_quantile","a401_quantile","hmort_quantile","hequity_quantile","hval_quantile","other_assets_quantile")
 independent_vars_temp <-
   colnames(mydata_transform)[!grepl("_std", colnames(mydata_transform), TRUE)]
 independent_vars <-
   independent_vars_temp[!(independent_vars_temp %in% dependent_vars) &
+                          !(independent_vars_temp %in% dependent_vars_quantile) & 
+                          !(independent_vars_temp %in% dependent_vars_std) & 
                           !(independent_vars_temp %in% non_used_wealth_variables)]
 independent_vars_std <-  paste0(independent_vars, "_std")
 
@@ -590,8 +592,6 @@ independent_vars_benjamin_std <-
       dependent_vars_std,
       dependent_vars_quantile,
       dependent_vars_selection,
-      dependent_vars_selection_std,
-      dependent_vars_selection_quantile,
       non_used_wealth_variables,
       independent_vars,
       independent_vars_std,
@@ -609,8 +609,6 @@ independent_vars_benjamin_std <-
       "dependent_vars_std",
       "dependent_vars_quantile",
       "dependent_vars_selection",
-      "dependent_vars_selection_std",
-      "dependent_vars_selection_quantile",
       "non_used_wealth_variables",
       "independent_vars",
       "independent_vars_std",
@@ -819,6 +817,28 @@ rownames(table_descriptives_paper) <- names_vars_descriptive_table
 save(table_descriptives_paper, file= paste0(outpath_des_after_trans, "table_descriptives_paper.Rdata"))
 print(xtable(table_descriptives_paper,title = "Descriptive Statistics", digits = 2), type="latex",paste0(outpath_des_after_trans, "table_descriptives_paper.tex"))
 
+
+# Scatter Plots Income / Wealth with color for treatment
+mydata_transform_scatter <- mydata_transform_descriptive
+#mydata_transform_scatter <- mydata_transform_descriptive
+
+ggplot(mydata_transform_scatter, aes(x=inc/1000, y=tw_adjust_original/1000, z=e401))+
+  stat_summary_hex()+
+  labs(x = "Income in TUSD")+
+  labs(y = "Total Wealth in TUSD")+
+  labs(fill = "Share Eligible")+
+  theme_bw()+
+  theme(legend.text=element_text(size=12))+
+  theme(axis.text=element_text(size=12),
+        axis.title=element_text(size=12,face="bold"))
+ggsave(
+  paste0(
+    outpath_des_paper,
+    "3d_scatter_income_wealth_eligibility",
+    ".png"
+  )
+)
+
 # correlation matrix for key variables
 # use transformed dataset (to show correlations)
 # vars to use
@@ -901,4 +921,3 @@ ggsave(
     ".png"
   )
 )
-
