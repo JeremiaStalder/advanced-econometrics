@@ -95,6 +95,6 @@ lasso <- function(Y,D,X,C){#Y = outcome, X=covariates  D= e401, C= conditional v
 lasso_output <- lasso(Y,D,X,C)
 
 
-save(lasso_output, file = "./output/lasso_output.RData")
+save(lasso_output, file = "./output/results/lasso/lasso_output.RData")
 
 
