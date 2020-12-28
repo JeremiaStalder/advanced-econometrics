@@ -553,7 +553,7 @@ independent_vars_selection <-
     "age_sq",
     "age_cub",
     "inc_sq" ,
-    "inc_cub"
+    "inc_cub" 
   )
 independent_vars_selection_std = paste0(independent_vars_selection, "_std")
 
@@ -789,18 +789,18 @@ for (i in 1:ncol(mydata_transform)) {
 # table descriptives for paper 
 # vars to use
 vars_descriptive_table = c("e401","p401",
-                           "tw_adjust_original","net_tfa_adjust_original","net_nifa",
-                           "age","inc","db","ira", "hequity","educ", "fsize","marr","male","twoearn","withdrawal")
+                           "tw_adjust_original","net_tfa_adjust_original",
+                           "age","inc","db","ira","pira", "hequity","hown","educ", "fsize","marr","male","twoearn","withdrawal")
 names_vars_descriptive_table = c("Eligibility","Participation",
-                                 "Total Wealth","Net Financial Assets","Net Non-401k Financial Assets",
-                                 "Age","Income","Defined Benefit Participation","IRA Account","Home Equity","Years Education", "Family Size", "Married","Male","Two Earners","Withdrawal w.o. Cost")
+                                 "Total wealth","Net financial assets",
+                                 "Age","Income","Defined benefit part.","IRA Account","IRA part.","Home equity","Home ownership","Years education", "Family size", "Married","Male","Two Earners","Withdrawal w.o. cost")
 
 # data for descriptives for tweaks
 mydata_transform_descriptive <- mydata_transform[,vars_descriptive_table]
 # revert some log transformations for descriptives
   mydata_transform_descriptive$ira <- exp(mydata_transform_descriptive$ira)-1
   mydata_transform_descriptive$hequity <- exp(mydata_transform_descriptive$hequity)-1
-  mydata_transform_descriptive$net_nifa <- exp(mydata_transform_descriptive$net_nifa)-1
+  # mydata_transform_descriptive$net_nifa <- exp(mydata_transform_descriptive$net_nifa)-1
   mydata_transform_descriptive$inc <- exp(mydata_transform_descriptive$inc)-1
 
 standardized_difference <- as.data.frame(balance_check(mydata_transform_descriptive,mydata_transform_descriptive$e401)) # balance check procedure
@@ -862,10 +862,10 @@ ggsave("./output/descriptives/paper/first_two_PCs.png")
 # use transformed dataset (to show correlations)
 # vars to use
 vars_descriptive_corrplot = c("e401","p401",
-                           "tw_adjust","net_tfa_adjust","net_nifa",
+                           "tw_adjust","net_tfa_adjust",
                            "age","inc","db","pira", "hown","educ", "fsize","marr","male","twoearn","withdrawal")
 names_vars_descriptive_corrplot = c("Eligibility","Participation",
-                                 "Total Wealth","Net Financial Assets","Net Non-401k Financial Assets",
+                                 "Total Wealth","Net Financial Assets",
                                  "Age","Income","Defined Benefit Participation","IRA Participation","Home Owner","Years Education", "Family Size", "Married","Male","Two Earners","Withdrawal w.o. Cost")
 
 mydata_transform_corrplot_paper <- mydata_transform[,vars_descriptive_corrplot]

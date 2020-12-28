@@ -1,7 +1,7 @@
 % Table Variable Transformtaion
 \begin{landscape}
-\begin{singlespace}
-	%\begin{landscape} 
+	\begin{tiny}
+	%\begin{singlespace}
 		%\begin{table} %[!htbp]
 			% \centering
 			\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
@@ -13,7 +13,7 @@
 				\end{TableNotes}
 				
 				\begin{longtable}{l C{2cm} C{2cm} C{7cm} C{7cm} }
-					\caption{Variable Transformations}\label{tab_variable_transformation}\\
+					\caption{Variable transformations}\label{tab_variable_transformation}\\
 					%Sample & \multicolumn{5}{c}{All} & 1974+ & Siblings \\  
 					\toprule
 					\textbf{Variable} & \textbf{abbrev.} & \textbf{Type} & \textbf{Transformations} & \textbf{Notes}   \\
@@ -46,7 +46,7 @@
 					Dummies for education & nohs, hs, smcol, col & binary & & no high-school, high-school, some college, college 					\vspace{0.5cm}\\
 
 					Years of Education & educ & factor & st.-dized, usually drop for analysis & \\
-					Gender (male) & male & binary & & Question: is it really 1=m? because 80\% of respondents are 0, and they are the home/flat owner - check this. \\
+	Gender (male) & male & binary & & Desciption in HDM package implies male coded as 1. Questionable because 80\% of respondents are 0, and respondent is the home/flat owner who could be more likely to be male at that time. \\
 					\bottomrule
 				\insertTableNotes \\
 				%\endlastfoot	
@@ -54,8 +54,8 @@
 				% \endgroup 
 
 				
-			\end{ThreePartTable}
+			\end{ThreePartTable}			
+	\end{tiny}
 		%\end{table} 
-	%\end{landscape} 
-\end{singlespace} 
+	%\end{singlespace}
 \end{landscape}
