@@ -793,7 +793,7 @@ vars_descriptive_table = c("e401","p401",
                            "age","inc","db","ira","pira", "hequity","hown","educ", "fsize","marr","male","twoearn","withdrawal")
 names_vars_descriptive_table = c("Eligibility","Participation",
                                  "Total wealth","Net financial assets",
-                                 "Age","Income","Defined benefit part.","IRA Account","IRA part.","Home equity","Home ownership","Years education", "Family size", "Married","Male","Two Earners","Withdrawal w.o. cost")
+                                 "Age","Income","Defined benefit part.","IRA Account","IRA part.","Home equity","Home ownership","Years education", "Family size", "Married","Male","Two earners","Withdrawal w.o. cost")
 
 # data for descriptives for tweaks
 mydata_transform_descriptive <- mydata_transform[,vars_descriptive_table]
@@ -865,8 +865,8 @@ vars_descriptive_corrplot = c("e401","p401",
                            "tw_adjust","net_tfa_adjust",
                            "age","inc","db","pira", "hown","educ", "fsize","marr","male","twoearn","withdrawal")
 names_vars_descriptive_corrplot = c("Eligibility","Participation",
-                                 "Total Wealth","Net Financial Assets",
-                                 "Age","Income","Defined Benefit Participation","IRA Participation","Home Owner","Years Education", "Family Size", "Married","Male","Two Earners","Withdrawal w.o. Cost")
+                                 "Total wealth","Net financial assets",
+                                 "Age","Income","Defined benefit part.","IRA part.","Home owner","Years education", "Family size", "Married","Male","Two earners","Withdrawal w.o. cost")
 
 mydata_transform_corrplot_paper <- mydata_transform[,vars_descriptive_corrplot]
 colnames(mydata_transform_corrplot_paper) <- names_vars_descriptive_corrplot
