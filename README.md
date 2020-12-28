@@ -8,11 +8,11 @@ Deadline Paper & Exam Date
 how to present results? need sds/conf intervals etc - yes, get SDs and try to get confidence intervals
 Figures: ok to use color? (e.g. correlation plots, overlap histograms work better)  - yes we can
 What type of assumption do you mean for e.g. nonparametric estimation (math assumptions or content)? (apart from the classic Sel on Obs Ass)
-Space mgmt: only 7pagesfor 5ppl? -> otherwise everyhting goes to appendix
+Space mgmt: only 7pagesfor 5ppl? -> we are free to write as much as we want, he will read it :P
 	- detailed description of estimators
 	- figures appendix
 Cod File orga: what to do with code that runs a long time?
-				can we call the seperate scripts from one main file -> comment out? 
+				can we call the seperate scripts from one main file -> mark it. Can use separate files with one main file. 
 	
 
 ## Meeting 18.11.2020
