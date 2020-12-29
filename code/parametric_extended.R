@@ -44,7 +44,10 @@ y_possible <- as.matrix(mydata_linear_model[,y_possible_names]) # matrix of outc
 colnames(d)[1] <- "d"
 
 
-
+# parameters
+number_bootstrap_samples_ate <- 1000 #number of bootstrap samples for ate
+number_bootstrap_samples_cate <- 1000 #number of bootstrap samples
+ATE_via_bootstrap <- TRUE# boolean. If FALSE, then ATE calculated with full sample, if TRUE, then ATE is mean of bootstrapped ATEs
 
 # A) ATE ESTIMATION -----------------------------------------------------------------------------------------------------------------
 
@@ -52,7 +55,6 @@ colnames(d)[1] <- "d"
   # draw bootstrapped samples here
   # purpose: bootstrapped SDs and confidence intervalls
   set.seed(42000) # set seed for comparability
-  number_bootstrap_samples_ate <- 1000 #number of bootstrap samples
   index_bootstrap_samples_ate <- replicate(number_bootstrap_samples_ate, sample(x=c(1:length(d)), size=length(d), replace = TRUE, prob =NULL), simplify=FALSE) # draw random indices for observations with replacement
   
   # convert list of indices for samples to list of data for samples
@@ -130,7 +132,7 @@ for (iter_outcome_name in 1:length(y_possible_names)){
       
       
   # 3) Inverse Probability Weighting -------------------------------------------------------------------------------------------------
-    # ATE
+    # ATE full sample
       IPW_input_fct <- list(outcome,x,d) #use original sample
       names(IPW_input_fct) <- c("outcome","x","d")
       IPW_results_fct <- IPW_all_samples(IPW_input_fct,x_name)
@@ -164,6 +166,15 @@ for (iter_outcome_name in 1:length(y_possible_names)){
                         quantile(IPW_estimates_bootstrap$Restricted, sign_level/2))
       IPW_ate3[5:6] <- c(quantile(IPW_estimates_bootstrap$Restricted2, 1-sign_level/2),
                         quantile(IPW_estimates_bootstrap$Restricted2, sign_level/2))
+      
+    # ATE via bootstrap
+      # replace full sample estimated ATE with mean of bootstrapped ate if ATE_via_bootstrap is true
+      if(ATE_via_bootstrap){
+        IPW_ate[1] <- mean(IPW_estimates_bootstrap$Base)  
+        IPW_ate2[1] <- mean(IPW_estimates_bootstrap$Restricted)
+        IPW_ate3[1] <- mean(IPW_estimates_bootstrap$Restricted2)
+      }
+
      
       
   
@@ -199,6 +210,14 @@ for (iter_outcome_name in 1:length(y_possible_names)){
                          quantile(DR_estimates_bootstrap$Restricted, sign_level/2))
       DR_help2_ate[5:6] <- c(quantile(DR_estimates_bootstrap$Restricted2, 1-sign_level/2),
                          quantile(DR_estimates_bootstrap$Restricted2, sign_level/2))
+      
+    # ATE via bootstrap
+      # replace full sample estimated ATE with mean of bootstrapped ate if ATE_via_bootstrap is true
+      if(ATE_via_bootstrap){
+        DR_base_ate[1] <- mean(DR_estimates_bootstrap$Base)  
+        DR_help_ate[1] <- mean(DR_estimates_bootstrap$Restricted)
+        DR_help2_ate[1] <- mean(DR_estimates_bootstrap$Restricted2)
+      }
       
   
   # Comparison ---------------------------------------------------------------------------------------------------
@@ -267,7 +286,6 @@ for (iter_cate in 1:length(unique(cate_variable))){
   # draw bootstrapped samples here
   # purpose: bootstrapped SDs and confidence intervalls
   set.seed(42000) # set seed for comparability
-  number_bootstrap_samples_cate <- 1000 #number of bootstrap samples
   index_bootstrap_samples_ate <- replicate(number_bootstrap_samples_cate, sample(x=c(1:length(d)), size=length(d), replace = TRUE, prob =NULL), simplify=FALSE) # draw random indices for observations with replacement
   
   # convert list of indices for samples to list of data for samples
@@ -336,7 +354,7 @@ for (iter_cate in 1:length(unique(cate_variable))){
       }
       
       # 3) Inverse Probability Weighting -------------------------------------------------------------------------------------------------
-      # ATE
+      # ATE full sample
       IPW_input_fct <- list(outcome,x,d) #use original sample
       names(IPW_input_fct) <- c("outcome","x","d")
       IPW_results_fct <- IPW_all_samples(IPW_input_fct,x_name)
@@ -370,6 +388,15 @@ for (iter_cate in 1:length(unique(cate_variable))){
                          quantile(IPW_estimates_bootstrap$Restricted, sign_level/2))
       IPW_ate3[5:6] <- c(quantile(IPW_estimates_bootstrap$Restricted2, 1-sign_level/2),
                          quantile(IPW_estimates_bootstrap$Restricted2, sign_level/2))
+      
+      # ATE via bootstrap
+      # replace full sample estimated ATE with mean of bootstrapped ate if ATE_via_bootstrap is true
+      if(ATE_via_bootstrap){
+        IPW_ate[1] <- mean(IPW_estimates_bootstrap$Base)  
+        IPW_ate2[1] <- mean(IPW_estimates_bootstrap$Restricted)
+        IPW_ate3[1] <- mean(IPW_estimates_bootstrap$Restricted2)
+      }
+      
       
       
       
@@ -405,6 +432,14 @@ for (iter_cate in 1:length(unique(cate_variable))){
                             quantile(DR_estimates_bootstrap$Restricted, sign_level/2))
       DR_help2_ate[5:6] <- c(quantile(DR_estimates_bootstrap$Restricted2, 1-sign_level/2),
                              quantile(DR_estimates_bootstrap$Restricted2, sign_level/2))
+      
+      # ATE via bootstrap
+      # replace full sample estimated ATE with mean of bootstrapped ate if ATE_via_bootstrap is true
+      if(ATE_via_bootstrap){
+        DR_base_ate[1] <- mean(DR_estimates_bootstrap$Base)  
+        DR_help_ate[1] <- mean(DR_estimates_bootstrap$Restricted)
+        DR_help2_ate[1] <- mean(DR_estimates_bootstrap$Restricted2)
+      }
     
     
     # Comparison ---------------------------------------------------------------------------------------------------
