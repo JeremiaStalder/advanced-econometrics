@@ -20,6 +20,7 @@ library(xtable)
 library(fastDummies)
 
 ## functions
+source("./code/parametric_extended_functions.R")
 filter <- dplyr::filter
 select <- dplyr::select
 
@@ -96,104 +97,23 @@ for (iter_outcome_name in 1:length(y_possible_names)){
       
   # 3) Inverse Probability Weighting -------------------------------------------------------------------------------------------------
     # estimate propensity score via probit
-      probit <- function(d, x){
-        out <- glm(d~x, family = "binomial"(link = "probit"))
-        return(as.matrix(out$fitted.values))
-      }
+      IPW_results_fct <- IPW_all_samples(outcome,x,d,x_name)
+      IPW_estimates <- IPW_results_fct$IPW_estimates_fct
+      IPW_ate <- c(IPW_estimates$Base,NA,NA,NA,NA,NA) 
+      IPW_ate2 <- c(IPW_estimates$Restricted,NA,NA,NA,NA,NA)  
+      IPW_ate3 <- c(IPW_estimates$Restricted2,NA,NA,NA,NA,NA) 
       
-      out <- glm(d~x, family = "binomial")
-      summary(out)
-      phat <- probit(d, x)
-  
-    # test if propensity score close to 0 / 1
-      mean <- mean(phat)
-      max <- max(phat)
-      min <- min(phat)
-      colname <- cbind("min", "mean", "max")
-      desc_phat <- cbind(min, mean, max)
-      hist(phat, breaks=100)
-      
-    # davia idea: remove obs with prop scores close to 0 / 1 according to boundries in hubner, lechner, wunsch (2013)
-      ipw_data <- as.data.frame(cbind(outcome, phat, d, x))
-      colnames(ipw_data) <- c(outcome_name, "phat", "d", x_name)
-      count_obs_removed_help <- sum(!(ipw_data$phat < 0.95 & ipw_data$phat > 0.05))
-      count_obs_removed_help2 <- sum(!(ipw_data$phat < 0.90 & ipw_data$phat > 0.10))
-      help <- ipw_data[ipw_data$phat < 0.95 & ipw_data$phat > 0.05, ]
-      help2 <- ipw_data[ipw_data$phat < 0.90 & ipw_data$phat > 0.10, ]
-      
-      print(paste("Removed", count_obs_removed_help ,"obs with min 5% distance from 0/1"))
-      print(paste("Removed", count_obs_removed_help2 ,"obs with min 10% distance from 0/1"))
-  
-    # IPW for treatment effect
-      IPW <- function(phat,y,d){
-        ate <- mean((d*y)/phat - ((1-d)*y/(1-phat)))
-        return(ate)
-      }
-  
-    IPW_ate <- c(IPW(phat,outcome,d),NA,NA,NA,NA,NA) # ate_estimate, sd, t-val, p-val
-    IPW_ate2 <- c(IPW(help$phat, help[,outcome_name], help$d),NA,NA,NA,NA,NA)  # ate_estimate, sd, t-val, p-val
-    IPW_ate3 <- c(IPW(help2$phat, help2[,outcome_name], help2$d),NA,NA,NA,NA,NA) # ate_estimate, sd, t-val, p-val
-    
-    print("IPW Effects:")
-    print(paste("Base:",IPW_ate[1]))
-    print(paste("Help:",IPW_ate2[1]))
-    print(paste("Help2:",IPW_ate3[1]))
-    
     # todo: sd-errors. confidence interval
   
   # 4) Doubly Robust -------------------------------------------------------------------------------------------------------------------
-    # use propensity scores as estimated above
-    
-    # estimate conditional means models with the 3 prop specifications (removing of obs)
-    ipw_base_est <- lm(ipw_data[,outcome_name]~ as.matrix(ipw_data[,c("d",x_name)])) # confounders and confounders*treatment as dummies
-    ipw_help_est <- lm(help[,outcome_name]~ as.matrix(help[,c("d",x_name)]))  # same for restricted data
-    ipw_help2_est <- lm(help2[,outcome_name]~ as.matrix(help2[,c("d",x_name)])) #same for restricted data
-    
-    # estimate ate
-    doubly_robust <- function(yhat_d0, yhat_d1,phat,y,d){
-      diff_yhat <- yhat_d1- yhat_d0 # difference conditional means
-      frac_1 <- d*(y-yhat_d1)/phat 
-      frac_2 <- (1-d)*(y-yhat_d0)/(1-phat)
-      ate <- 1/length(y)*sum(diff_yhat+frac_1-frac_2)
-      return(ate)
-    }
-      # base
-      yhat_d0 <- ipw_base_est$fitted.values - ipw_data$d*ipw_base_est$coefficients[2]    # yhat_d0 is the potential estimated value with treatment = 0 even if treatment was 1: added estimated coef for obs with treatment = 1
-      yhat_d1 <- ipw_base_est$fitted.values + (1-ipw_data$d)*ipw_base_est$coefficients[2]    # yhat_d1 is the potential estimated value with treatment = 1 even if treatment was 0: added estimated coef for obs with treatment = 0
-      DR_base_ate <- c(doubly_robust(yhat_d0,
-                              yhat_d1,
-                              ipw_data$phat,
-                              ipw_data[,outcome_name],
-                              ipw_data$d),
-                       NA,NA,NA,NA,NA) # ate_estimate, sd, t-val, p-val
+    # Note: DR requires the results from the propensity score estimation
+ 
+      DR_results_fct <- DR_all_samples(IPW_results_fct$data_ipw$Base, IPW_results_fct$data_ipw$Restricted, IPW_results_fct$data_ipw$Restricted2,
+                                       x_name, outcome_name)
+      DR_base_ate <- c(DR_results_fct$Base,NA,NA,NA,NA,NA) 
+      DR_help_ate <- c(DR_results_fct$Restricted,NA,NA,NA,NA,NA)  
+      DR_help2_ate <- c(DR_results_fct$Restricted2,NA,NA,NA,NA,NA) 
       
-      # subsample help
-      yhat_d0 <- ipw_help_est$fitted.values - help$d*ipw_help_est$coefficients[2]    # yhat_d0 is the potential estimated value with treatment = 0 even if treatment was 1: added estimated coef for obs with treatment = 1
-      yhat_d1 <- ipw_help_est$fitted.values + (1-help$d)*ipw_help_est$coefficients[2]    # yhat_d1 is the potential estimated value with treatment = 1 even if treatment was 0: added estimated coef for obs with treatment = 0
-      DR_help_ate <- c(doubly_robust(yhat_d0,
-                                   yhat_d1,
-                                   help$phat,
-                                   help[,outcome_name],
-                                   help$d),
-                       NA,NA,NA,NA,NA) # ate_estimate, sd, t-val, p-val
-      
-      # subsample help2
-      yhat_d0 <- ipw_help2_est$fitted.values - help2$d*ipw_help2_est$coefficients[2]    # yhat_d0 is the potential estimated value with treatment = 0 even if treatment was 1: added estimated coef for obs with treatment = 1
-      yhat_d1 <- ipw_help2_est$fitted.values + (1-help2$d)*ipw_help2_est$coefficients[2]    # yhat_d1 is the potential estimated value with treatment = 1 even if treatment was 0: added estimated coef for obs with treatment = 0
-      DR_help2_ate <- c(doubly_robust(yhat_d0,
-                                   yhat_d1,
-                                   help2$phat,
-                                   help2[,outcome_name],
-                                   help2$d),
-                        NA,NA,NA,NA,NA)# ate_estimate, sd, t-val, p-val
-      
-      print("Double Robust Effects:")
-      print(paste("Base:",DR_base_ate[1]))
-      print(paste("Help:",DR_help_ate[1]))
-      print(paste("Help2:",DR_help2_ate[1]))
-      # ?? variance estimation : bootstrap or delta-method? -> not done yet, bootstrap would be possible to implement.
-    # ?? pvalues: dont know its distribution
-    
   
   # Comparison ---------------------------------------------------------------------------------------------------
   parametric_est <- cbind(mc_ate, OLS_ate, OLS_flex_ate,IPW_ate, IPW_ate2, IPW_ate3,DR_base_ate,DR_help_ate,DR_help2_ate)
@@ -238,11 +158,16 @@ parametric_results_cate_all <- vector(mode = "list", length = length(unique(cate
 names(results_cate) <- paste0("CATE_inc_quantile",c(1:5))
 names(parametric_results_cate_all) <- paste0("CATE_inc_quantile",c(1:5))
 
+# rename original data to avoid renaming in code
+y_possible_original <- y_possible
+x_original<- x
+d_original <- d
+
 for (iter_cate in 1:length(unique(cate_variable))){
   # condition dataset used: X=x
-  y_possible_cate <- y_possible[unique(cate_variable)[iter_cate]==cate_variable,]
-  x_cate <-  x[unique(cate_variable)[iter_cate]==cate_variable,]
-  d_cate <- d[unique(cate_variable)[iter_cate]==cate_variable,]
+  y_possible_cate <- y_possible_original[unique(cate_variable)[iter_cate]==cate_variable,]
+  x <-  x_original[unique(cate_variable)[iter_cate]==cate_variable,]
+  d <- d_original[unique(cate_variable)[iter_cate]==cate_variable,]
   
   # Use different outcome variables 
   results_outcome <- vector(mode = "list", length = length(y_possible_names))
@@ -250,7 +175,7 @@ for (iter_cate in 1:length(unique(cate_variable))){
   
   for (iter_outcome_name in 1:length(y_possible_names)){
     outcome_name <- y_possible_names[iter_outcome_name]
-    outcome_cate <- y_possible_cate[,outcome_name]# selected outcome for loop iteration
+    outcome <- y_possible_cate[,outcome_name]# selected outcome for loop iteration
     # select conditioning:
     # adjust data: run model for 5 quintiles of income data
     
@@ -295,105 +220,25 @@ for (iter_cate in 1:length(unique(cate_variable))){
       OLS_flex_ate <- c(OLS_flex_ate, CI_up, CI_low)
     
     
-    # 3) Inverse Probability Weighting -------------------------------------------------------------------------------------------------
-    # estimate propensity score via probit
-    probit <- function(d, x){
-      out <- glm(d~x, family = "binomial"(link = "probit"))
-      return(as.matrix(out$fitted.values))
-    }
-    
-    out <- glm(d_cate~x_cate, family = "binomial")
-    summary(out)
-    phat <- probit(d_cate, x_cate)
-    
-    # test if propensity score close to 0 / 1
-    mean <- mean(phat)
-    max <- max(phat)
-    min <- min(phat)
-    colname <- cbind("min", "mean", "max")
-    desc_phat <- cbind(min, mean, max)
-    hist(phat, breaks=100)
-    
-    # davia idea: remove obs with prop scores close to 0 / 1 according to boundries in hubner, lechner, wunsch (2013)
-    ipw_data <- as.data.frame(cbind(outcome_cate, phat, d_cate, x_cate))
-    colnames(ipw_data) <- c(outcome_name, "phat", "d_cate", x_name)
-    count_obs_removed_help <- sum(!(ipw_data$phat < 0.95 & ipw_data$phat > 0.05))
-    count_obs_removed_help2 <- sum(!(ipw_data$phat < 0.90 & ipw_data$phat > 0.10))
-    help <- ipw_data[ipw_data$phat < 0.95 & ipw_data$phat > 0.05, ]
-    help2 <- ipw_data[ipw_data$phat < 0.90 & ipw_data$phat > 0.10, ]
-    
-    print(paste("Removed", count_obs_removed_help ,"obs with min 5% distance from 0/1"))
-    print(paste("Removed", count_obs_removed_help2 ,"obs with min 10% distance from 0/1"))
-    
-    # IPW for treatment effect
-    IPW <- function(phat,y,d){
-      ate <- mean((d*y)/phat - ((1-d)*y/(1-phat)))
-      return(ate)
-    }
-    
-    IPW_ate <- c(IPW(phat,outcome_cate,d_cate),NA,NA,NA,NA,NA) # ate_estimate, sd, t-val, p-val
-    IPW_ate2 <- c(IPW(help$phat, help[,outcome_name], help$d_cate),NA,NA,NA,NA,NA)  # ate_estimate, sd, t-val, p-val
-    IPW_ate3 <- c(IPW(help2$phat, help2[,outcome_name], help2$d_cate),NA,NA,NA,NA,NA) # ate_estimate, sd, t-val, p-val
-    
-    print("IPW Effects:")
-    print(paste("Base:",IPW_ate[1]))
-    print(paste("Help:",IPW_ate2[1]))
-    print(paste("Help2:",IPW_ate3[1]))
-    
-    # todo: sd-errors. t-val, p-val
-    
-    # 4) Doubly Robust -------------------------------------------------------------------------------------------------------------------
-    # use propensity scores as estimated above
-    
-    # estimate conditional means models with the 3 prop specifications (removing of obs)
-    ipw_base_est <- lm(ipw_data[,outcome_name]~ as.matrix(ipw_data[,c("d_cate",x_name)])) # confounders and confounders*treatment as dummies
-    ipw_help_est <- lm(help[,outcome_name]~ as.matrix(help[,c("d_cate",x_name)]))  # same for restricted data
-    ipw_help2_est <- lm(help2[,outcome_name]~ as.matrix(help2[,c("d_cate",x_name)])) #same for restricted data
-    
-    # estimate ate
-    doubly_robust <- function(yhat_d0, yhat_d1,phat,y,d){
-      diff_yhat <- yhat_d1- yhat_d0 # difference conditional means
-      frac_1 <- d*(y-yhat_d1)/phat 
-      frac_2 <- (1-d)*(y-yhat_d0)/(1-phat)
-      ate <- 1/length(y)*sum(diff_yhat+frac_1-frac_2)
-      return(ate)
-    }
-    # base
-    yhat_d0 <- ipw_base_est$fitted.values - ipw_data$d_cate*ipw_base_est$coefficients[2]    # yhat_d0 is the potential estimated value with treatment = 0 even if treatment was 1: added estimated coef for obs with treatment = 1
-    yhat_d1 <- ipw_base_est$fitted.values + (1-ipw_data$d_cate)*ipw_base_est$coefficients[2]    # yhat_d1 is the potential estimated value with treatment = 1 even if treatment was 0: added estimated coef for obs with treatment = 0
-    DR_base_ate <- c(doubly_robust(yhat_d0,
-                                   yhat_d1,
-                                   ipw_data$phat,
-                                   ipw_data[,outcome_name],
-                                   ipw_data$d_cate),
-                     NA,NA,NA,NA,NA) # ate_estimate, sd, t-val, p-val
-    
-    # subsample help
-    yhat_d0 <- ipw_help_est$fitted.values - help$d_cate*ipw_help_est$coefficients[2]    # yhat_d0 is the potential estimated value with treatment = 0 even if treatment was 1: added estimated coef for obs with treatment = 1
-    yhat_d1 <- ipw_help_est$fitted.values + (1-help$d_cate)*ipw_help_est$coefficients[2]    # yhat_d1 is the potential estimated value with treatment = 1 even if treatment was 0: added estimated coef for obs with treatment = 0
-    DR_help_ate <- c(doubly_robust(yhat_d0,
-                                   yhat_d1,
-                                   help$phat,
-                                   help[,outcome_name],
-                                   help$d_cate),
-                     NA,NA,NA,NA,NA) # ate_estimate, sd, t-val, p-val
-    
-    # subsample help2
-    yhat_d0 <- ipw_help2_est$fitted.values - help2$d_cate*ipw_help2_est$coefficients[2]    # yhat_d0 is the potential estimated value with treatment = 0 even if treatment was 1: added estimated coef for obs with treatment = 1
-    yhat_d1 <- ipw_help2_est$fitted.values + (1-help2$d_cate)*ipw_help2_est$coefficients[2]    # yhat_d1 is the potential estimated value with treatment = 1 even if treatment was 0: added estimated coef for obs with treatment = 0
-    DR_help2_ate <- c(doubly_robust(yhat_d0,
-                                    yhat_d1,
-                                    help2$phat,
-                                    help2[,outcome_name],
-                                    help2$d_cate),
-                      NA,NA,NA,NA,NA)# ate_estimate, sd, t-val, p-val
-    
-    print("Double Robust Effects:")
-    print(paste("Base:",DR_base_ate[1]))
-    print(paste("Help:",DR_help_ate[1]))
-    print(paste("Help2:",DR_help2_ate[1]))
-    # ?? variance estimation : bootstrap or delta-method? -> not done yet, bootstrap would be possible to implement.
-    # ?? pvalues: dont know its distribution
+      
+      # 3) Inverse Probability Weighting -------------------------------------------------------------------------------------------------
+      # estimate propensity score via probit
+      IPW_results_fct <- IPW_all_samples(outcome,x,d,x_name)
+      IPW_estimates <- IPW_results_fct$IPW_estimates_fct
+      IPW_ate <- c(IPW_estimates$Base,NA,NA,NA,NA,NA) 
+      IPW_ate2 <- c(IPW_estimates$Restricted,NA,NA,NA,NA,NA)  
+      IPW_ate3 <- c(IPW_estimates$Restricted2,NA,NA,NA,NA,NA) 
+      
+      # todo: sd-errors. confidence interval
+      
+      # 4) Doubly Robust -------------------------------------------------------------------------------------------------------------------
+      # Note: DR requires the results from the propensity score estimation
+      
+      DR_results_fct <- DR_all_samples(IPW_results_fct$data_ipw$Base, IPW_results_fct$data_ipw$Restricted, IPW_results_fct$data_ipw$Restricted2,
+                                       x_name, outcome_name)
+      DR_base_ate <- c(DR_results_fct$Base,NA,NA,NA,NA,NA) 
+      DR_help_ate <- c(DR_results_fct$Restricted,NA,NA,NA,NA,NA)  
+      DR_help2_ate <- c(DR_results_fct$Restricted2,NA,NA,NA,NA,NA) 
     
     
     # Comparison ---------------------------------------------------------------------------------------------------
