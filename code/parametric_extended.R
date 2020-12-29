@@ -2,6 +2,7 @@
 
 setwd("D:/GitHub/advanced-econometrics") # setwd
 outpath_results_parametric <- "./output/results/parametric/"
+sign_level <- 0.05
 
 # librarys
 library(readr)
@@ -41,8 +42,8 @@ colnames(d)[1] <- "d"
 # A) ATE ESTIMATION -----------------------------------------------------------------------------------------------------------------
 
 # Use different outcome variables 
-results_outcome <- vector(mode = "list", length = length(y_possible_names))
-names(results_outcome) <- y_possible_names
+parametric_results_ate <- vector(mode = "list", length = length(y_possible_names))
+names(parametric_results_ate) <- y_possible_names
 
 for (iter_outcome_name in 1:length(y_possible_names)){
   outcome_name <- y_possible_names[iter_outcome_name]
@@ -57,7 +58,12 @@ for (iter_outcome_name in 1:length(y_possible_names)){
   summary(est)
   est_mc <- summary(est)
   mc_ate <- summary(est)$coefficients["d",]
-  #mc_ate <- summary(est)$coefficients["d",1]
+  # add confidence intervalls (normally distributed)
+  CI_up <- mc_ate[names(mc_ate)=="Estimate"]+qnorm(1-sign_level/2)*mc_ate[names(mc_ate)=="Std. Error"]
+  CI_low <- mc_ate[names(mc_ate)=="Estimate"]+qnorm(sign_level/2)*mc_ate[names(mc_ate)=="Std. Error"]
+  names(CI_up) <- "Upper CI"
+  names(CI_low) <- "Lower CI"
+  mc_ate <- c(mc_ate, CI_up, CI_low)
   
   
   # 2) Conditional Means via Ols -------------------------------------------------------------------------------------------------
@@ -67,7 +73,12 @@ for (iter_outcome_name in 1:length(y_possible_names)){
       
       ols_cond_means <- summary(est)
       OLS_ate <- summary(est)$coefficients["d", ]
-      #OLS_ate <- summary(est)$coefficients["d", 1] # remove after  I get sds for all estimates
+      # add confidence intervalls (normally distributed)
+      CI_up <- OLS_ate[names(OLS_ate)=="Estimate"]+qnorm(1-sign_level/2)*OLS_ate[names(OLS_ate)=="Std. Error"]
+      CI_low <- OLS_ate[names(OLS_ate)=="Estimate"]+qnorm(sign_level/2)*OLS_ate[names(OLS_ate)=="Std. Error"]
+      names(CI_up) <- "Upper CI"
+      names(CI_low) <- "Lower CI"
+      OLS_ate <- c(OLS_ate, CI_up, CI_low)
       
     # flexible coefficients for confounders for treatment states (2 OLS)
       est <- lm(outcome~ x + d*x) # confounders and confounders*treatment as dummies
@@ -75,7 +86,12 @@ for (iter_outcome_name in 1:length(y_possible_names)){
       
       ols_cond_means_flex <- summary(est)
       OLS_flex_ate <- summary(est)$coefficients["d", ]
-      #OLS_flex_ate <- summary(est)$coefficients["d", 1] # remove after I get sds for all estimates
+      # add confidence intervalls (normally distributed)
+      CI_up <- OLS_flex_ate[names(OLS_flex_ate)=="Estimate"]+qnorm(1-sign_level/2)*OLS_flex_ate[names(OLS_flex_ate)=="Std. Error"]
+      CI_low <- OLS_flex_ate[names(OLS_flex_ate)=="Estimate"]+qnorm(sign_level/2)*OLS_flex_ate[names(OLS_flex_ate)=="Std. Error"]
+      names(CI_up) <- "Upper CI"
+      names(CI_low) <- "Lower CI"
+      OLS_flex_ate <- c(OLS_flex_ate, CI_up, CI_low)
       
       
   # 3) Inverse Probability Weighting -------------------------------------------------------------------------------------------------
@@ -114,16 +130,16 @@ for (iter_outcome_name in 1:length(y_possible_names)){
         return(ate)
       }
   
-    IPW_ate <- c(IPW(phat,outcome,d),NA,NA,NA) # ate_estimate, sd, t-val, p-val
-    IPW_ate2 <- c(IPW(help$phat, help[,outcome_name], help$d),NA,NA,NA)  # ate_estimate, sd, t-val, p-val
-    IPW_ate3 <- c(IPW(help2$phat, help2[,outcome_name], help2$d),NA,NA,NA) # ate_estimate, sd, t-val, p-val
+    IPW_ate <- c(IPW(phat,outcome,d),NA,NA,NA,NA,NA) # ate_estimate, sd, t-val, p-val
+    IPW_ate2 <- c(IPW(help$phat, help[,outcome_name], help$d),NA,NA,NA,NA,NA)  # ate_estimate, sd, t-val, p-val
+    IPW_ate3 <- c(IPW(help2$phat, help2[,outcome_name], help2$d),NA,NA,NA,NA,NA) # ate_estimate, sd, t-val, p-val
     
     print("IPW Effects:")
     print(paste("Base:",IPW_ate[1]))
     print(paste("Help:",IPW_ate2[1]))
     print(paste("Help2:",IPW_ate3[1]))
     
-    # todo: sd-errors. t-val, p-val
+    # todo: sd-errors. confidence interval
   
   # 4) Doubly Robust -------------------------------------------------------------------------------------------------------------------
     # use propensity scores as estimated above
@@ -149,7 +165,7 @@ for (iter_outcome_name in 1:length(y_possible_names)){
                               ipw_data$phat,
                               ipw_data[,outcome_name],
                               ipw_data$d),
-                       NA,NA,NA) # ate_estimate, sd, t-val, p-val
+                       NA,NA,NA,NA,NA) # ate_estimate, sd, t-val, p-val
       
       # subsample help
       yhat_d0 <- ipw_help_est$fitted.values - help$d*ipw_help_est$coefficients[2]    # yhat_d0 is the potential estimated value with treatment = 0 even if treatment was 1: added estimated coef for obs with treatment = 1
@@ -159,7 +175,7 @@ for (iter_outcome_name in 1:length(y_possible_names)){
                                    help$phat,
                                    help[,outcome_name],
                                    help$d),
-                       NA,NA,NA) # ate_estimate, sd, t-val, p-val
+                       NA,NA,NA,NA,NA) # ate_estimate, sd, t-val, p-val
       
       # subsample help2
       yhat_d0 <- ipw_help2_est$fitted.values - help2$d*ipw_help2_est$coefficients[2]    # yhat_d0 is the potential estimated value with treatment = 0 even if treatment was 1: added estimated coef for obs with treatment = 1
@@ -169,7 +185,7 @@ for (iter_outcome_name in 1:length(y_possible_names)){
                                    help2$phat,
                                    help2[,outcome_name],
                                    help2$d),
-                        NA,NA,NA)# ate_estimate, sd, t-val, p-val
+                        NA,NA,NA,NA,NA)# ate_estimate, sd, t-val, p-val
       
       print("Double Robust Effects:")
       print(paste("Base:",DR_base_ate[1]))
@@ -184,25 +200,29 @@ for (iter_outcome_name in 1:length(y_possible_names)){
   colnames(parametric_est) <- c("Mean Comparison", "OLS", "OLS_flex", "IPW", "IPW_restricted", "IPW_restricted2","Doubly_robust_base","Doubly_robust_restricted","Doubly_robust_restricted2")
   
   # Collect in list
-  results_outcome[[iter_outcome_name]] = parametric_est
+  parametric_results_ate[[iter_outcome_name]] = parametric_est
 }
 
+# save image of all results
+save(parametric_results_ate,file=paste0(outpath_results_parametric,"_parametric_results_ate.Rdata"))
+
+
 # print results for all measures
-for (i in 1:length(results_outcome)){
-  print(names(results_outcome[i]))
-  print(results_outcome[[i]])
+for (i in 1:length(parametric_results_ate)){
+  print(names(parametric_results_ate[i]))
+  print(parametric_results_ate[[i]])
 }
 
 # overview table of only ATEs in latex
-ate_table_all_outcomes <- as.data.frame(t(results_outcome[[1]][1,]))
-
-for (i in 2:length(results_outcome)){
-  ate_table_all_outcomes<- rbind(ate_table_all_outcomes,t(results_outcome[[i]][1,]))
-}
-rownames(ate_table_all_outcomes) <- names(results_outcome)
+  ate_table_all_outcomes <- as.data.frame(t(parametric_results_ate[[1]][1,]))
   
-print(xtable(ate_table_all_outcomes), type="latex",paste0(outpath_results_parametric, "ate_table_all_outcomes.tex"))
-
+  for (i in 2:length(parametric_results_ate)){
+    ate_table_all_outcomes<- rbind(ate_table_all_outcomes,t(parametric_results_ate[[i]][1,]))
+  }
+  rownames(ate_table_all_outcomes) <- names(parametric_results_ate)
+    
+  print(xtable(ate_table_all_outcomes), type="latex",paste0(outpath_results_parametric, "ate_table_all_outcomes.tex"))
+  
 
 
 
@@ -213,8 +233,10 @@ cate_variable_name <- variable_sets_modelling$cate_vars # select cate variable n
 cate_variable <- as.vector(mydata_linear_model[,cate_variable_name])
 
 # loop for each different value of X (cate_variable)
-results_cate <- vector(mode = "list", length = length(unique(cate_variable)))
+results_cate <- vector(mode = "list", length = length(unique(cate_variable))) # only for effect estimate, no CIs
+parametric_results_cate_all <- vector(mode = "list", length = length(unique(cate_variable)))
 names(results_cate) <- paste0("CATE_inc_quantile",c(1:5))
+names(parametric_results_cate_all) <- paste0("CATE_inc_quantile",c(1:5))
 
 for (iter_cate in 1:length(unique(cate_variable))){
   # condition dataset used: X=x
@@ -233,29 +255,44 @@ for (iter_cate in 1:length(unique(cate_variable))){
     # adjust data: run model for 5 quintiles of income data
     
     # 1) Simple Mean comparison ----------------------------------------------------------------------------------------------------
-    est <- lm(outcome_cate~d_cate)
+    est <- lm(outcome~d)
     summary(est)
     est_mc <- summary(est)
-    mc_ate <- summary(est)$coefficients["d_cate",]
-    #mc_ate <- summary(est)$coefficients["d",1]
+    mc_ate <- summary(est)$coefficients["d",]
+    # add confidence intervalls (normally distributed)
+    CI_up <- mc_ate[names(mc_ate)=="Estimate"]+qnorm(1-sign_level/2)*mc_ate[names(mc_ate)=="Std. Error"]
+    CI_low <- mc_ate[names(mc_ate)=="Estimate"]+qnorm(sign_level/2)*mc_ate[names(mc_ate)=="Std. Error"]
+    names(CI_up) <- "Upper CI"
+    names(CI_low) <- "Lower CI"
+    mc_ate <- c(mc_ate, CI_up, CI_low)
     
     
     # 2) Conditional Means via Ols -------------------------------------------------------------------------------------------------
-    # same coefficients for confounders for both treatment states (1 OLS)
-    est <- lm(outcome_cate~d_cate+x_cate)
-    summary(est)
-    
-    ols_cond_means <- summary(est)
-    OLS_ate <- summary(est)$coefficients["d_cate", ]
-    #OLS_ate <- summary(est)$coefficients["d", 1] # remove after  I get sds for all estimates
-    
-    # flexible coefficients for confounders for treatment states (2 OLS)
-    est <- lm(outcome_cate~ x_cate + d_cate*x_cate) # confounders and confounders*treatment as dummies
-    summary(est)
-    
-    ols_cond_means_flex <- summary(est)
-    OLS_flex_ate <- summary(est)$coefficients["d_cate", ]
-    #OLS_flex_ate <- summary(est)$coefficients["d", 1] # remove after I get sds for all estimates
+      # same coefficients for confounders for both treatment states (1 OLS)
+      est <- lm(outcome~d+x)
+      summary(est)
+      
+      ols_cond_means <- summary(est)
+      OLS_ate <- summary(est)$coefficients["d", ]
+      # add confidence intervalls (normally distributed)
+      CI_up <- OLS_ate[names(OLS_ate)=="Estimate"]+qnorm(1-sign_level/2)*OLS_ate[names(OLS_ate)=="Std. Error"]
+      CI_low <- OLS_ate[names(OLS_ate)=="Estimate"]+qnorm(sign_level/2)*OLS_ate[names(OLS_ate)=="Std. Error"]
+      names(CI_up) <- "Upper CI"
+      names(CI_low) <- "Lower CI"
+      OLS_ate <- c(OLS_ate, CI_up, CI_low)
+      
+      # flexible coefficients for confounders for treatment states (2 OLS)
+      est <- lm(outcome~ x + d*x) # confounders and confounders*treatment as dummies
+      summary(est)
+      
+      ols_cond_means_flex <- summary(est)
+      OLS_flex_ate <- summary(est)$coefficients["d", ]
+      # add confidence intervalls (normally distributed)
+      CI_up <- OLS_flex_ate[names(OLS_flex_ate)=="Estimate"]+qnorm(1-sign_level/2)*OLS_flex_ate[names(OLS_flex_ate)=="Std. Error"]
+      CI_low <- OLS_flex_ate[names(OLS_flex_ate)=="Estimate"]+qnorm(sign_level/2)*OLS_flex_ate[names(OLS_flex_ate)=="Std. Error"]
+      names(CI_up) <- "Upper CI"
+      names(CI_low) <- "Lower CI"
+      OLS_flex_ate <- c(OLS_flex_ate, CI_up, CI_low)
     
     
     # 3) Inverse Probability Weighting -------------------------------------------------------------------------------------------------
@@ -294,9 +331,9 @@ for (iter_cate in 1:length(unique(cate_variable))){
       return(ate)
     }
     
-    IPW_ate <- c(IPW(phat,outcome_cate,d_cate),NA,NA,NA) # ate_estimate, sd, t-val, p-val
-    IPW_ate2 <- c(IPW(help$phat, help[,outcome_name], help$d_cate),NA,NA,NA)  # ate_estimate, sd, t-val, p-val
-    IPW_ate3 <- c(IPW(help2$phat, help2[,outcome_name], help2$d_cate),NA,NA,NA) # ate_estimate, sd, t-val, p-val
+    IPW_ate <- c(IPW(phat,outcome_cate,d_cate),NA,NA,NA,NA,NA) # ate_estimate, sd, t-val, p-val
+    IPW_ate2 <- c(IPW(help$phat, help[,outcome_name], help$d_cate),NA,NA,NA,NA,NA)  # ate_estimate, sd, t-val, p-val
+    IPW_ate3 <- c(IPW(help2$phat, help2[,outcome_name], help2$d_cate),NA,NA,NA,NA,NA) # ate_estimate, sd, t-val, p-val
     
     print("IPW Effects:")
     print(paste("Base:",IPW_ate[1]))
@@ -329,7 +366,7 @@ for (iter_cate in 1:length(unique(cate_variable))){
                                    ipw_data$phat,
                                    ipw_data[,outcome_name],
                                    ipw_data$d_cate),
-                     NA,NA,NA) # ate_estimate, sd, t-val, p-val
+                     NA,NA,NA,NA,NA) # ate_estimate, sd, t-val, p-val
     
     # subsample help
     yhat_d0 <- ipw_help_est$fitted.values - help$d_cate*ipw_help_est$coefficients[2]    # yhat_d0 is the potential estimated value with treatment = 0 even if treatment was 1: added estimated coef for obs with treatment = 1
@@ -339,7 +376,7 @@ for (iter_cate in 1:length(unique(cate_variable))){
                                    help$phat,
                                    help[,outcome_name],
                                    help$d_cate),
-                     NA,NA,NA) # ate_estimate, sd, t-val, p-val
+                     NA,NA,NA,NA,NA) # ate_estimate, sd, t-val, p-val
     
     # subsample help2
     yhat_d0 <- ipw_help2_est$fitted.values - help2$d_cate*ipw_help2_est$coefficients[2]    # yhat_d0 is the potential estimated value with treatment = 0 even if treatment was 1: added estimated coef for obs with treatment = 1
@@ -349,7 +386,7 @@ for (iter_cate in 1:length(unique(cate_variable))){
                                     help2$phat,
                                     help2[,outcome_name],
                                     help2$d_cate),
-                      NA,NA,NA)# ate_estimate, sd, t-val, p-val
+                      NA,NA,NA,NA,NA)# ate_estimate, sd, t-val, p-val
     
     print("Double Robust Effects:")
     print(paste("Base:",DR_base_ate[1]))
@@ -367,27 +404,35 @@ for (iter_cate in 1:length(unique(cate_variable))){
     results_outcome[[iter_outcome_name]] = parametric_est
   }
   
-  # overview table of only ATEs in latex
-  cate_table_all_outcomes <- as.data.frame(t(results_outcome[[1]][1,]))
   
-  for (i in 2:length(results_outcome)){
-    cate_table_all_outcomes<- rbind(cate_table_all_outcomes,t(results_outcome[[i]][1,]))
+  # list CATE, std, CIs
+   parametric_results_cate_all[[iter_cate]] <- results_outcome
+  
+  # overview table of only estimate CATEs in latex
+    cate_table_all_outcomes <- as.data.frame(t(results_outcome[[1]][1,]))
+    
+    for (i in 2:length(results_outcome)){
+      cate_table_all_outcomes<- rbind(cate_table_all_outcomes,t(results_outcome[[i]][1,]))
+    }
+    rownames(cate_table_all_outcomes) <- names(results_outcome)
+    
+    # collect all cate results in table
+    results_cate[[iter_cate]] <- cate_table_all_outcomes
+}
+
+# save all results
+save(parametric_results_cate_all,file=paste0(outpath_results_parametric,"_parametric_results_cate_all.Rdata"))
+
+# overview latex table
+  # build cate table.
+  cate_table_all_outcomes_all_cates <- rbind(NA,results_cate[[1]])  # add na as placeholder line for new value x to condition on + add cate estimates
+  for (i in 2:length(unique(cate_variable))){
+    cate_table_all_outcomes_all_cates<- rbind(cate_table_all_outcomes_all_cates, NA) # add na as placeholder line for new value x to condition on 
+    cate_table_all_outcomes_all_cates<- rbind(cate_table_all_outcomes_all_cates,results_cate[[i]]) # add cate estimates
   }
-  rownames(cate_table_all_outcomes) <- names(results_outcome)
+  # adjust rowname for placehoder row with na when new cate starts
+  for (i in 1:length(results_cate)){
+    rownames(cate_table_all_outcomes_all_cates)[1+(i-1)*(length(y_possible_names)+1)] <- names(results_cate)[i]
+  }
   
-  # collect all cate results in table
-  results_cate[[iter_cate]] <- cate_table_all_outcomes
-}
-
-# build cate table.
-cate_table_all_outcomes_all_cates <- rbind(NA,results_cate[[1]])  # add na as placeholder line for new value x to condition on + add cate estimates
-for (i in 2:length(unique(cate_variable))){
-  cate_table_all_outcomes_all_cates<- rbind(cate_table_all_outcomes_all_cates, NA) # add na as placeholder line for new value x to condition on 
-  cate_table_all_outcomes_all_cates<- rbind(cate_table_all_outcomes_all_cates,results_cate[[i]]) # add cate estimates
-}
-# adjust rowname for placehoder row with na when new cate starts
-for (i in 1:length(results_cate)){
-  rownames(cate_table_all_outcomes_all_cates)[1+(i-1)*(length(y_possible_names)+1)] <- names(results_cate)[i]
-}
-
-print(xtable(cate_table_all_outcomes_all_cates), type="latex",paste0(outpath_results_parametric, "cate_table_all_outcomes_all_cates.tex"))
+  print(xtable(cate_table_all_outcomes_all_cates), type="latex",paste0(outpath_results_parametric, "cate_table_all_outcomes_all_cates.tex"))
