@@ -248,8 +248,15 @@ for (i in 1:length(parametric_results_ate)){
     
   print(xtable(ate_table_all_outcomes), type="latex",paste0(outpath_results_parametric, "parametric_ate.tex"))
   
-
-
+# table all estimators in latex
+  print(xtable(parametric_results_ate$tw_adjust_original[c(1,2,5,6),]), type="latex",paste0(outpath_results_parametric, "parametric_tw_original_all.tex"))
+  print(xtable(parametric_results_ate$tw_adjust_quantile[c(1,2,5,6),]), type="latex",paste0(outpath_results_parametric, "parametric_tw_quantile_all.tex"))
+  
+# table selected estimators in latex
+  print(xtable(parametric_results_ate$tw_adjust_original[c(1,2,5,6),c("Doubly_robust_base","Doubly_robust_restricted","Doubly_robust_restricted2")]), type="latex",paste0(outpath_results_parametric, "parametric_tw_original_DR.tex"))
+  print(xtable(parametric_results_ate$tw_adjust_quantile[c(1,2,5,6),c("Doubly_robust_base","Doubly_robust_restricted","Doubly_robust_restricted2")]), type="latex",paste0(outpath_results_parametric, "parametric_tw_quantile_DR.tex"))
+  
+  
 
 # B) CATE ESTIMATION -----------------------------------------------------------------------------------------------------------------
 

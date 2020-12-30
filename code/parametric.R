@@ -39,7 +39,7 @@ y_possible <- as.matrix(mydata_linear_model[,y_possible_names]) # matrix of outc
 colnames(d)[1] <- "d"
 
 # Use different outcome variables 
-outcome_name <- "tw_adjust"
+outcome_name <- "tw_adjust_original"
 outcome <- y_possible[,outcome_name]# selected outcome for loop iteration
 # select conditioning:
   # adjust data: run model for 5 quintiles of income data
