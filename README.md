@@ -14,6 +14,24 @@ Space mgmt: only 7pagesfor 5ppl? -> we are free to write as much as we want, he 
 Cod File orga: what to do with code that runs a long time?
 				can we call the seperate scripts from one main file -> mark it. Can use separate files with one main file. 
 	
+## Proofreading List
+Every main section needs min 2 proofreaders that did not work on the section
+Every estimation section needs min 1 proofreader that did not work on the section
+1. Intro. Written by:
+2. Descriptives. Written by: Erik. Proofread by: Davia,
+3. Empirical strategy. 
+3.1: ATE: Written by: Davia & Erik. Proofread by:
+3.2: Diff-In-Means: Written by: Davia & Erik. Proofread by:
+3.3: CIA-Assumptions: Written by: Davia & Erik. Proofread by:
+3.4: Parametric Model: Written by: Davia & Erik. Proofread by:
+3.5: NLS: Written by: Proofread by:
+3.6: Non-Parametric / Semiparametric: Written by: Proofread by:
+3.7: Lasso: Written by: Proofread by:
+3.8: Causal Random Forest: Written by: Erik. Proofread by:
+4: Results: Written by:  Proofread by: 
+5: Conclusion Written by:  Proofread by:
+A: Appendix. Proofread by: 
+
 
 ## Meeting 18.11.2020
 0. General Questions
