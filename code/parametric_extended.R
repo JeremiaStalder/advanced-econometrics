@@ -246,7 +246,7 @@ for (i in 1:length(parametric_results_ate)){
   }
   rownames(ate_table_all_outcomes) <- names(parametric_results_ate)
     
-  print(xtable(ate_table_all_outcomes), type="latex",paste0(outpath_results_parametric, "ate_table_all_outcomes.tex"))
+  print(xtable(ate_table_all_outcomes), type="latex",paste0(outpath_results_parametric, "parametric_ate.tex"))
   
 
 
@@ -487,8 +487,8 @@ save(parametric_results_cate_all,file=paste0(outpath_results_parametric,"_parame
       result_tw_quantiles[,i] <- parametric_results_cate_all[[i]]$tw_adjust_quantile[1,colnames(parametric_results_cate_all[[i]]$tw_adjust_quantile) %in% rownames(result_tw_quantiles)]
     }
     # save latex tables
-    print(xtable(result_tw_original), type="latex",paste0(outpath_results_parametric, "result_tw_original.tex"))
-    print(xtable(result_tw_quantiles), type="latex",paste0(outpath_results_parametric, "result_tw_quantiles.tex"))
+    print(xtable(result_tw_original), type="latex",paste0(outpath_results_parametric, "parametric_cate_result_tw_original.tex"))
+    print(xtable(result_tw_quantiles), type="latex",paste0(outpath_results_parametric, "parametric_cate_result_tw_quantiles.tex"))
     
     
     # build cate table all estimation methods
