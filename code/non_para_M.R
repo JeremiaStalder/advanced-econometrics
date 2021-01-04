@@ -53,6 +53,9 @@ load("./output/non_para_M_bw_1.RData")
 H.0 = Hlscv(PC.0[, 1:3])
 H.1 = Hlscv(PC.1[, 1:3])
 
+save(H.0, file = "./output/non_para_M_H_0.RData")
+save(H.1, file = "./output/non_para_M_H_1.RData")
+
 #### Kernel Estimation ####
 
 kd.0 = kde(PC.0[, 1:3], H = H.0)
@@ -113,20 +116,20 @@ nwk.1 = NadarayaWatsonkernel(ym.1, Y.1, h = bw.cv.1$bw, gridpoint = seq(-3, 3, l
 # check if I can get standard errors for the estimator
 
 #### Scatter plot for PCs ####
-#mydata_transform_scatter = read.table("./output/mydata_transform_scatter.csv", sep = ",", header = TRUE)
+mydata_transform_scatter = read.table("./output/mydata_transform_scatter.csv", sep = ",", header = TRUE)
 
-#X.scatter <- dplyr::select(mydata_transform_scatter, -c("tw_adjust_original"))
-#PC.scatter = pcatr(X.scatter)
+X.scatter <- dplyr::select(mydata_transform_scatter, -c("tw_adjust_original"))
+PC.scatter = pcatr(X.scatter)
 
-#PC.scatter["tw"] <- mydata_transform_scatter["tw_adjust_original"]
+PC.scatter["Total_wealth"] <- mydata_transform_scatter["tw_adjust_original"]
 
-#ggplot(PC.scatter, aes(x = V1, y = V2, color = tw)) + geom_point() + 
-#  scale_color_gradientn(colours = rainbow(5)) + 
-#  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), 
-#        panel.grid.major = element_line(colour = "lightgrey"),
-#        panel.grid.minor = element_line(colour = "lightgrey")) +
-#  xlab("PC 1") +
-#  ylab("PC 2") +
+ggplot(PC.scatter, aes(x = V1, y = V2, color = Total_wealth)) + geom_point() + 
+  scale_color_gradientn(colours = rainbow(5)) + 
+  theme(panel.background = element_blank(), axis.line = element_line(colour = "black"), 
+        panel.grid.major = element_line(colour = "lightgrey"),
+        panel.grid.minor = element_line(colour = "lightgrey")) +
+  xlab("PC 1") +
+  ylab("PC 2")
 #  ggtitle("First two principal components")
 
 #ggsave("./output/descriptives/paper/first_two_PCs.png")
