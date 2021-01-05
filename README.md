@@ -1,7 +1,26 @@
 # Advanced Econometric Methods Project
 
+## overleaf
+https://www.overleaf.com/project/5f8301e2d430cc0001f661f7
+
 ## Research Question
 What is the (conditional) average treatment effect of 401k eligibility on wealth? (No IV)
+
+## Finished Code Files for Jere
+parametric.R
+parametric_functions.R
+
+## Estimates to Report
+Simple Means
+OLS / Conditional Means
+Doubly_Robust_Base
+NLS
+Non-Parametric
+Semiparametric
+Conditional Means Lasso
+Double Selection Lasso
+Forest
+
 
 ## Questions for Petyo:
 Deadline Paper & Exam Date

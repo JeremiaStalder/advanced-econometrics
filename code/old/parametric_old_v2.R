@@ -222,7 +222,7 @@ for (iter_outcome_name in 1:length(y_possible_names)){
   
   # Comparison ---------------------------------------------------------------------------------------------------
   parametric_est <- cbind(mc_ate, OLS_ate, OLS_flex_ate,IPW_ate, IPW_ate2, IPW_ate3,DR_base_ate,DR_help_ate,DR_help2_ate)
-  colnames(parametric_est) <- c("Mean Comparison", "OLS", "OLS_flex", "IPW", "IPW_restricted", "IPW_restricted2","Doubly_robust_base","Doubly_robust_restricted","Doubly_robust_restricted2")
+  colnames(parametric_est) <- c("Mean Comparison", "Cond. Means", "Cond_Means_flex", "IPW", "IPW_restricted", "IPW_restricted2","Doubly_robust_base","Doubly_robust_restricted","Doubly_robust_restricted2")
   
   # Collect in list
   parametric_results_ate[[iter_outcome_name]] = parametric_est
@@ -451,7 +451,7 @@ for (iter_cate in 1:length(unique(cate_variable))){
     
     # Comparison ---------------------------------------------------------------------------------------------------
     parametric_est <- cbind(mc_ate, OLS_ate, OLS_flex_ate,IPW_ate, IPW_ate2, IPW_ate3,DR_base_ate,DR_help_ate,DR_help2_ate)
-    colnames(parametric_est) <- c("Mean Comparison", "OLS", "OLS_flex", "IPW", "IPW_restricted", "IPW_restricted2","Doubly_robust_base","Doubly_robust_restricted","Doubly_robust_restricted2")
+    colnames(parametric_est) <- c("Mean Comparison", "Cond. Means", "Cond_Means_flex", "IPW", "IPW_restricted", "IPW_restricted2","Doubly_robust_base","Doubly_robust_restricted","Doubly_robust_restricted2")
     
     # Collect in list
     results_outcome[[iter_outcome_name]] = parametric_est
@@ -481,12 +481,12 @@ save(parametric_results_cate_all,file=paste0(outpath_results_parametric,"_parame
     #tw original initialize
     result_tw_original <- matrix(nrow=4, ncol=5)
     colnames(result_tw_original) <- paste0("Income_Quintile_",c(1:5))
-    rownames(result_tw_original) <- c("Mean Comparison","OLS","IPW_restricted","Doubly_robust_base")
+    rownames(result_tw_original) <- c("Mean Comparison","Cond. Means","IPW_restricted","Doubly_robust_base")
     
    #tw quantiles initialize
     result_tw_quantiles <- matrix(nrow=4, ncol=5)
     colnames(result_tw_quantiles) <- paste0("Income_Quintile_",c(1:5))
-    rownames(result_tw_quantiles) <- c("Mean Comparison","OLS","IPW_restricted","Doubly_robust_base")
+    rownames(result_tw_quantiles) <- c("Mean Comparison","Cond. Means","IPW_restricted","Doubly_robust_base")
     
     # fill tables 
     for (i in 1:ncol(result_tw_original)){
@@ -510,3 +510,45 @@ save(parametric_results_cate_all,file=paste0(outpath_results_parametric,"_parame
     }
     
     print(xtable(cate_table_all_outcomes_all_cates), type="latex",paste0(outpath_results_parametric, "cate_table_all_outcomes_all_cates.tex"))
+
+    
+# C) create formatted result list
+    # create lists for each estimator (easier to combine with other estimators)
+    df_estimator_results <- as.data.frame(matrix(nrow=4, ncol=6))
+    colnames(df_estimator_results) <- c("ATE","CATE_inc_quantile1","CATE_inc_quantile2","CATE_inc_quantile3","CATE_inc_quantile4","CATE_inc_quantile5")
+    rownames(df_estimator_results) <- rownames(parametric_results_cate_all$CATE_inc_quantile1$tw_adjust_original)[c(1,2,5,6)]
+    
+    all_results_parametric_tw = vector(mode = "list", length = ncol(parametric_results_cate_all$CATE_inc_quantile1$tw_adjust_original))
+    names(all_results_parametric_tw) = colnames(parametric_results_cate_all$CATE_inc_quantile1$tw_adjust_original)
+    
+    all_results_parametric_tw_quantiles = vector(mode = "list", length = ncol(parametric_results_cate_all$CATE_inc_quantile1$tw_adjust_original))
+    names(all_results_parametric_tw) = colnames(parametric_results_cate_all$CATE_inc_quantile1$tw_adjust_original)
+    
+    for (i in 1:length(all_results_parametric_tw)){
+      df_estimator_results_loop = df_estimator_results
+      df_estimator_results_loop$ATE = parametric_results_ate$tw_adjust_original[,i][c(1,2,5,6)]
+      df_estimator_results_loop$CATE_inc_quantile1 = parametric_results_cate_all$CATE_inc_quantile1$tw_adjust_original[,i][c(1,2,5,6)]
+      df_estimator_results_loop$CATE_inc_quantile2 = parametric_results_cate_all$CATE_inc_quantile2$tw_adjust_original[,i][c(1,2,5,6)]
+      df_estimator_results_loop$CATE_inc_quantile3 = parametric_results_cate_all$CATE_inc_quantile3$tw_adjust_original[,i][c(1,2,5,6)]
+      df_estimator_results_loop$CATE_inc_quantile4 = parametric_results_cate_all$CATE_inc_quantile4$tw_adjust_original[,i][c(1,2,5,6)]
+      df_estimator_results_loop$CATE_inc_quantile5 = parametric_results_cate_all$CATE_inc_quantile5$tw_adjust_original[,i][c(1,2,5,6)]
+      all_results_parametric_tw[[i]] = df_estimator_results_loop
+    }
+    
+    for (i in 1:length(all_results_parametric_tw_quantiles)){
+      df_estimator_results_loop = df_estimator_results
+      df_estimator_results_loop$ATE = parametric_results_ate$tw_adjust_quantile[,i][c(1,2,5,6)]
+      df_estimator_results_loop$CATE_inc_quantile1 = parametric_results_cate_all$CATE_inc_quantile1$tw_adjust_quantile[,i][c(1,2,5,6)]
+      df_estimator_results_loop$CATE_inc_quantile2 = parametric_results_cate_all$CATE_inc_quantile2$tw_adjust_quantile[,i][c(1,2,5,6)]
+      df_estimator_results_loop$CATE_inc_quantile3 = parametric_results_cate_all$CATE_inc_quantile3$tw_adjust_quantile[,i][c(1,2,5,6)]
+      df_estimator_results_loop$CATE_inc_quantile4 = parametric_results_cate_all$CATE_inc_quantile4$tw_adjust_quantile[,i][c(1,2,5,6)]
+      df_estimator_results_loop$CATE_inc_quantile5 = parametric_results_cate_all$CATE_inc_quantile5$tw_adjust_quantile[,i][c(1,2,5,6)]
+      all_results_parametric_tw_quantiles[[i]] = df_estimator_results_loop
+    }
+    
+    all_results_parametric <- list(all_results_parametric_tw, all_results_parametric_tw_quantiles)
+    names(all_results_parametric) = c("tw_adjust_original","tw_adjust_quantile")
+    
+    # save all results
+    save(all_results_parametric,file=paste0(outpath_results_parametric,"_parametric_all_results.Rdata"))
+    

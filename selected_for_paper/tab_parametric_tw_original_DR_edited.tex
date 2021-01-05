@@ -1,0 +1,39 @@
+%tab_parametric_tw_original_DR_edited
+%\begin{singlespace}
+\begin{scriptsize}
+	%\begin{landscape} 
+		%\begin{table} %[!htbp]
+			% \centering
+			\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+			\begin{ThreePartTable}
+				\begin{TableNotes}
+					\begin{scriptsize}
+					\item \textit{Note:} This table reports linear doubly-robust estimates as described in Section \ref{linear_model}  for 3 samples. The two restricted samples exclude observations with estimated propensity scores that are less than 5\% or 10\% away from 0 or 1. The sample size reported relate to the estimated propensity scores for the non-bootstrapped sample.
+Because we are not sure whether the DR-estimator is sensitive towards propensity scores close to 0 and 1 as  e.g. the IPW-estimator, we test the robustness here.
+					\end{scriptsize}
+				\end{TableNotes}
+				
+				\begin{longtable}{l C{1.45cm} C{1.45cm} C{1.45cm}}
+					\caption{Doubly Robust - Restricted Samples}\label{tab_dr_robustness}\\
+					  \hline
+ & Full Sample & Restricted Sample 5\% & Restricted Sample 10\% \\ 
+  \hline
+Estimate & 3852.35 & 3945.57 & 3845.35 \\ 
+  Std. Error & 1898.80 & 1901.77 & 1957.21 \\ 
+  Upper CI & 7637.32 & 7697.56 & 7821.94 \\ 
+  Lower CI & -31.47 & 69.77 & 60.08 \\ 
+  \hline
+  Sample Size & 9585 & 9549 & 9022\\
+    \hline
+				\insertTableNotes \\
+				%\endlastfoot	
+				\end{longtable} 
+				% \endgroup 
+
+				
+			\end{ThreePartTable}
+		%\end{table} 
+	%\end{landscape} 
+	\end{scriptsize}
+%\end{singlespace} 
+
