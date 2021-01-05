@@ -16,7 +16,7 @@ lassodata <- mydata_transform
 X <- select(lassodata, c(variable_sets_modelling[["independent_vars_std"]]))
 X <- select(X, -c("e401_std"))
 D <- select(lassodata, c("e401"))
-Y <- select(lassodata, c("tw_adjust_std"))
+Y <- select(lassodata, c("tw_adjust__original"))
 C <- select(lassodata, c("inc_quintile"))
 
 #PCA
@@ -132,12 +132,12 @@ kernel_output <- kernel_cate(Y,D,X,C)
 semi_table <- kernel_output
 
 #recaleing
-mu <- mean(mydata_transform$e401)
-sd <- sd
-
-
-semi_table[,1] <- (semi_table[,1]*sd)+ mu
-semi_table[,2] <- semi_table[,2]*sd
+# mu <- mean(mydata_transform$e401)
+# sd <- sd(mydata_transform$e401)
+# 
+# 
+# semi_table[,1] <- (semi_table[,1]*sd)+ mu
+# semi_table[,2] <- semi_table[,2]*sd
 
 #Confidence Intervals
 CIu <- semi_table[,1]+(1.96*semi_table[,2])

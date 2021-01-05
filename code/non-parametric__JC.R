@@ -98,12 +98,12 @@ kernel_output <- kernel_cate(Y,D,X,C)
 non_table <- kernel_output
 
 #recaleing
-mu <- mean(mydata_transform$e401)
-sd <- sd(mydata_transform$e401)
+#mu <- mean(mydata_transform$tw_adjust_original)
+#sd <- sd(mydata_transform$tw_adjust_original)
 
 
-non_table[,1] <- (non_table[,1]*sd)+ mu
-non_table[,2] <- non_table[,2]*sd
+#non_table[,1] <- (non_table[,1]*sd)+ mu
+#non_table[,2] <- non_table[,2]*sd
 
 #Confidence Intervals
 CIu <- non_table[,1]+(1.96*non_table[,2])
@@ -113,4 +113,4 @@ non_table<- cbind(non_table,CIl,CIu)
 
 
 ####Save output####
-save(non_table, file = "./output/results/nonparametric/non-parametric_output_JC.RData")
+save(non_table, file = "./output/results/nonparametric/non-parametric_output_tw_adjust_JC.RData")
