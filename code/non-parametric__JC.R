@@ -86,8 +86,8 @@ kernel_cate <- function(Y,D,X,C){#Y = outcome, X=covariates  D= e401, C= conditi
   }
   
   #ATE
-  #output_ate <- kernel(Y,D,X)
-  #output_matrix[1,] <- output_ate
+  output_ate <- kernel(Y,D,X)
+  output_matrix[1,] <- output_ate
   
   return(output_matrix)
 }

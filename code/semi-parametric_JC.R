@@ -36,7 +36,7 @@ pcatr <- function(data){
 
 ##################KERNEL#########################
 
-kernel <- function(Y,D,X){
+semi_kernel <- function(Y,D,X){
   non_para_data <- cbind(Y,D,X)
   
   
@@ -94,7 +94,7 @@ kernel <- function(Y,D,X){
 
 ########CATE KERNEL####################################
 
-kernel_cate <- function(Y,D,X,C){#Y = outcome, X=covariates  D= e401, C= conditional varibale
+semi_kernel_cate <- function(Y,D,X,C){#Y = outcome, X=covariates  D= e401, C= conditional varibale
   output_matrix <- matrix(NA, 6, 2)
   colnames(output_matrix) <- c("Coef","SE")
   rownames(output_matrix) <- c("ATE", "CATE q1", "CATE q2", "CATE q3", "CATE q4", "CATE q5")
@@ -108,21 +108,21 @@ kernel_cate <- function(Y,D,X,C){#Y = outcome, X=covariates  D= e401, C= conditi
   
   
   for (n in 1:5) {
-    
+    print(n)
     dat_n <- dat[which(dat$quintile == n),]
     #seperate datasets
     Y_cate <- select(dat_n, all_of(Y_vars))
     X_cate <- select(dat_n, all_of(X_vars))
     D_cate <- select(dat_n, all_of(D_vars))
-    output <- kernel(Y_cate, D_cate ,X_cate)
+    output <- semi_kernel(Y_cate, D_cate ,X_cate)
     
     output_matrix[n+1,] <- output
     
   }
   
   #ATE
-  #output_ate <- kernel(Y,D,X)
-  #output_matrix[1,] <- output_ate
+  output_ate <- semi_kernel(Y,D,X)
+  output_matrix[1,] <- output_ate
   
   return(output_matrix)
 }
