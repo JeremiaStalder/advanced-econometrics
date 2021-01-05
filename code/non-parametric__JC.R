@@ -113,4 +113,4 @@ non_table<- cbind(non_table,CIl,CIu)
 
 
 ####Save output####
-save(non_table, file = "./output/results/nonparametric/non-parametric_output_tw_adjust_JC.RData")
+save(non_table, file = "./output/results/nonparametric/non-parametric_output_JC.RData")
