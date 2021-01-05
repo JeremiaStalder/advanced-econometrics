@@ -99,7 +99,7 @@ non_table <- kernel_output
 
 #recaleing
 mu <- mean(mydata_transform$e401)
-sd <- sd
+sd <- sd(mydata_transform$e401)
 
 
 non_table[,1] <- (non_table[,1]*sd)+ mu
