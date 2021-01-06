@@ -43,7 +43,7 @@ non_para_data <- cbind(Y,D,X)
 colnames(non_para_data)[3:5] <- c("dim1","dim2","dim3")
 
 
-model.pl_nonpara <- npplreg(tw_adjust_std ~ e401
+model.pl_nonpara <- npplreg(tw_adjust_original ~ e401
                             | dim1 + dim2 + dim3,
                             data = non_para_data)
 

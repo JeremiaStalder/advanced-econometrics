@@ -16,7 +16,7 @@ lassodata <- mydata_transform
 X <- select(lassodata, c(variable_sets_modelling[["independent_vars_std"]]))
 X <- select(X, -c("e401_std"))
 D <- select(lassodata, c("e401"))
-Y <- select(lassodata, c("tw_adjust__original"))
+Y <- select(lassodata, c("tw_adjust_original"))
 C <- select(lassodata, c("inc_quintile"))
 
 #PCA
@@ -40,7 +40,7 @@ semi_kernel <- function(Y,D,X){
   non_para_data <- cbind(Y,D,X)
   
   
-  model.pl_nonpara <- npplreg(tw_adjust_std ~ e401 +
+  model.pl_nonpara <- npplreg(tw_adjust_original ~ e401 +
                                 age_std + 
                                 inc_std + 
                                 fsize_std +                      
@@ -107,28 +107,28 @@ semi_kernel_cate <- function(Y,D,X,C){#Y = outcome, X=covariates  D= e401, C= co
   colnames(dat)[ncol(dat)] <- "quintile"
   
   
-  for (n in 1:5) {
-    print(n)
-    dat_n <- dat[which(dat$quintile == n),]
-    #seperate datasets
-    Y_cate <- select(dat_n, all_of(Y_vars))
-    X_cate <- select(dat_n, all_of(X_vars))
-    D_cate <- select(dat_n, all_of(D_vars))
-    output <- semi_kernel(Y_cate, D_cate ,X_cate)
-    
-    output_matrix[n+1,] <- output
-    
-  }
-  
+  # for (n in 1:5) {
+  #   print(n)
+  #   dat_n <- dat[which(dat$quintile == n),]
+  #   #seperate datasets
+  #   Y_cate <- select(dat_n, all_of(Y_vars))
+  #   X_cate <- select(dat_n, all_of(X_vars))
+  #   D_cate <- select(dat_n, all_of(D_vars))
+  #   output <- semi_kernel(Y_cate, D_cate ,X_cate)
+  #   
+  #   output_matrix[n+1,] <- output
+  #   
+  # }
+  # 
   #ATE
   output_ate <- semi_kernel(Y,D,X)
   output_matrix[1,] <- output_ate
-  
+  list(outputmatrix,output_ate)
   return(output_matrix)
 }
 ###########################
 
-kernel_output <- kernel_cate(Y,D,X,C)
+kernel_output <- semi_kernel_cate(Y,D,X,C)
 semi_table <- kernel_output
 
 #recaleing
