@@ -16,7 +16,7 @@ lassodata <- mydata_transform
 X <- select(lassodata, c(variable_sets_modelling[["independent_vars_std"]]))
 X <- select(X, -c("e401_std"))
 D <- select(lassodata, c("e401"))
-Y <- select(lassodata, c("tw_adjust_std"))
+Y <- select(lassodata, c("tw_adjust_original"))
 C <- select(lassodata, c("inc_quintile"))
 
 #PCA
