@@ -16,7 +16,7 @@ lassodata <- mydata_transform
 X <- select(lassodata, c(variable_sets_modelling[["independent_vars_std"]]))
 X <- select(X, -c("e401_std"))
 D <- select(lassodata, c("e401"))
-Y <- select(lassodata, c("tw_adjust_std"))
+Y <- select(lassodata, c("tw_adjust_original"))
 C <- select(lassodata, c("inc_quintile"))
 
 #####Function lasso######
@@ -33,7 +33,7 @@ postlasso <- function(Y_cate,D_cate,X_cate){#input in matrix Y= outcome, X covar
   variables <- coef_lasso1@Dimnames[[1]][which(coef_lasso1 != 0 ) ]
   
   data_post <- as.data.frame(cbind(data_cate, Y_cate))
-  postlasso <- lm(as.formula(paste("tw_adjust_std ~ ", paste(variables[2:length(variables)], collapse= "+"))), data = data_post)
+  postlasso <- lm(as.formula(paste("tw_adjust_original ~ ", paste(variables[2:length(variables)], collapse= "+"))), data = data_post)
   
   plasso_ATE <- postlasso$coefficients[["e401"]]
   plasso_SE <- plasso_SE <- coef(summary(postlasso))["e401","Std. Error"]
@@ -88,12 +88,12 @@ cata_lasso <- function(Y,D,X,C){#Y = outcome, X=covariates  D= e401, C= conditio
 lasso_output <- cata_lasso(Y,D,X,C)
 
 ####Rescale everything
-mu <- mean(mydata_transform$e401)
-sd <- sd(mydata_transform$e401)
+#mu <- mean(mydata_transform$tw_adjust_or)
+#sd <- sd(mydata_transform$e401)
 lasso_table <- lasso_output[[2]]
 
-lasso_table[,1] <- (lasso_table[,1]*sd)+ mu
-lasso_table[,2] <- lasso_table[,2]*sd
+#lasso_table[,1] <- (lasso_table[,1]*sd)+ mu
+#lasso_table[,2] <- lasso_table[,2]*sd
   
 #Confidence Intervals
 CIu <- lasso_output[[2]][,1]+(1.96*lasso_output[[2]][,2])
@@ -104,3 +104,4 @@ lasso_table<- cbind(lasso_table,CIl,CIu)
 
 ####Save Outputtable#####
 save(lasso_table, file = "./output/results/lasso/lasso_output_final.RData")
+lasso_table
