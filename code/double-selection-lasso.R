@@ -13,10 +13,13 @@ load("./output/variable_sets_modelling.Rdata")
 ######Data prep####
 lassodata <- mydata_transform
 #Xvars <- c(variable_sets_modelling[["independent_vars_std"]][1:(length(variable_sets_modelling[["independent_vars_std"]])-2)])
+var_set <- variable_sets_modelling[["independent_vars_std"]]
+
 X <- select(lassodata, c(variable_sets_modelling[["independent_vars_std"]]))
 X <- select(X, -c("e401_std"))
+X <- select(X, -var_set[10:40])
 D <- select(lassodata, c("e401"))
-Y <- select(lassodata, c("tw_adjust_std"))
+Y <- select(lassodata, c("tw_adjust_original"))
 C <- select(lassodata, c("inc_quintile"))
 X_cate <-X
 Y_cate <- Y
@@ -29,8 +32,8 @@ DS_postlasso <- function(Y_cate,D_cate,X_cate){#input in matrix Y= outcome, X co
   
   
   #Propensity Score Lasso
-  pscore_lasso.cv <- cv.glmnet(x=as.matrix(X_cate), y=as.matrix(D_cate), type.measure = "mse", family = binomial(link = "probit"), nfolds = 3, alpha = 1)#lambda = seq(from = 0,to =lambda_min+10*lambda_min,length.out = 200),
-  pscore <- glmnet(x=as.matrix(X_cate), y=as.matrix(D_cate), alpha = 1, family = binomial(link = "probit"),lambda = pscore_lasso.cv$lambda.min)
+  pscore_lasso.cv <- cv.glmnet(x=as.matrix(X_cate), y=as.matrix(D_cate), type.measure = "mse", family = binomial(link = "logit"), nfolds = 3, alpha = 1)#lambda = seq(from = 0,to =lambda_min+10*lambda_min,length.out = 200),
+  pscore <- glmnet(x=as.matrix(X_cate), y=as.matrix(D_cate), alpha = 1, family = binomial(link = "logit"),lambda = pscore_lasso.cv$lambda.min)
   coef_lasso_p <- coef(pscore_lasso.cv, s = pscore_lasso.cv$lambda.min)
   variables_p <- coef_lasso_p@Dimnames[[1]][which(coef_lasso_p != 0 ) ]
   
@@ -42,7 +45,7 @@ DS_postlasso <- function(Y_cate,D_cate,X_cate){#input in matrix Y= outcome, X co
   
   var_postlasso <- union(variables, variables_p)
   data_post <- as.data.frame(cbind(data_cate, Y_cate))
-  postlasso <- lm(as.formula(paste("tw_adjust_std ~ ", paste(var_postlasso[2:length(var_postlasso)], collapse= "+"))), data = data_post)
+  postlasso <- lm(as.formula(paste("tw_adjust_original ~ e401 + ", paste(var_postlasso[2:length(var_postlasso)], collapse= "+"))), data = data_post)
   plasso_ATE <- postlasso$coefficients[["e401"]]
   plasso_SE <- plasso_SE <- coef(summary(postlasso))["e401","Std. Error"]
   
