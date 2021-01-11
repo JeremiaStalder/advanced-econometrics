@@ -35,7 +35,9 @@ for (n in 1:(ncol(X)-1)) {
 
 X <- cbind(X, crv)
 
-
+#Y_cate <- Y
+#D_cate <- D
+#X_cate <- X
 
 #####Function lasso######
 postlasso <- function(Y_cate,D_cate,X_cate){#input in matrix Y= outcome, X covariates including D,
@@ -46,8 +48,8 @@ postlasso <- function(Y_cate,D_cate,X_cate){#input in matrix Y= outcome, X covar
   
   lasso.cv <- cv.glmnet(data_cate, Y_cate, type.measure = "mse", family = "gaussian", nfolds = 15, alpha = 1)
   model <- glmnet(data_cate, Y_cate, alpha = 1, family = "gaussian",
-                  lambda = lasso.cv$lambda.min)
-  coef_lasso1 <- coef(lasso.cv, s = lasso.cv$lambda.min)
+                  lambda = lasso.cv$lambda.1se)
+  coef_lasso1 <- coef(lasso.cv, s = lasso.cv$lambda.1se)
   variables <- coef_lasso1@Dimnames[[1]][which(coef_lasso1 != 0 ) ]
   
   data_post <- as.data.frame(cbind(data_cate, Y_cate))
