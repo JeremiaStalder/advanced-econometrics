@@ -19,6 +19,24 @@ D <- select(lassodata, c("e401"))
 Y <- select(lassodata, c("tw_adjust_original"))
 C <- select(lassodata, c("inc_quintile"))
 
+
+#Creating all possible cross variables
+cr <- factorial(ncol(X))/(factorial(2)*factorial(ncol(X)-2))
+crv <- data.frame(matrix(NA, ncol = cr, nrow = nrow(X)))
+col <- 1
+for (n in 1:(ncol(X)-1)) {
+ for (j in (n):(ncol(X)-1)) {
+    crv[,col] <- X[,n]*X[,j]
+    colnames(crv)[col] <- paste(colnames(X)[n],colnames(X)[j], sep = "*")
+    col <- col + 1
+}
+}
+
+
+X <- cbind(X, crv)
+
+
+
 #####Function lasso######
 postlasso <- function(Y_cate,D_cate,X_cate){#input in matrix Y= outcome, X covariates including D,
   
@@ -33,7 +51,7 @@ postlasso <- function(Y_cate,D_cate,X_cate){#input in matrix Y= outcome, X covar
   variables <- coef_lasso1@Dimnames[[1]][which(coef_lasso1 != 0 ) ]
   
   data_post <- as.data.frame(cbind(data_cate, Y_cate))
-  postlasso <- lm(as.formula(paste("tw_adjust_original ~ ", paste(variables[2:length(variables)], collapse= "+"))), data = data_post)
+  postlasso <- lm(as.formula(paste("tw_adjust_original ~ e401 + ", paste(variables[2:length(variables)], collapse= "+"))), data = data_post)
   
   plasso_ATE <- postlasso$coefficients[["e401"]]
   plasso_SE <- plasso_SE <- coef(summary(postlasso))["e401","Std. Error"]
@@ -104,4 +122,5 @@ lasso_table<- cbind(lasso_table,CIl,CIu)
 
 ####Save Outputtable#####
 save(lasso_table, file = "./output/results/lasso/lasso_output_final.RData")
+save(lasso_output, file = "./output/results/lasso/lasso_output_final_inc_variables.RData")
 lasso_table
