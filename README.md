@@ -44,9 +44,9 @@ Every estimation section needs min 1 proofreader that did not work on the sectio
 3.3: CIA-Assumptions: Written by: Davia & Erik. Proofread by:
 3.4: Parametric Model: Written by: Davia & Erik. Proofread by:
 3.5: NLS: Written by: Proofread by:
-3.6: Non-Parametric / Semiparametric: Written by: Proofread by:
-3.7: Lasso: Written by: Proofread by:
-3.8: Causal Random Forest: Written by: Erik. Proofread by:
+3.6: Non-Parametric / Semiparametric: Written by: Proofread by: Erik (state 12.01, added notes)
+3.7: Lasso: Written by: Johannes, Erik Proofread by: Erik (state 12.01)
+3.8: Causal Random Forest: Written by: Jere. Proofread by: Erik (state 12.01)
 4: Results: Written by:  Proofread by: 
 5: Conclusion Written by:  Proofread by:
 A: Appendix. Proofread by: 
