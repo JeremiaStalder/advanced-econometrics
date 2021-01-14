@@ -11,8 +11,8 @@ source("./code/non_para_M_functions.R")
 
 
 npdata = mydata_transform
-#Y = npdata$tw_adjust_std #outcome
-Y = npdata$tw_adjust_original
+Y = npdata$tw_adjust_std #outcome
+#Y = npdata$tw_adjust_original
 D = npdata$e401_std #Treatment 
 indep.vars = variable_sets_modelling[["independent_vars_std"]]
 
@@ -20,8 +20,8 @@ X = dplyr::select(npdata, all_of(indep.vars))
 
 #### Data preparation ####
 ## divide the data into two samples - where treatment equal to 0 and to 1
-Y.0 = npdata[npdata[, "e401_std"] == min(X[, "e401_std"]),]$tw_adjust_original
-Y.1 = npdata[npdata[, "e401_std"] == max(X[, "e401_std"]),]$tw_adjust_original
+Y.0 = npdata[npdata[, "e401_std"] == min(X[, "e401_std"]),]$tw_adjust_std
+Y.1 = npdata[npdata[, "e401_std"] == max(X[, "e401_std"]),]$tw_adjust_std
 
 X.0 = X[X[, "e401_std"] == min(X[, "e401_std"]),]
 X.1 = X[X[, "e401_std"] == max(X[, "e401_std"]),]
