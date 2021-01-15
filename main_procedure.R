@@ -36,6 +36,7 @@ library(bbemkr)
 library(glmnet)
 library(factoextra)
 library(BNSP)
+library(misc3d)
 
 # Note: most libraries are specified again in the external files, such that each file can run independently. 
 # ---------------------------------------------------------------------
@@ -72,7 +73,7 @@ source("./code/double-selection-lasso.R")
 # Estimated computation time: around one hour
 source("./code/semi-parametric_JC.R")
 
-# ------------ Causal Rancom Forest -------------
+# ------------ Causal Random Forest -------------
 # Causal Random Forest estimation
 # Estimated computation time: 1-2 minutes
 source("./code/causal_random_forest.R")
