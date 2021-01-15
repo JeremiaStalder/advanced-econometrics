@@ -9,9 +9,7 @@ source("./code/non_para_M_functions.R")
 
 
 npdata = mydata_transform
-#Y = npdata$tw_adjust_std #outcome
 Y = npdata$tw_adjust_original
-D = npdata$e401_std #Treatment 
 indep.vars = variable_sets_modelling[["independent_vars_std"]]
 
 X = dplyr::select(npdata, all_of(indep.vars))
@@ -35,6 +33,13 @@ PC.1 = pcatr(X.1)[, 1:n_pca]
 
 
 #### Bandwidth estimation ####
+
+load("./output/np M interim/h_vector_0.Rdata")
+load("./output/np M interim/h_vector_1.Rdata")
+
+# pre-computed bandwidths are loaded to save time
+# in order to re-compute the bandwidths uncomment the loop below
+
 # Least squares cross validation:
 
 # this loop computes optimal bandwidths for each variable by LS CV
@@ -43,20 +48,20 @@ PC.1 = pcatr(X.1)[, 1:n_pca]
 ###  ### ### ### ###  ###
 ### takes time to run ###
 ###  ### ### ### ###  ###
-for (e in c(0, 1)){
-  assign(paste0("h.vector.", e), numeric(n_pca))
-  hv = get(paste0("h.vector.", e))
-  for (i in seq(1, n_pca)){
-    variable = get(paste0("PC.", e))[, paste0("V", i)]
-    assign(paste0("h.cv.", e, ".", i), npudensbw(variable, bwmethod="cv.ls"))
-    if (e == 0){
-      h.vector.0[i] = get(paste0("h.cv.0.", i))$bw
-    }
-    if (e == 1){
-      h.vector.1[i] = get(paste0("h.cv.1.", i))$bw
-    }
-  }
-}
+#for (e in c(0, 1)){
+#  assign(paste0("h.vector.", e), numeric(n_pca))
+#  hv = get(paste0("h.vector.", e))
+#  for (i in seq(1, n_pca)){
+#    variable = get(paste0("PC.", e))[, paste0("V", i)]
+#    assign(paste0("h.cv.", e, ".", i), npudensbw(variable, bwmethod="cv.ls"))
+#    if (e == 0){
+#      h.vector.0[i] = get(paste0("h.cv.0.", i))$bw
+#    }
+#    if (e == 1){
+#      h.vector.1[i] = get(paste0("h.cv.1.", i))$bw
+#    }
+#  }
+#}
 
 #### Grid ####
 ## generate matrix x_p with grid for all of the variables to use in the kernel estimation
@@ -65,14 +70,9 @@ for (e in c(0, 1)){
 n.0 = nrow(PC.0)
 n.1 = nrow(PC.1)
 
-## this loop creates grids for each variable (which correspond to principal components)
+## these lines create grids for each variable (which correspond to principal components)
 ## of each of the subsamples (PC.0 and PC.1)
 ## example: grid.0.1 corresponds to the grid of first PC of the 0-subsample
-
-##for (i in seq(1, n_pca)){
-##  assign(paste0("grid.0.", i), seq(min(PC.0), max(PC.0), l = n.0))
-##  assign(paste0("grid.1.", i), seq(min(PC.1), max(PC.1), l = n.1))
-##}
 
 grid.0.1 = seq(min(PC.0$V1), max(PC.0$V1), l = n.0)
 grid.0.2 = seq(min(PC.0$V2), max(PC.0$V2), l = n.0)
@@ -83,13 +83,9 @@ grid.1.2 = seq(min(PC.1$V2), max(PC.1$V2), l = n.1)
 grid.1.3 = seq(min(PC.1$V3), max(PC.1$V3), l = n.1)
 
 #### Kernel estimation ####
-# this loop estimates density for the set of variables used for each of the 0-1-subsamples
-# example: k.0 is the density object for variables in PC.0
-
-for (e in c(0, 1)){
-  assign(paste0("k.", e), npudens(bws = get(paste0("h.vector.", e)), 
-                                  tdat = get(paste0("PC.", e))))
-}
+# these lines estimate density for the set of variables used for each of the 0-1-subsamples
+# example: k.t.1.0 is the density object for variable 1 in PC.0 (first principal component)
+# joint kernel is computed as a product kernel
 
 # individual kernels
 
@@ -102,11 +98,10 @@ k.t.1.1 = npudens(bws = h.vector.1[1], tdat = grid.1.1 - PC.1$V1)
 k.t.2.1 = npudens(bws = h.vector.1[2], tdat = grid.1.2 - PC.1$V2)
 k.t.3.1 = npudens(bws = h.vector.1[3], tdat = grid.1.3 - PC.1$V3)
 k.t.1 = k.t.1.1$dens * k.t.2.1$dens * k.t.3.1$dens
+
+
 #### Nadaraya-Watson estimator ####
 # m^hat(x) = ( (\sum(y_i* K))/ (\sum(K)))
-
-#m.0 = sum(Y.0 * k.0$dens)/sum(k.0$dens)
-#m.1 = sum(Y.1 * k.1$dens)/sum(k.1$dens)
 
 m.0 = sum(Y.0 * k.t.0)/sum(k.t.0)
 m.1 = sum(Y.1 * k.t.1)/sum(k.t.1)
@@ -149,53 +144,68 @@ for (i in 1:5){
 
 ### Bandwidth
 
+load("./output/np M interim/h_vector_q_1_0.Rdata")
+load("./output/np M interim/h_vector_q_1_1.Rdata")
+load("./output/np M interim/h_vector_q_2_0.Rdata")
+load("./output/np M interim/h_vector_q_2_1.Rdata")
+load("./output/np M interim/h_vector_q_3_0.Rdata")
+load("./output/np M interim/h_vector_q_3_1.Rdata")
+load("./output/np M interim/h_vector_q_4_0.Rdata")
+load("./output/np M interim/h_vector_q_4_1.Rdata")
+load("./output/np M interim/h_vector_q_5_0.Rdata")
+load("./output/np M interim/h_vector_q_5_1.Rdata")
+
+# pre-computed bandwidths are loaded to save time
+# in order to re-compute the bandwidths uncomment the loop below
+
 # this loop computes optimal bandwidths for each variable by LS CV
 # example: h.vector.q.1.0 contains bandwidths for variables in PC.q.1.0
 # takes time to run
-for (i in 1:5){
-  for (e in c(0, 1)){
-    assign(paste0("h.vector.q.", i, ".", e), numeric(n_pca))
-    hv = get(paste0("h.vector.q.", i, ".", e))
-    for (j in seq(1, n_pca)){
-      variable = get(paste0("PC.q.", i, ".", e))[, paste0("V", j)]
-      assign(paste0("h.cv.q.", i, ".", e, ".", j), npudensbw(variable, bwmethod="cv.ls"))
-      if (e == 0){
-        if (i == 1){
-          h.vector.q.1.0[j] = get(paste0("h.cv.q.1.0.", j))$bw
-        }
-        if (i == 2){
-          h.vector.q.2.0[j] = get(paste0("h.cv.q.2.0.", j))$bw
-        }
-        if (i == 3){
-          h.vector.q.3.0[j] = get(paste0("h.cv.q.3.0.", j))$bw
-        }
-        if (i == 4){
-          h.vector.q.4.0[j] = get(paste0("h.cv.q.4.0.", j))$bw
-        }
-        if (i == 5){
-          h.vector.q.5.0[j] = get(paste0("h.cv.q.5.0.", j))$bw
-        }
-      }
-      if (e == 1){
-        if (i == 1){
-          h.vector.q.1.1[j] = get(paste0("h.cv.q.1.1.", j))$bw
-        }
-        if (i == 2){
-          h.vector.q.2.1[j] = get(paste0("h.cv.q.2.1.", j))$bw
-        }
-        if (i == 3){
-          h.vector.q.3.1[j] = get(paste0("h.cv.q.3.1.", j))$bw
-        }
-        if (i == 4){
-          h.vector.q.4.1[j] = get(paste0("h.cv.q.4.1.", j))$bw
-        }
-        if (i == 5){
-          h.vector.q.5.1[j] = get(paste0("h.cv.q.5.1.", j))$bw
-        }
-      }
-    }
-  }
-}
+
+# for (i in 1:5){
+#   for (e in c(0, 1)){
+#     assign(paste0("h.vector.q.", i, ".", e), numeric(n_pca))
+#     hv = get(paste0("h.vector.q.", i, ".", e))
+#     for (j in seq(1, n_pca)){
+#       variable = get(paste0("PC.q.", i, ".", e))[, paste0("V", j)]
+#       assign(paste0("h.cv.q.", i, ".", e, ".", j), npudensbw(variable, bwmethod="cv.ls"))
+#       if (e == 0){
+#         if (i == 1){
+#           h.vector.q.1.0[j] = get(paste0("h.cv.q.1.0.", j))$bw
+#         }
+#         if (i == 2){
+#           h.vector.q.2.0[j] = get(paste0("h.cv.q.2.0.", j))$bw
+#         }
+#         if (i == 3){
+#           h.vector.q.3.0[j] = get(paste0("h.cv.q.3.0.", j))$bw
+#         }
+#         if (i == 4){
+#           h.vector.q.4.0[j] = get(paste0("h.cv.q.4.0.", j))$bw
+#         }
+#         if (i == 5){
+#           h.vector.q.5.0[j] = get(paste0("h.cv.q.5.0.", j))$bw
+#         }
+#       }
+#       if (e == 1){
+#         if (i == 1){
+#           h.vector.q.1.1[j] = get(paste0("h.cv.q.1.1.", j))$bw
+#         }
+#         if (i == 2){
+#           h.vector.q.2.1[j] = get(paste0("h.cv.q.2.1.", j))$bw
+#         }
+#         if (i == 3){
+#           h.vector.q.3.1[j] = get(paste0("h.cv.q.3.1.", j))$bw
+#         }
+#         if (i == 4){
+#           h.vector.q.4.1[j] = get(paste0("h.cv.q.4.1.", j))$bw
+#         }
+#         if (i == 5){
+#           h.vector.q.5.1[j] = get(paste0("h.cv.q.5.1.", j))$bw
+#         }
+#       }
+#     }
+#   }
+# }
 
 ### Grid ###
 ## generate matrix x_p with grid for all of the variables to use in the kernel estimation
@@ -224,30 +234,9 @@ for (i in 1:5){
   }
 }
 
-##grid.q.1.0.1 = seq(min(PC.q.1.0$V1), max(PC.q.1.0$V1), l = n.q.1.0)
-##grid.q.2.0.1 = seq(min(PC.q.2.0$V1), max(PC.q.2.0$V1), l = n.q.2.0)
-##grid.q.3.0.2 = seq(min(PC.q.3.0$V2), max(PC.q.3.0$V2), l = n.q.3.0)
-##grid.q.4.0.2 = seq(min(PC.q.4.0$V2), max(PC.q.4.0$V2), l = n.q.4.0)
-
 
 ### Kernel
-
-##for (i in 1:5){
-##  for (e in c(0, 1)){
-##    assign(paste0("k.q.", i, ".", e), npudens(bws = get(paste0("h.vector.q.", i, ".", e)), 
-##                                              tdat = get(paste0("PC.q.", i, ".", e))))
-##  }
-##}
-
-
-##for (i in 1:5){
-##  for (e in 0:1){
-##    for (v in 1:n_pca){
-##      assign(paste0("k.q.", i, ".", e, ".", v), npudens(bws = get(paste0("h.vector.q.", i, ".", e))[v],
-##                                                        tdat = get(paste0("grid.q.", i, ".", e, ".", v)) - get(paste0("PC.q.", i, ".", e))[, paste0("V", v)]))
-##    }
-##  }
-##}
+# kernel densities are computed the same way as in the previous section
 
 k.q.1.0.1 = npudens(bws = h.vector.q.1.0[1], tdat = grid.q.1.0.1 - PC.q.1.0$V1)
 k.q.1.0.2 = npudens(bws = h.vector.q.1.0[2], tdat = grid.q.1.0.2 - PC.q.1.0$V2)
