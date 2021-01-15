@@ -7,6 +7,7 @@ We estimate average treatment effects of and treatment effects conditional on ho
 
 ## Contributers
 Supervisor: Prof. Petyo Bonev
+
 Students: Johannes Cordier, Liudmila Gorkun-Voevoda, Davia Kündig, Erik Senn, Jeremia Stalder
 
 ## Abstract
@@ -17,14 +18,23 @@ In general, we conclude that 401(k) plans are an effective policy tool to increa
 
 ## Estimation Methods
 Simple Mean Comparison
+
 OLS / Conditional Means
+
 Doubly Robust Parametric Model
+
 Non-linear Least Squares
+
 Non-Parametric kernel regression
+
 Nadaraya Watson estimator
+
 Semiparametric regression
+
 Lasso 
+
 Double Selection Lasso 
+
 Causal random forest
 
 ## Code
@@ -32,5 +42,6 @@ main_procedure.R - Guide through project. Calls all required code files and prod
 
 ## Relevant Datasets
 mydata_transform.Rdata - contains the transformed cleaned data for effect estimation
+
 variable_sets_modelling.Rdata - contains lists of variables used as dependent and independet variables. As independent variables, we use independent_vars_selection apart from lasso, where independent_vars is used. As dependent variable, we use tw_adjust_total.
 
