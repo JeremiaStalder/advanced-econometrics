@@ -1,11 +1,8 @@
 library(ATE)
-library (BNSP)
 library(bbemkr)
 library(tidyverse)
 library(glmnet)
 
-
-setwd("C:/Users/johan/Documents/GitHub/advanced-econometrics")
 load("./output/mydata_transform.Rdata")
 load("./output/variable_sets_modelling.Rdata")
 
@@ -125,4 +122,5 @@ lasso_table<- cbind(lasso_table,CIl,CIu)
 ####Save Outputtable#####
 save(lasso_table, file = "./output/results/lasso/lasso_output_final.RData")
 save(lasso_output, file = "./output/results/lasso/lasso_output_final_inc_variables.RData")
-lasso_table
+print("Results of Lasso:")
+print(lasso_table)

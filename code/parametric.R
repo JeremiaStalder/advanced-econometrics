@@ -254,7 +254,8 @@ save(parametric_results_ate,file=paste0(outpath_results_parametric,"parametric_r
   print(xtable(parametric_results_ate$tw_adjust_original[c(1,2,5,6),c("Doubly_robust_base","Doubly_robust_restricted","Doubly_robust_restricted2")]), type="latex",paste0(outpath_results_parametric, "tab_parametric_tw_original_DR.tex"))
   #print(xtable(parametric_results_ate$tw_adjust_quantile[c(1,2,5,6),c("Doubly_robust_base","Doubly_robust_restricted","Doubly_robust_restricted2")]), type="latex",paste0(outpath_results_parametric, "tab_parametric_tw_quantile_DR.tex"))
   
-  
+print("Results of the ATE estimation:")
+print(parametric_results_ate)
 
 # B) CATE ESTIMATION -----------------------------------------------------------------------------------------------------------------
 
@@ -274,8 +275,8 @@ x_original<- x
 d_original <- d
 
 # check if sorted
-print("Check if Sorted after quintiles (all outputs true). If not, then need to sort!")
-print(all(unique(cate_variable)==c(1:length(unique(cate_variable)))))
+# print("Check if Sorted after quintiles (all outputs true). If not, then need to sort!")
+# print(all(unique(cate_variable)==c(1:length(unique(cate_variable)))))
 #iter_cate = 1
 for (iter_cate in 1:length(unique(cate_variable))){
   # condition dataset used: X=x
@@ -491,6 +492,9 @@ for (iter_cate in 1:length(unique(cate_variable))){
 # save cate results
 save(parametric_results_cate_all,file=paste0(outpath_results_parametric,"parametric_results_cate_all.Rdata"))
 
+print("Results of the CATE estimation:")
+print(parametric_results_cate_all)
+
 # C) Formatted result list -------------
     # create lists for each estimator (easier to combine with other estimators)
     df_estimator_results <- as.data.frame(matrix(nrow=4, ncol=6))
@@ -531,4 +535,7 @@ save(parametric_results_cate_all,file=paste0(outpath_results_parametric,"paramet
     
     # save all results
     save(all_results_parametric,file=paste0(outpath_results_parametric,"parametric_all_results.Rdata"))
+    
+    print("Results of all parametric estimation:")
+    print(all_results_parametric)
     

@@ -1,9 +1,5 @@
 ### Causal Random Forest
 
-setwd("D:/GitHub/advanced-econometrics") # setwd
-outpath_results_crf <- "./output/results/random_forest/"
-sign_level <- 0.05
-
 # librarys
 library(readr)
 library(zoo)
@@ -19,6 +15,9 @@ library(ggcorrplot)
 library(xtable)
 library(fastDummies)
 library(grf) # random forest package
+
+outpath_results_crf <- "./output/results/random_forest/"
+sign_level <- 0.05
 
 ## functions
 filter <- dplyr::filter
@@ -128,3 +127,5 @@ save(results_outcome,file=paste0(outpath_results_crf,"crf_results_all.Rdata"))
 print(xtable(results_outcome$tw_adjust_original), type="latex",paste0(outpath_results_crf, "crf_tw_original.tex"))
 print(xtable(results_outcome$tw_adjust_quantile), type="latex",paste0(outpath_results_crf, "crf_tw_quantiles.tex"))
 
+print("Results of the causal random forest:")
+print(results_outcome$tw_adjust_original)
