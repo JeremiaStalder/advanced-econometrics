@@ -83,7 +83,8 @@ source("./code/causal_random_forest.R")
 source("./code/non-parametric__JC.R")
 
 # Nadaraya-Watson Estimator
-# Estimated computation time: X minutes
+# Estimated computation time: 10 seconds with loaded pre-estimated bandwidths (default)
+#                             1 hour without loaded pre-estimated bandwidths (could be changed in code in section "Bandwidth estimation")
 source("./code/non_para_M_2.R")
 # Note: see "./code/non_para_M_functions.R" for additional functions used in "non_para_M_2.R".
 
