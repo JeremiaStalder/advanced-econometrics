@@ -1,5 +1,5 @@
 library(ATE)
-library (BNSP)
+library(BNSP)
 library(bbemkr)
 library(tidyverse)
 library(factoextra)

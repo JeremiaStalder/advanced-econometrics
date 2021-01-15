@@ -2,6 +2,7 @@ library(ATE)
 library(bbemkr)
 library(tidyverse)
 library(glmnet)
+library(BNSP)
 
 
 load("./output/mydata_transform.Rdata")
