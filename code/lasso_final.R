@@ -1,7 +1,18 @@
+#######################################################################################################################
+# Project - Advanced Econometric Methods
+# Erik Senn, Johannes Cordier, Mila Gorkun-Voevoda, Davia Kündig and Jeremia Stalder
+#
+# Description:
+# Lasso
+# Estimated computation time: around 10 minutes
+
+# ------------------------- Libraries ---------------------------------
 library(ATE)
 library(bbemkr)
 library(tidyverse)
 library(glmnet)
+
+# ----------------------------------------------------------------------
 
 load("./output/mydata_transform.Rdata")
 load("./output/variable_sets_modelling.Rdata")

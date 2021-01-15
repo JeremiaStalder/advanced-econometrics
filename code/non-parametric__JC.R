@@ -1,3 +1,13 @@
+#######################################################################################################################
+# Project - Advanced Econometric Methods
+# Erik Senn, Johannes Cordier, Mila Gorkun-Voevoda, Davia Kündig and Jeremia Stalder
+#
+# Description:
+# Non-parametric Kernel Regression
+# Estimated computation time: around 12 hours
+
+# ------------------------- Libraries ---------------------------------
+
 library(ATE)
 library(BNSP)
 library(bbemkr)
@@ -5,8 +15,8 @@ library(tidyverse)
 library(factoextra)
 library(np)	
 
+# ----------------------------------------------------------------------
 
-setwd("C:/Users/johan/Documents/GitHub/advanced-econometrics")
 load("./output/mydata_transform.Rdata")
 load("./output/variable_sets_modelling.Rdata")
 

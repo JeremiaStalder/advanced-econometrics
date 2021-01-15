@@ -45,7 +45,7 @@ library(misc3d)
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))  
 
 # ------------ Data cleanup -------------
-# We start with some descriptive statistics
+# We start with some descriptive statistics and then clean the data
 # Estimated computation time: 2-5 minutes
 source("./code/data_cleaning.R")
 

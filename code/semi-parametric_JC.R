@@ -1,3 +1,14 @@
+#######################################################################################################################
+# Project - Advanced Econometric Methods
+# Erik Senn, Johannes Cordier, Mila Gorkun-Voevoda, Davia Kündig and Jeremia Stalder
+#
+# Description:
+# Semi-Parametric estimation
+# For computation time reason we calculate the Semi-Parametric Estimation only with one non-parametric parameter.
+# However, in "semi-parametric_JC.R" you can set it to two or three non-parametric parameters (option at the top of the file, might take up to 36h)
+# Estimated computation time: around one hour
+
+# ------------------------- Libraries ---------------------------------
 library(ATE)
 library(bbemkr)
 library(BNSP)
@@ -5,7 +16,7 @@ library(tidyverse)
 library(factoextra)
 library(np)	
 
-# ------------ Option ------------------
+# ---------------------------- Option ---------------------------------
 # Set the number of non-parametric parameters (1,2 or 3):
 # 1: inc_std non-parametric
 # 2: inc_std and age_std non-parametric (takes around 5h)
@@ -13,7 +24,7 @@ library(np)
 
 option <- 1
 
-# --------------------------------------
+# --------------------------------------------------------------------
 
 
 load("./output/mydata_transform.Rdata")

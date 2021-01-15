@@ -1,5 +1,18 @@
+#######################################################################################################################
+# Project - Advanced Econometric Methods
+# Erik Senn, Johannes Cordier, Mila Gorkun-Voevoda, Davia Kündig and Jeremia Stalder
+#
+# Description:
+# Nadaraya-Watson Estimator
+# Estimated computation time: 10 seconds with loaded pre-estimated bandwidths (default)
+#                             1 hour without loaded pre-estimated bandwidths (could be changed in code in section "Bandwidth estimation")
+# Note: see "./code/non_para_M_functions.R" for additional functions used in "non_para_M_2.R".
+
+# ------------------------- Libraries ---------------------------------
 library(dplyr)
 library(np)
+
+# ----------------------------------------------------------------------
 
 load("./output/mydata_transform.Rdata")
 load("./output/variable_sets_descriptives.Rdata")

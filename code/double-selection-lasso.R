@@ -1,8 +1,19 @@
+#######################################################################################################################
+# Project - Advanced Econometric Methods
+# Erik Senn, Johannes Cordier, Mila Gorkun-Voevoda, Davia Kündig and Jeremia Stalder
+#
+# Description:
+# Double Selection Lasso
+# Estimated computation time: around 3 minutes
+
+# ------------------------- Libraries ---------------------------------
 library(ATE)
 library(bbemkr)
 library(tidyverse)
 library(glmnet)
 library(BNSP)
+
+# ----------------------------------------------------------------------
 
 load("./output/mydata_transform.Rdata")
 load("./output/variable_sets_modelling.Rdata")

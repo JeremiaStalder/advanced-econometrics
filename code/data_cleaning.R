@@ -1,5 +1,12 @@
-### Project Pension - Advanced Econometrics Methods, HSG
-# librarys
+#######################################################################################################################
+# Project - Advanced Econometric Methods
+# Erik Senn, Johannes Cordier, Mila Gorkun-Voevoda, Davia Kündig and Jeremia Stalder
+#
+# Description:
+# Data cleaning and descriptive statistics
+# Estimated computation time: 2-5 minutes
+
+# ------------------------- Libraries ---------------------------------
 library(readr)
 library(zoo)
 library(stats)
@@ -15,6 +22,8 @@ library(xtable)
 library(fastDummies)
 library(plotly)
 library(hexbin)
+
+# ----------------------------------------------------------------------
 
 options(scipen=10000)
 outpath <- "./output/" # output

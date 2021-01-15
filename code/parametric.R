@@ -1,10 +1,15 @@
-### Linear Estimators - Simple, Conditional Means, IPW, Doubly-Robust
+#######################################################################################################################
+# Project - Advanced Econometric Methods
+# Erik Senn, Johannes Cordier, Mila Gorkun-Voevoda, Davia Kündig and Jeremia Stalder
+#
+# Description:
+# Now, we go on to estimate our parametric ATEs and CATEs.
+# The following methods are used: Simple mean comparison, conditional outcome regression, flexible conditional outcome regression, generalized additive model, inverse probability weighting (ipw), restricted ipw, restricted ipw 2,
+# doubly robust regression, restricted doubly robust regression and restricted doubly robust regression 2
+# Estimated computation time: 5-10 minutes (the bootstraps take some time and might in rare cases cause problems with RAM-usage)
+# Note: see "./code/parametric_functions.R" for additional functions used in "parametric.R".
 
-#setwd("D:/GitHub/advanced-econometrics") # setwd
-outpath_results_parametric <- "./output/results/parametric/"
-sign_level <- 0.05
-
-# librarys
+# ------------------------- Libraries ---------------------------------
 library(readr)
 library(zoo)
 library(stats)
@@ -20,6 +25,11 @@ library(xtable)
 library(fastDummies)
 library(rlist)
 library(mgcv)
+
+# ----------------------------------------------------------------------
+
+outpath_results_parametric <- "./output/results/parametric/"
+sign_level <- 0.05
 
 ## functions
 source("./code/parametric_functions.R")

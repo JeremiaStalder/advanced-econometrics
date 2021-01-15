@@ -1,3 +1,11 @@
+#######################################################################################################################
+# Project - Advanced Econometric Methods
+# Erik Senn, Johannes Cordier, Mila Gorkun-Voevoda, Davia Kündig and Jeremia Stalder
+#
+# Description:
+# Collects results and produces graphs.
+# Estimated computation time: a few seconds
+
 # ------------------------- Libraries ---------------------------------
 
 library(data.table) # used for transposing some data tables

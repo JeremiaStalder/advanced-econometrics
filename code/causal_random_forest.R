@@ -1,6 +1,12 @@
-### Causal Random Forest
+#######################################################################################################################
+# Project - Advanced Econometric Methods
+# Erik Senn, Johannes Cordier, Mila Gorkun-Voevoda, Davia Kündig and Jeremia Stalder
+#
+# Description:
+# Causal Random Forest estimation
+# Estimated computation time: 1-2 minutes
 
-# librarys
+# ------------------------- Libraries ---------------------------------
 library(readr)
 library(zoo)
 library(stats)
@@ -15,6 +21,8 @@ library(ggcorrplot)
 library(xtable)
 library(fastDummies)
 library(grf) # random forest package
+
+# ----------------------------------------------------------------------
 
 outpath_results_crf <- "./output/results/random_forest/"
 sign_level <- 0.05

@@ -1,4 +1,9 @@
-# Functions - Parametric Estimation 
+#######################################################################################################################
+# Project - Advanced Econometric Methods
+# Erik Senn, Johannes Cordier, Mila Gorkun-Voevoda, Davia Kündig and Jeremia Stalder
+#
+# Description:
+# Functions used for "parametric.R"
 
 # probit
 probit <- function(d, x){
