@@ -6,7 +6,7 @@ library(ggplot2)
 
 # ------------------------- Functions and Variables -------------------
 transpose <- data.table::transpose
-path = "./output/results/"
+path = "./output/results/graphs/"
 
 # ------------------------- Collection of Results ---------------------
 
@@ -93,7 +93,7 @@ rownames(non_para) <- c("Non-Parametric Kernel Regression ATE", "Q1", "Q2", "Q3"
 rownames(semiparametric_output) <- c("Semi-Parametric Regression ATE", "Q1", "Q2", "Q3", "Q4", "Q5")
 rownames(lasso) <- c("Lasso ATE", "Q1", "Q2", "Q3", "Q4", "Q5")
 rownames(ds_lasso) <- c("Double Selection Lasso ATE", "Q1", "Q2", "Q3", "Q4", "Q5")
-all_results <- rbind(mean_comparison, cond_means, ipw, ipw_restricted, ipw_restricted2, doubly_robust_base, doubly_robust_restricted, doubly_robust_restricted2, non_para, semiparametric_output, lasso, ds_lasso, crf)
+all_results <- rbind(mean_comparison, cond_means, ipw, ipw_restricted, ipw_restricted2, doubly_robust_base, doubly_robust_restricted, doubly_robust_restricted2, gam, non_para, semiparametric_output, lasso, ds_lasso, crf)
 all_results_quantile <- all_results[c(FALSE, TRUE, TRUE, TRUE, TRUE, TRUE),]
 all_results_ate <- all_results[c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE),]
 
@@ -205,7 +205,7 @@ ate_plot_data <- data.frame(ate = rep(c("Doubly Robust Parametric", "Linear Cond
 
 ggplot(ate_plot_data, aes(x=ate, y=coef)) + 
   geom_errorbar(mapping = aes(x = ate, ymin = CIl, ymax = CIu), width = 0.3, alpha = 0.9)+theme_minimal() + 
-  labs(x = "Method", y = "Treatment Effect", color = "Methods:") + theme(axis.text.x = element_text(angle = 50, vjust = 0.9, hjust=1)) +
+  labs(x = "Method", y = "Treatment Effect", color = "Methods:") + theme(axis.text.x = element_text(angle = 20, vjust = 0.9, hjust=1)) +
   geom_point(mapping=aes(x=ate, y=coef), size=4, shape=21, fill="white")
 
 ggsave(paste0(path, "ate_plot.png"), width = 25, height = 13, units = "cm")
