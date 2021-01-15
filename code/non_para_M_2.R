@@ -1,8 +1,6 @@
 library(dplyr)
 library(np)
 
-
-setwd("C:/Users/lmgv/iCloudDrive/SG MiQEF/3 semester/Advanced Econometric Methods/Project/advanced-econometrics")
 load("./output/mydata_transform.Rdata")
 load("./output/variable_sets_descriptives.Rdata")
 load("./output/variable_sets_modelling.Rdata")
