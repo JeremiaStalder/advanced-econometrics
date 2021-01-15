@@ -17,25 +17,16 @@ Our results suggest a positive average effect of eligibility on wealth between 2
 In general, we conclude that 401(k) plans are an effective policy tool to increase retirement savings as well as wealth, especially for low and high income groups.
 
 ## Estimation Methods
-Simple Mean Comparison
-
-OLS / Conditional Means
-
-Doubly Robust Parametric Model
-
-Non-linear Least Squares
-
-Non-Parametric kernel regression
-
-Nadaraya Watson estimator
-
-Semiparametric regression
-
-Lasso 
-
-Double Selection Lasso 
-
-Causal random forest
+- Simple Mean Comparison
+- OLS / Conditional Means
+- Doubly Robust Parametric Model
+- Non-linear Least Squares
+- Non-Parametric kernel regression
+- Nadaraya Watson estimator
+- Semiparametric regression
+- Lasso 
+- Double Selection Lasso 
+- Causal random forest
 
 ## Code
 main_procedure.R - Guide through project. Calls all required code files and produces results. 
