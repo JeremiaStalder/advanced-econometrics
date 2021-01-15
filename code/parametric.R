@@ -3,7 +3,6 @@
 # Erik Senn, Johannes Cordier, Mila Gorkun-Voevoda, Davia Kündig and Jeremia Stalder
 #
 # Description:
-# Now, we go on to estimate our parametric ATEs and CATEs.
 # The following methods are used: Simple mean comparison, conditional outcome regression, flexible conditional outcome regression, generalized additive model, inverse probability weighting (ipw), restricted ipw, restricted ipw 2,
 # doubly robust regression, restricted doubly robust regression and restricted doubly robust regression 2
 # Estimated computation time: 5-10 minutes (the bootstraps take some time and might in rare cases cause problems with RAM-usage)
