@@ -1,14 +1,4 @@
 ### Project Pension - Advanced Econometrics Methods, HSG
-
-setwd("D:/GitHub/advanced-econometrics") # setwd
-# setwd("C:/Users/johan/Documents/GitHub/advanced-econometrics") # setwd
-options(scipen=10000)
-outpath <- "./output/" # output
-outpath_des_before_trans <- "./output/descriptives/before_trans/"
-outpath_des_after_trans <- "./output/descriptives/after_trans/"
-outpath_des_paper <- "./output/descriptives/paper/"
-datapath <- "./data/" # data files (input datafile from package)
-
 # librarys
 library(readr)
 library(zoo)
@@ -25,6 +15,13 @@ library(xtable)
 library(fastDummies)
 library(plotly)
 library(hexbin)
+
+options(scipen=10000)
+outpath <- "./output/" # output
+outpath_des_before_trans <- "./output/descriptives/before_trans/"
+outpath_des_after_trans <- "./output/descriptives/after_trans/"
+outpath_des_paper <- "./output/descriptives/paper/"
+datapath <- "./data/" # data files (input datafile from package)
 
 ## functions
 filter <- dplyr::filter
@@ -56,7 +53,7 @@ return(res)
 
 
 ####  0) Import Data ####
-View(data("pension"))
+#View(data("pension"))
 mydata <- as.data.frame(pension)
 
 #### 1) Data Overview (before transformations) ####
@@ -246,19 +243,19 @@ all(educ_dummy_check2 == mydata$nohs)
 # ALL WEALTH VARIABLES:  hard to replicate
 # tfa_he: tfa and housing equity
 # Could not fully replicate variable. Do not use. Difference could be partly caused by right censoring of hval and hmort
-diff_tfa = mydata$tfa - mydata$tfa_he + mydata$hequity
-hist(diff_tfa)
-sum(diff_tfa == 0)
-summary(diff_tfa)
-for (i in 1:ncol(mydata)) {
-  print(paste("Corr diff and ", colnames(mydata)[i], cor(diff_tfa, mydata[, i])))
-}
-data_test = mydata_transform[mydata_transform$hval == max(mydata_transform$hval), ]
-data_test = mydata_transform[mydata_transform$hmort == max(mydata_transform$hmort), ]
-diff_tfa_test = data_test$tfa - data_test$tfa_he + data_test$hequity
-hist(diff_tfa_test)
-sum(diff_tfa_test == 0)
-sum(diff_tfa_test != 0)
+# diff_tfa = mydata$tfa - mydata$tfa_he + mydata$hequity
+# hist(diff_tfa)
+# sum(diff_tfa == 0)
+# summary(diff_tfa)
+# for (i in 1:ncol(mydata)) {
+#   print(paste("Corr diff and ", colnames(mydata)[i], cor(diff_tfa, mydata[, i])))
+# }
+# data_test = mydata_transform[mydata_transform$hval == max(mydata_transform$hval), ]
+# data_test = mydata_transform[mydata_transform$hmort == max(mydata_transform$hmort), ]
+# diff_tfa_test = data_test$tfa - data_test$tfa_he + data_test$hequity
+# hist(diff_tfa_test)
+# sum(diff_tfa_test == 0)
+# sum(diff_tfa_test != 0)
 
 # tfa
 # successful replication (apart from 80 obs)
