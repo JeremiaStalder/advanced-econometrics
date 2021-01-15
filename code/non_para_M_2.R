@@ -11,8 +11,8 @@ source("./code/non_para_M_functions.R")
 
 
 npdata = mydata_transform
-Y = npdata$tw_adjust_std #outcome
-#Y = npdata$tw_adjust_original
+#Y = npdata$tw_adjust_std #outcome
+Y = npdata$tw_adjust_original
 D = npdata$e401_std #Treatment 
 indep.vars = variable_sets_modelling[["independent_vars_std"]]
 
@@ -20,8 +20,8 @@ X = dplyr::select(npdata, all_of(indep.vars))
 
 #### Data preparation ####
 ## divide the data into two samples - where treatment equal to 0 and to 1
-Y.0 = npdata[npdata[, "e401_std"] == min(X[, "e401_std"]),]$tw_adjust_std
-Y.1 = npdata[npdata[, "e401_std"] == max(X[, "e401_std"]),]$tw_adjust_std
+Y.0 = npdata[npdata[, "e401_std"] == min(X[, "e401_std"]),]$tw_adjust_original
+Y.1 = npdata[npdata[, "e401_std"] == max(X[, "e401_std"]),]$tw_adjust_original
 
 X.0 = X[X[, "e401_std"] == min(X[, "e401_std"]),]
 X.1 = X[X[, "e401_std"] == max(X[, "e401_std"]),]
@@ -69,7 +69,6 @@ n.1 = nrow(PC.1)
 
 ## this loop creates grids for each variable (which correspond to principal components)
 ## of each of the subsamples (PC.0 and PC.1)
-## it allows for changing number of principal components used
 ## example: grid.0.1 corresponds to the grid of first PC of the 0-subsample
 
 ##for (i in seq(1, n_pca)){
@@ -108,8 +107,8 @@ k.t.1 = k.t.1.1$dens * k.t.2.1$dens * k.t.3.1$dens
 #### Nadaraya-Watson estimator ####
 # m^hat(x) = ( (\sum(y_i* K))/ (\sum(K)))
 
-m.0 = sum(Y.0 * k.0$dens)/sum(k.0$dens)
-m.1 = sum(Y.1 * k.1$dens)/sum(k.1$dens)
+#m.0 = sum(Y.0 * k.0$dens)/sum(k.0$dens)
+#m.1 = sum(Y.1 * k.1$dens)/sum(k.1$dens)
 
 m.0 = sum(Y.0 * k.t.0)/sum(k.t.0)
 m.1 = sum(Y.1 * k.t.1)/sum(k.t.1)
@@ -241,21 +240,25 @@ for (i in 1:5){
 ##  }
 ##}
 
+
 ##for (i in 1:5){
-##  for (j in seq(1, n_pca)){
-##    assign(paste0("k.q.", i, ".0.", j), npudens(bws = get(paste0("h.vector.q.", i, ".0"))[j], tdat = get(paste0("grid.q.", i, ".0.", j)) - get(paste0("PC.q.", i, ".0"))[, paste0("V", j)]))
-##    
-##    assign(paste0("k.q.", i, ".1.", j), 
-##           npudens(bws = get(paste0("h.vector.q.", i, ".1"))[j], 
-##                   tdat = get(paste0("grid.q.", i, ".1.", j)) - get(paste0("PC.q.", i, ".1"))[, paste0("V", j)]))
+##  for (e in 0:1){
+##    for (v in 1:n_pca){
+##      assign(paste0("k.q.", i, ".", e, ".", v), npudens(bws = get(paste0("h.vector.q.", i, ".", e))[v],
+##                                                        tdat = get(paste0("grid.q.", i, ".", e, ".", v)) - get(paste0("PC.q.", i, ".", e))[, paste0("V", v)]))
+##    }
 ##  }
 ##}
-
 
 k.q.1.0.1 = npudens(bws = h.vector.q.1.0[1], tdat = grid.q.1.0.1 - PC.q.1.0$V1)
 k.q.1.0.2 = npudens(bws = h.vector.q.1.0[2], tdat = grid.q.1.0.2 - PC.q.1.0$V2)
 k.q.1.0.3 = npudens(bws = h.vector.q.1.0[3], tdat = grid.q.1.0.3 - PC.q.1.0$V3)
 k.q.1.0 = k.q.1.0.1$dens * k.q.1.0.2$dens * k.q.1.0.3$dens
+
+k.q.1.1.1 = npudens(bws = h.vector.q.1.1[1], tdat = grid.q.1.1.1 - PC.q.1.1$V1)
+k.q.1.1.2 = npudens(bws = h.vector.q.1.1[2], tdat = grid.q.1.1.2 - PC.q.1.1$V2)
+k.q.1.1.3 = npudens(bws = h.vector.q.1.1[3], tdat = grid.q.1.1.3 - PC.q.1.1$V3)
+k.q.1.1 = k.q.1.1.1$dens * k.q.1.1.2$dens * k.q.1.1.3$dens
 
 k.q.2.0.1 = npudens(bws = h.vector.q.2.0[1], tdat = grid.q.2.0.1 - PC.q.2.0$V1)
 k.q.2.0.2 = npudens(bws = h.vector.q.2.0[2], tdat = grid.q.2.0.2 - PC.q.2.0$V2)
