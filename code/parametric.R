@@ -1,6 +1,6 @@
 ### Linear Estimators - Simple, Conditional Means, IPW, Doubly-Robust
 
-setwd("D:/GitHub/advanced-econometrics") # setwd
+#setwd("D:/GitHub/advanced-econometrics") # setwd
 outpath_results_parametric <- "./output/results/parametric/"
 sign_level <- 0.05
 
@@ -19,6 +19,7 @@ library(ggcorrplot)
 library(xtable)
 library(fastDummies)
 library(rlist)
+library(mgcv)
 
 ## functions
 source("./code/parametric_functions.R")
@@ -39,10 +40,12 @@ d_name <- "e401"
 d <- as.matrix(mydata_linear_model[,d_name]) # treatment
 x_name <- as.vector(variable_sets_modelling$independent_vars_selection[variable_sets_modelling$independent_vars_selection!="e401"])
 x <- as.matrix(mydata_linear_model[,x_name]) # use all base vars except treatment as confounders
-y_possible_names <- c(variable_sets_modelling$dependent_vars_selection) # names of outcome vars to consider
+y_possible_names <- c("tw_adjust_original") # names of outcome vars to consider
 y_possible <- as.matrix(mydata_linear_model[,y_possible_names]) # matrix of outcomes to choose from
+colnames(y_possible) <- y_possible_names
 colnames(d)[1] <- "d"
 
+data_modelling_gam <- cbind(select(mydata_linear_model, c("tw_adjust_original")), select(mydata_linear_model, c(variable_sets_modelling[["independent_vars_selection"]])))
 
 # parameters
 number_bootstrap_samples_ate <- 1000 #number of bootstrap samples for ate
@@ -74,8 +77,8 @@ ATE_via_bootstrap <- TRUE# boolean. If FALSE, then ATE calculated with full samp
 parametric_results_ate <- vector(mode = "list", length = length(y_possible_names))
 names(parametric_results_ate) <- y_possible_names
 
-for (iter_outcome_name in 1:length(y_possible_names)){
-  outcome_name <- y_possible_names[iter_outcome_name]
+
+  outcome_name <- y_possible_names[1]
   outcome <- y_possible[,outcome_name]# selected outcome for loop iteration
   # select conditioning:
     # adjust data: run model for 5 quintiles of income data
@@ -116,15 +119,31 @@ for (iter_outcome_name in 1:length(y_possible_names)){
       OLS_flex_ate <- c(OLS_flex_ate, CI_up, CI_low)
       
       
+  # GAM 
+      
+      est_gam <- gam(tw_adjust_original ~ e401 + s(age) + s(inc) + db + marr + male + twoearn + pira + hs + smcol + col + hown + withdrawal, data = data_modelling_gam)
+      summary_gam <- summary(est_gam)
+      GAM <- summary_gam$p.coeff["e401"]
+      names(GAM) <- "Estimate"
+      GAM_se <- summary_gam$se["e401"]
+      names(GAM_se) <- "Std. Error"
+      GAM <- c(GAM, GAM_se)
+      CI_up <- GAM[names(GAM)=="Estimate"]+qnorm(1-sign_level/2)*GAM[names(GAM)=="Std. Error"]
+      CI_low <- GAM[names(GAM)=="Estimate"]+qnorm(sign_level/2)*GAM[names(GAM)=="Std. Error"]
+      names(CI_up) <- "Upper CI"
+      names(CI_low) <- "Lower CI"
+      GAM <- c(GAM, NA, NA, CI_up, CI_low)
+      
+      
   # Data For 3) and 4) Bootstrapping -------------------------------------------------------------------------------------
       # list for each sample with sublist of x,d and specific outcome variable 
       # all data for bootstrapped samples
-      bootstrap_samples_ate <- list(list(y_possible_bootstrap_samples_ate[[1]][,colnames(y_possible_bootstrap_samples_ate[[1]])==outcome_name], 
+      bootstrap_samples_ate <- list(list(y_possible_bootstrap_samples_ate[[1]], 
                                           x_bootstrap_samples_ate[[1]],
                                           d_bootstrap_samples_ate[[1]]))
       names(bootstrap_samples_ate[[1]]) <- c("outcome","x","d")
       for (i in 2:number_bootstrap_samples_ate){
-        bootstrap_samples_ate <- list.append(bootstrap_samples_ate, list(y_possible_bootstrap_samples_ate[[i]][,colnames(y_possible_bootstrap_samples_ate[[i]])==outcome_name],
+        bootstrap_samples_ate <- list.append(bootstrap_samples_ate, list(y_possible_bootstrap_samples_ate[[i]],
                                                                          x_bootstrap_samples_ate[[i]],
                                                                          d_bootstrap_samples_ate[[i]]))
         names(bootstrap_samples_ate[[i]]) <- c("outcome","x","d")
@@ -221,19 +240,19 @@ for (iter_outcome_name in 1:length(y_possible_names)){
       
   
   # Comparison ---------------------------------------------------------------------------------------------------
-  parametric_est <- cbind(mc_ate, OLS_ate, OLS_flex_ate,IPW_ate, IPW_ate2, IPW_ate3,DR_base_ate,DR_help_ate,DR_help2_ate)
-  colnames(parametric_est) <- c("Mean Comparison", "Cond. Means", "Cond_Means_flex", "IPW", "IPW_restricted", "IPW_restricted2","Doubly_robust_base","Doubly_robust_restricted","Doubly_robust_restricted2")
+  parametric_est <- cbind(mc_ate, OLS_ate, OLS_flex_ate,IPW_ate, IPW_ate2, IPW_ate3,DR_base_ate,DR_help_ate,DR_help2_ate, GAM)
+  colnames(parametric_est) <- c("Mean Comparison", "Cond. Means", "Cond_Means_flex", "IPW", "IPW_restricted", "IPW_restricted2","Doubly_robust_base","Doubly_robust_restricted","Doubly_robust_restricted2", "GAM")
   
   # Collect in list
-  parametric_results_ate[[iter_outcome_name]] = parametric_est
-}
+  parametric_results_ate[[1]] = parametric_est
+
 
 # save image of all results
 save(parametric_results_ate,file=paste0(outpath_results_parametric,"parametric_results_ate.Rdata"))
 
 # table selected estimators in latex
   print(xtable(parametric_results_ate$tw_adjust_original[c(1,2,5,6),c("Doubly_robust_base","Doubly_robust_restricted","Doubly_robust_restricted2")]), type="latex",paste0(outpath_results_parametric, "tab_parametric_tw_original_DR.tex"))
-  print(xtable(parametric_results_ate$tw_adjust_quantile[c(1,2,5,6),c("Doubly_robust_base","Doubly_robust_restricted","Doubly_robust_restricted2")]), type="latex",paste0(outpath_results_parametric, "tab_parametric_tw_quantile_DR.tex"))
+  #print(xtable(parametric_results_ate$tw_adjust_quantile[c(1,2,5,6),c("Doubly_robust_base","Doubly_robust_restricted","Doubly_robust_restricted2")]), type="latex",paste0(outpath_results_parametric, "tab_parametric_tw_quantile_DR.tex"))
   
   
 
@@ -257,7 +276,7 @@ d_original <- d
 # check if sorted
 print("Check if Sorted after quintiles (all outputs true). If not, then need to sort!")
 print(all(unique(cate_variable)==c(1:length(unique(cate_variable)))))
-
+#iter_cate = 1
 for (iter_cate in 1:length(unique(cate_variable))){
   # condition dataset used: X=x
   y_possible <- as.matrix(y_possible_original[unique(cate_variable)[iter_cate]==cate_variable,])
@@ -282,9 +301,9 @@ for (iter_cate in 1:length(unique(cate_variable))){
   x_bootstrap_samples_ate <- lapply(index_bootstrap_samples_ate,slide_user,matrix=x)
   y_possible_bootstrap_samples_ate <- lapply(index_bootstrap_samples_ate,slide_user,matrix=y_possible)
   
-  for (iter_outcome_name in 1:length(y_possible_names)){
-    outcome_name <- y_possible_names[iter_outcome_name]
-    outcome <- y_possible[,outcome_name]# selected outcome for loop iteration
+    # outcome_name <- y_possible_names["tw_adjust_original"]
+    outcome_name <- y_possible_names[1]
+    outcome <- y_possible# selected outcome for loop iteration
     # select conditioning:
     # adjust data: run model for 5 quintiles of income data
     
@@ -322,18 +341,35 @@ for (iter_cate in 1:length(unique(cate_variable))){
       names(CI_up) <- "Upper CI"
       names(CI_low) <- "Lower CI"
       OLS_flex_ate <- c(OLS_flex_ate, CI_up, CI_low)
-    
-    
+      
+    # GAM
+    outcome_gam <- data.frame(outcome)
+    colnames(outcome_gam) <- "tw_adjust_original"
+    d_gam <- data.frame(d)
+    colnames(d_gam) <- "e401"
+    data_modelling_gam_cate <- data.frame(outcome_gam, d_gam, x)
+      est_gam <- gam(tw_adjust_original ~ e401 + s(age) + s(inc) + db + marr + male + twoearn + pira + hs + smcol + col + hown + withdrawal, data = data_modelling_gam_cate)
+      summary_gam <- summary(est_gam)
+      GAM <- summary_gam$p.coeff["e401"]
+      names(GAM) <- "Estimate"
+      GAM_se <- summary_gam$se["e401"]
+      names(GAM_se) <- "Std. Error"
+      GAM <- c(GAM, GAM_se)
+      CI_up <- GAM[names(GAM)=="Estimate"]+qnorm(1-sign_level/2)*GAM[names(GAM)=="Std. Error"]
+      CI_low <- GAM[names(GAM)=="Estimate"]+qnorm(sign_level/2)*GAM[names(GAM)=="Std. Error"]
+      names(CI_up) <- "Upper CI"
+      names(CI_low) <- "Lower CI"
+      GAM <- c(GAM, NA, NA, CI_up, CI_low)
       
     # Data For 3) and 4) Bootstrapping -------------------------------------------------------------------------------------
       # list for each sample with sublist of x,d and specific outcome variable 
       # all data for bootstrapped samples
-      bootstrap_samples_ate <- list(list(y_possible_bootstrap_samples_ate[[1]][,colnames(y_possible_bootstrap_samples_ate[[1]])==outcome_name], 
+      bootstrap_samples_ate <- list(list(y_possible_bootstrap_samples_ate[[1]], 
                                          x_bootstrap_samples_ate[[1]],
                                          d_bootstrap_samples_ate[[1]]))
       names(bootstrap_samples_ate[[1]]) <- c("outcome","x","d")
       for (i in 2:number_bootstrap_samples_cate){
-        bootstrap_samples_ate <- list.append(bootstrap_samples_ate, list(y_possible_bootstrap_samples_ate[[i]][,colnames(y_possible_bootstrap_samples_ate[[i]])==outcome_name],
+        bootstrap_samples_ate <- list.append(bootstrap_samples_ate, list(y_possible_bootstrap_samples_ate[[i]],
                                                                          x_bootstrap_samples_ate[[i]],
                                                                          d_bootstrap_samples_ate[[i]]))
         names(bootstrap_samples_ate[[i]]) <- c("outcome","x","d")
@@ -429,29 +465,29 @@ for (iter_cate in 1:length(unique(cate_variable))){
     
     
     # Comparison ---------------------------------------------------------------------------------------------------
-    parametric_est <- cbind(mc_ate, OLS_ate, OLS_flex_ate,IPW_ate, IPW_ate2, IPW_ate3,DR_base_ate,DR_help_ate,DR_help2_ate)
-    colnames(parametric_est) <- c("Mean Comparison", "Cond. Means", "Cond_Means_flex", "IPW", "IPW_restricted", "IPW_restricted2","Doubly_robust_base","Doubly_robust_restricted","Doubly_robust_restricted2")
+    parametric_est <- cbind(mc_ate, OLS_ate, OLS_flex_ate, GAM,IPW_ate, IPW_ate2, IPW_ate3,DR_base_ate,DR_help_ate,DR_help2_ate)
+    colnames(parametric_est) <- c("Mean Comparison", "Cond. Means", "Cond_Means_flex","GAM", "IPW", "IPW_restricted", "IPW_restricted2","Doubly_robust_base","Doubly_robust_restricted","Doubly_robust_restricted2")
     
     # Collect in list
-    results_outcome[[iter_outcome_name]] = parametric_est
-  }
+    results_outcome[[1]] = parametric_est
+  
   
   
   # list CATE, std, CIs
    parametric_results_cate_all[[iter_cate]] <- results_outcome
   
   # overview table of only estimate CATEs in latex
-    cate_table_all_outcomes <- as.data.frame(t(results_outcome[[1]][1,]))
-    
-    for (i in 2:length(results_outcome)){
-      cate_table_all_outcomes<- rbind(cate_table_all_outcomes,t(results_outcome[[i]][1,]))
-    }
-    rownames(cate_table_all_outcomes) <- names(results_outcome)
-    
-    # collect all cate results in table
-    results_cate[[iter_cate]] <- cate_table_all_outcomes
-}
+    # cate_table_all_outcomes <- as.data.frame(t(results_outcome[[1]][1,]))
+    # 
+    # for (i in 2:length(results_outcome)){
+    #   cate_table_all_outcomes<- rbind(cate_table_all_outcomes,t(results_outcome[[i]][1,]))
+    # }
+    # rownames(cate_table_all_outcomes) <- names(results_outcome)
+    # 
+    # # collect all cate results in table
+    # results_cate[[iter_cate]] <- cate_table_all_outcomes
 
+}
 # save cate results
 save(parametric_results_cate_all,file=paste0(outpath_results_parametric,"parametric_results_cate_all.Rdata"))
 
@@ -464,8 +500,8 @@ save(parametric_results_cate_all,file=paste0(outpath_results_parametric,"paramet
     all_results_parametric_tw = vector(mode = "list", length = ncol(parametric_results_cate_all$CATE_inc_quantile1$tw_adjust_original))
     names(all_results_parametric_tw) = colnames(parametric_results_cate_all$CATE_inc_quantile1$tw_adjust_original)
     
-    all_results_parametric_tw_quantiles = vector(mode = "list", length = ncol(parametric_results_cate_all$CATE_inc_quantile1$tw_adjust_original))
-    names(all_results_parametric_tw_quantiles) = colnames(parametric_results_cate_all$CATE_inc_quantile1$tw_adjust_original)
+    # all_results_parametric_tw_quantiles = vector(mode = "list", length = ncol(parametric_results_cate_all$CATE_inc_quantile1$tw_adjust_original))
+    # names(all_results_parametric_tw_quantiles) = colnames(parametric_results_cate_all$CATE_inc_quantile1$tw_adjust_original)
     
     for (i in 1:length(all_results_parametric_tw)){
       df_estimator_results_loop = df_estimator_results
@@ -478,19 +514,20 @@ save(parametric_results_cate_all,file=paste0(outpath_results_parametric,"paramet
       all_results_parametric_tw[[i]] = df_estimator_results_loop
     }
     
-    for (i in 1:length(all_results_parametric_tw_quantiles)){
-      df_estimator_results_loop = df_estimator_results
-      df_estimator_results_loop$ATE = parametric_results_ate$tw_adjust_quantile[,i][c(1,2,5,6)]
-      df_estimator_results_loop$CATE_inc_quantile1 = parametric_results_cate_all$CATE_inc_quantile1$tw_adjust_quantile[,i][c(1,2,5,6)]
-      df_estimator_results_loop$CATE_inc_quantile2 = parametric_results_cate_all$CATE_inc_quantile2$tw_adjust_quantile[,i][c(1,2,5,6)]
-      df_estimator_results_loop$CATE_inc_quantile3 = parametric_results_cate_all$CATE_inc_quantile3$tw_adjust_quantile[,i][c(1,2,5,6)]
-      df_estimator_results_loop$CATE_inc_quantile4 = parametric_results_cate_all$CATE_inc_quantile4$tw_adjust_quantile[,i][c(1,2,5,6)]
-      df_estimator_results_loop$CATE_inc_quantile5 = parametric_results_cate_all$CATE_inc_quantile5$tw_adjust_quantile[,i][c(1,2,5,6)]
-      all_results_parametric_tw_quantiles[[i]] = df_estimator_results_loop
-    }
+  
+    # for (i in 1:length(all_results_parametric_tw_quantiles)){
+    #   df_estimator_results_loop = df_estimator_results
+    #   df_estimator_results_loop$ATE = parametric_results_ate$tw_adjust_quantile[,i][c(1,2,5,6)]
+    #   df_estimator_results_loop$CATE_inc_quantile1 = parametric_results_cate_all$CATE_inc_quantile1$tw_adjust_quantile[,i][c(1,2,5,6)]
+    #   df_estimator_results_loop$CATE_inc_quantile2 = parametric_results_cate_all$CATE_inc_quantile2$tw_adjust_quantile[,i][c(1,2,5,6)]
+    #   df_estimator_results_loop$CATE_inc_quantile3 = parametric_results_cate_all$CATE_inc_quantile3$tw_adjust_quantile[,i][c(1,2,5,6)]
+    #   df_estimator_results_loop$CATE_inc_quantile4 = parametric_results_cate_all$CATE_inc_quantile4$tw_adjust_quantile[,i][c(1,2,5,6)]
+    #   df_estimator_results_loop$CATE_inc_quantile5 = parametric_results_cate_all$CATE_inc_quantile5$tw_adjust_quantile[,i][c(1,2,5,6)]
+    #   all_results_parametric_tw_quantiles[[i]] = df_estimator_results_loop
+    # }
     
-    all_results_parametric <- list(all_results_parametric_tw, all_results_parametric_tw_quantiles)
-    names(all_results_parametric) = c("tw_adjust_original","tw_adjust_quantile")
+    all_results_parametric <- list(all_results_parametric_tw) #, all_results_parametric_tw_quantiles)
+    names(all_results_parametric) = c("tw_adjust_original") #,"tw_adjust_quantile")
     
     # save all results
     save(all_results_parametric,file=paste0(outpath_results_parametric,"parametric_all_results.Rdata"))
