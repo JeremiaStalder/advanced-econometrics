@@ -79,13 +79,13 @@ source("./code/causal_random_forest.R")
 
 # ------------ Non-Parametric -------------
 # Non-parametric Kernel Regression
+# Estimated computation time: around 12 hours
+source("./code/non-parametric__JC.R")
+
+# Nadaraya-Watson Estimator
 # Estimated computation time: X minutes
 source("./code/non_para_M_2.R")
 # Note: see "./code/non_para_M_functions.R" for additional functions used in "non_para_M_2.R".
-
-# Nadaraya-Watson Estimator
-# Estimated computation time: around 12 hours
-source("./code/non-parametric__JC.R")
 
 # ------------ Result collection -------------
 # Finally, the results are collected and the graphs for the paper are created.
