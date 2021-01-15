@@ -113,7 +113,8 @@ m.1 = sum(Y.1 * k.t.1)/sum(k.t.1)
 
 ate = m.1 - m.0
 
-#save(ate, file = "./output/results/nonparametric/ate_M.RData")
+print(ate)
+save(ate, file = "./output/results/nonparametric/ate_M.RData")
 
 
 #### CATEs ####
@@ -327,5 +328,6 @@ for (i in 1:5){
 }
 
 cates = cbind(ate.q.1, ate.q.2, ate.q.3, ate.q.4, ate.q.5)
+print(cates)
 
-#save(cates, file = "./output/results/nonparametric/cates_M.RData")
+save(cates, file = "./output/results/nonparametric/cates_M.RData")
