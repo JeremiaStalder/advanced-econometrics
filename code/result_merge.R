@@ -1,23 +1,24 @@
+# ------------------------- Libraries ---------------------------------
+
 library(data.table) # used for transposing some data tables
 library(xtable)
 library(ggplot2)
-transpose <- data.table::transpose
 
+# ------------------------- Functions and Variables -------------------
+transpose <- data.table::transpose
 path = "./output/results/"
 
+# ------------------------- Collection of Results ---------------------
+
+# Load all data
 non_para <- get(load("./output/results/nonparametric/non-parametric_output_JC.RData"))
 lasso <- get(load("./output/results/lasso/lasso_output_final.RData"))
 parametric_all_results <- get(load("./output/results/parametric/parametric_all_results.Rdata"))
 semiparametric_output <- get(load("./output/results/semiparametric/semiparametric_output_3nonpara.RData"))
 crf_results_all <- get(load("./output/results/random_forest/crf_results_all.Rdata"))
 ds_lasso <- get(load("./output/results/lasso/DS_lasso_output_final.RData"))
-#nadaraya_watson <- get(load("./output/results/nonparametric/cates_M.RData"))
-#lasso_test <- get(load("./output/results/lasso/lasso_output_final_inc_variables.RData"))
 
-#parametric_all_results$tw_adjust_original
-#print(xtable(results_outcome$tw_adjust_original), type="latex",paste0(path, "crf_tw_original.tex"))
-
-### TODO put following into a loop
+# Define Names
 row_names <- c("ATE", "Q1", "Q2", "Q3", "Q4", "Q5")
 col_names <- c("Coef", "SE", "CIl", "CIu")
 
@@ -38,6 +39,12 @@ cond_means_data <- transpose(data.table(parametric_all_results$tw_adjust_origina
 cond_means <- as.data.frame(cond_means_data[,c(1, 2, 4, 3)])
 rownames(cond_means) <- c("Linear Conditional Outcome Regression ATE", "Q1", "Q2", "Q3", "Q4", "Q5")
 colnames(cond_means) <- col_names
+
+## GAM
+gam_data <- transpose(data.table(parametric_all_results$tw_adjust_original$GAM)) # transpose
+gam <- as.data.frame(gam_data[,c(1, 2, 4, 3)])
+rownames(gam) <- c("Generalized Additive Model ATE", "Q1", "Q2", "Q3", "Q4", "Q5")
+colnames(gam) <- col_names
 
 ## Cond_Means_flex
 #cond_Means_flex_data <- transpose(data.table(parametric_all_results$tw_adjust_original$Cond_Means_flex)) # transpose
@@ -94,6 +101,9 @@ all_results_ate <- all_results[c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE),]
 print(xtable(all_results), type="latex",paste0(path, "all_results.tex"))
 print(xtable(all_results_ate), type="latex",paste0(path, "all_results_ate.tex"))
 
+
+# ------------------------- Creation of Graphs ---------------------
+
 results_graph <- rbind(mean_comparison, cond_means, non_para, ds_lasso, semiparametric_output, crf)
 results_graph_quantile <- results_graph[c(FALSE, TRUE, TRUE, TRUE, TRUE, TRUE),]
 results_graph_ate <- results_graph[c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE),]
@@ -124,12 +134,12 @@ ggplot(selected_estimators, aes(x=quant, y=coef, group=cate, color=cate)) +
 ggsave(paste0(path, "comparison_selection_error_grey.png"), width = 25, height = 13, units = "cm")
 
 # All Methods (except cond means flexible and doubly robust restricted 2) without CIs
-all_results_no_cond_means_flex <- rbind(mean_comparison, cond_means, doubly_robust_base, non_para, semiparametric_output, lasso, ds_lasso, crf)
+all_results_no_cond_means_flex <- rbind(mean_comparison, cond_means, doubly_robust_base, non_para, semiparametric_output, lasso, ds_lasso, crf, gam)
 # all_results_no_cond_means_flex <- rbind(mean_comparison, cond_means, doubly_robust_base, non_para, semiparametric_output, lasso, ds_lasso, crf)
 all_results_quantile <- all_results_no_cond_means_flex[c(FALSE, TRUE, TRUE, TRUE, TRUE, TRUE),]
 # all_estimators <- data.frame(cate = rep(c("Mean Comparison", "Conditional Means", "IPW", "IPW Restricted", "IPW Restricted 2", "Doubly Robust Base","Doubly Robust Restricted", "Nonparametric", "Semiparametric", "Lasso", "Double Selection Lasso", "Causal Random Forest"), each=5),
-all_estimators <- data.frame(cate = rep(c("Mean Comparison", "Linear Conditional Outcome Regression", "Doubly Robust Parametric", "Nonparametric", "Semi-Parametric Regression", "Lasso", "Double Selection Lasso", "Causal Random Forest"), each=5),
-                                  quant=rep(c("Q1", "Q2", "Q3", "Q4", "Q5"),8),
+all_estimators <- data.frame(cate = rep(c("Mean Comparison", "Linear Conditional Outcome Regression", "Doubly Robust Parametric", "Nonparametric", "Semi-Parametric Regression", "Lasso", "Double Selection Lasso", "Causal Random Forest", "Generalized Additive Model"), each=5),
+                                  quant=rep(c("Q1", "Q2", "Q3", "Q4", "Q5"),9),
                                   coef = all_results_quantile[,1],
                                   CIl = all_results_quantile[,3],
                                   CIu = all_results_quantile[,4])
@@ -143,11 +153,11 @@ ggplot(all_estimators, aes(x=quant, y=coef, group=cate, color=cate)) +
   ggsave(paste0(path, "comparison_all_cate.png"), width = 25, height = 13, units = "cm")
 
 # Comparison Parametric
-parametric_graph <- rbind(mean_comparison, doubly_robust_base, cond_means, lasso, ds_lasso)
+parametric_graph <- rbind(mean_comparison, doubly_robust_base, cond_means, lasso, ds_lasso, gam)
 parametric_graph_quantile <- parametric_graph[c(FALSE, TRUE, TRUE, TRUE, TRUE, TRUE),]
 
-parametric_estimators <- data.frame(cate = rep(c("Mean Comparison", "Doubly Robust Parametric", "Linear Conditional Outcome Regression", "Lasso", "Double Selection Lasso"), each=5),
-                                  quant=rep(c("Q1", "Q2", "Q3", "Q4", "Q5"),5),
+parametric_estimators <- data.frame(cate = rep(c("Mean Comparison", "Doubly Robust Parametric", "Linear Conditional Outcome Regression", "Lasso", "Double Selection Lasso", "Generalized Additive Model"), each=5),
+                                  quant=rep(c("Q1", "Q2", "Q3", "Q4", "Q5"),6),
                                   coef = parametric_graph_quantile[,1],
                                   CIl = parametric_graph_quantile[,3],
                                   CIu = parametric_graph_quantile[,4])
@@ -184,11 +194,10 @@ ggsave(paste0(path, "comparison_nonparametric_semiparametric.png"), width = 25, 
 
 
 ###### ATE plot
-ate_plot <- rbind(doubly_robust_base, cond_means, semiparametric_output, non_para, lasso, ds_lasso, crf)
-# all_results_no_cond_means_flex <- rbind(mean_comparison, cond_means, doubly_robust_base, non_para, semiparametric_output, lasso, ds_lasso, crf)
+ate_plot <- rbind(doubly_robust_base, cond_means, gam, semiparametric_output, non_para, lasso, ds_lasso, crf)
 ate_plot_data <- ate_plot[c(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE),]
 # all_estimators <- data.frame(cate = rep(c("Mean Comparison", "Conditional Means", "IPW", "IPW Restricted", "IPW Restricted 2", "Doubly Robust Base","Doubly Robust Restricted", "Nonparametric", "Semiparametric", "Lasso", "Double Selection Lasso", "Causal Random Forest"), each=5),
-ate_plot_data <- data.frame(ate = rep(c("Doubly Robust Parametric", "Linear Conditional Outcome Regression",  "Semi-Parametric Regression", "Non-Parametric", "Lasso", "Double Selection Lasso", "Causal Random Forest"), each=1),
+ate_plot_data <- data.frame(ate = rep(c("Doubly Robust Parametric", "Linear Conditional Outcome Regression",  "Generalized Additive Model", "Semi-Parametric Regression", "Non-Parametric", "Lasso", "Double Selection Lasso", "Causal Random Forest"), each=1),
                              coef = ate_plot_data[,1],
                              CIl = ate_plot_data[,3],
                              CIu = ate_plot_data[,4])

@@ -4,7 +4,6 @@ library(tidyverse)
 library(glmnet)
 library(BNSP)
 
-
 load("./output/mydata_transform.Rdata")
 load("./output/variable_sets_modelling.Rdata")
 
@@ -23,6 +22,7 @@ C <- select(lassodata, c("inc_quintile"))
 X_cate <-X
 Y_cate <- Y
 D_cate <- D
+
 #####Function lasso######
 DS_postlasso <- function(Y_cate,D_cate,X_cate){#input in matrix Y= outcome, X covariates including D,
   

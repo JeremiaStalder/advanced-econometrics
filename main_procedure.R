@@ -6,6 +6,7 @@
 # This file is meant as a guide through the whole project and helps to understand the structure of our code-files. 
 # It will automatically execute the different scripts for data cleaning, estimation and result display, and produce all outputs automatically.
 # Each file run here, can also be run independently. All code files are stored in the "code" folder.
+# Note that some methods might take really long to run, that is why we indicated approximate runtimes. 
 
 # ------------------------- Libraries ---------------------------------
 # List of all required libraries, please make sure that they are all installed.
@@ -55,39 +56,39 @@ source("./code/data_cleaning.R")
 source("./code/parametric.R")
 # Note: see "./code/parametric_functions.R" for additional functions used in "parametric.R".
 
+# ------------ Lasso -------------
 # Lasso
-# Estimated computation time: 8-16 minutes
+# Estimated computation time: around 10 minutes
 source("./code/lasso_final.R")
 
 # Double Selection Lasso
-# Estimated computation time: X minutes
+# Estimated computation time: around 3 minutes
 source("./code/double-selection-lasso.R")
-
 
 # ------------ Semi-Parametric -------------
 # Semi-Parametric estimation
 # For computation time reason we calculate the Semi-Parametric Estimation only with one non-parametric parameter.
 # However, in "semi-parametric_JC.R" you can set it to two or three non-parametric parameters (option at the top of the file, might take up to 36h)
-# Estimated computation time: X minutes
+# Estimated computation time: around one hour
 source("./code/semi-parametric_JC.R")
 
-# ------------ Non-Parametric -------------
+# ------------ Causal Rancom Forest -------------
 # Causal Random Forest estimation
 # Estimated computation time: 1-2 minutes
 source("./code/causal_random_forest.R")
 
-# Kernel estimation
+# ------------ Non-Parametric -------------
+# Non-parametric Kernel Regression
+# Estimated computation time: X minutes
 source("./code/non_para_M_2.R")
 # Note: see "./code/non_para_M_functions.R" for additional functions used in "non_para_M_2.R".
 
-
-
-
-
-
-
-
+# Nadaraya-Watson Estimator
+# Estimated computation time: around 12 hours
+source("./code/non-parametric__JC.R")
 
 # ------------ Result collection -------------
 # Finally, the results are collected and the graphs for the paper are created.
+# Estimated computation time: a few seconds
 source("./code/result_merge.R")
+
